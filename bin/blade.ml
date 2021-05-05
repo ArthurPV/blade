@@ -1,3 +1,5 @@
+open Blade_command.Command
+
 let _ = 
     match Array.length Sys.argv with
     | 1 -> Printf.printf "help"
@@ -9,5 +11,5 @@ let _ =
            | "new" -> Printf.printf "new"
            | "run" -> Printf.printf "run"
            | "to" -> Printf.printf "to"
-           | "-v" | "--version" | "version" -> Printf.printf "version"
+           | "-v" | "--version" | "version" -> BladeCommand.blade_version
            | _ -> Printf.printf "error"

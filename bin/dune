@@ -1,4 +1,5 @@
 (executable 
   (libraries
-    color)
+    color
+    blade_command)
   (name blade))

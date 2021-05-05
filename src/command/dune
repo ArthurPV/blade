@@ -1,2 +1,2 @@
 (library
-  (name command))
+  (name blade_command))
