@@ -20,5 +20,8 @@ val new_lexer_info : lexer_info
 val new_lexer : lexer_info -> 'a read -> 'a lexer
 
 module UtilLexer : sig
-    val next_token : 'a lexer -> unit
+    val next_char : 'a lexer -> unit
+    val previous_char : 'a lexer -> unit
+    val start_token : 'a lexer -> unit
+    val end_token : 'a lexer -> unit
 end

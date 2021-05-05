@@ -31,16 +31,32 @@ let new_lexer info read = {
 }
 
 module UtilLexer = struct 
-    let next_token lexer = 
-        if lexer.read.c = '\n' then
-            (lexer.info.pos <- lexer.info.pos + 1;
-             lexer.info.col <- 1;
-             lexer.info.line <- lexer.info.line + 1;
-             lexer.read.c <- lexer.read.content.[lexer.info.pos];
+    let next_char lex = 
+        if lex.read.c = '\n' then
+            (lex.info.pos <- lex.info.pos + 1;
+             lex.info.col <- 1;
+             lex.info.line <- lex.info.line + 1;
+             lex.read.c <- lex.read.content.[lex.info.pos];
              ())
         else
-            (lexer.info.pos <- lexer.info.pos + 1;
-             lexer.info.col <- lexer.info.col + 1;
-             lexer.read.c <- lexer.read.content.[lexer.info.pos];
+            (lex.info.pos <- lex.info.pos + 1;
+             lex.info.col <- lex.info.col + 1;
+             lex.read.c <- lex.read.content.[lex.info.pos];
              ())
+
+    let previous_char lex =
+        lex.info.pos <- lex.info.pos - 1;
+        lex.info.col <- lex.info.col - 1;
+        lex.read.c <- lex.read.content.[lex.info.pos];
+        ()
+
+    let start_token lex =
+        lex.info.s_line <- lex.info.line;
+        lex.info.s_col <- lex.info.col;
+        ()
+
+    let end_token lex =
+        lex.info.e_line <- lex.info.line;
+        lex.info.e_col <- lex.info.col;
+        ()
 end

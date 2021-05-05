@@ -1,2 +1,3 @@
+(dirs ast)
 (library
   (name front))
