@@ -102,9 +102,19 @@ type keyword =
     | KeywordBool
     | KeywordUnit
 
+type int_format = 
+    | Normal
+    | Hexadecimal
+    | Octal
+    | Binary
+
+type float_format = 
+    | Normal
+    | Scientific
+
 type literal = 
-    | LiteralInt of int
-    | LiteralFloat of float
+    | LiteralInt of int * int_format
+    | LiteralFloat of float * float_format
     | LiteralChar of char
     | LiteralString of string
 

@@ -60,3 +60,11 @@ module UtilLexer = struct
         lex.info.e_col <- lex.info.col;
         ()
 end
+
+let rec lexer lex = 
+    if lex.info.pos < lex.read.length then 
+        (Printf.printf "hello";
+         UtilLexer.next_char lex;
+         lexer (lex))
+    else
+        (Printf.printf "bye")

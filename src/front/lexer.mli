@@ -25,3 +25,5 @@ module UtilLexer : sig
     val start_token : 'a lexer -> unit
     val end_token : 'a lexer -> unit
 end
+
+val lexer : 'a lexer -> unit

@@ -1,2 +1,4 @@
 (library
+  (libraries
+    blade_front)
   (name blade_command))

@@ -18,11 +18,11 @@ let new_read filename content =
 
 module GetFileContent = struct
     let msg_not_exists filename =
-        Printf.printf "Error: the file doesn\'t exists: \'%s\'\n" filename;
+        Printf.printf "\027[1m\027[31mError\027[0m\027[1m: the file doesn\'t exists: \'%s\'\027[0m\n" filename;
         exit 1
 
     let msg_is_dir filename =
-        Printf.printf "Error: the file is a directory: \'%s\'\n" filename;
+        Printf.printf "\027[1m\027[31mError\027[0m\027[1m: the file is a directory: \'%s\'\027[0m\n" filename;
         exit 1
 
     let read_lines filename =

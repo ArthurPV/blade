@@ -1,5 +1,5 @@
 (executable 
   (libraries
-    color
+    ANSITerminal
     blade_command)
   (name blade))

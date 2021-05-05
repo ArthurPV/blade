@@ -102,9 +102,19 @@ type keyword =
     | KeywordBool
     | KeywordUnit
 
+type int_format = 
+    | Normal
+    | Hexadecimal
+    | Octal
+    | Binary
+
+type float_format = 
+    | Normal
+    | Scientific
+
 type literal = 
-    | LiteralInt of int
-    | LiteralFloat of float
+    | LiteralInt of int * int_format
+    | LiteralFloat of float * float_format
     | LiteralChar of char
     | LiteralString of string
 
@@ -220,8 +230,8 @@ let token_to_str tok =
     | Keyword KeywordString -> "string"
     | Keyword KeywordBool -> "bool"
     | Keyword KeywordUnit -> "unit"
-    | Literal LiteralInt l -> Printf.sprintf "Integer -> %d" l
-    | Literal LiteralFloat l -> Printf.sprintf "Float -> %f" l
+    | Literal LiteralInt (l,_) -> Printf.sprintf "Integer -> %d" l
+    | Literal LiteralFloat (l,_) -> Printf.sprintf "Float -> %f" l
     | Literal LiteralChar l -> Printf.sprintf "Char -> %c" l
     | Literal LiteralString l -> Printf.sprintf "String -> %s" l
     | Comment CommentOneLine -> "**"

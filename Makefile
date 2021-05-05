@@ -1,5 +1,5 @@
 all:
-	opam install color llvm
+	opam install ANSITerminal llvm
 	dune build
 
 clean:
