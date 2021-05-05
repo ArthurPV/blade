@@ -1,0 +1,6 @@
+import list
+
+doubleList :: [i32] -> [i32]
+fun doubleList l = l.map(x -> x*2) end
+
+doubleList([1,2,3,4,5])

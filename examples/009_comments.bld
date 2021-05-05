@@ -1,0 +1,9 @@
+** comment one line
+
+(* 
+this is a comment multi line
+*)
+
+(**
+this is a comment doc
+**)

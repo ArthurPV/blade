@@ -1,3 +1,45 @@
+type separator = 
+    | SeparatorDot
+    | SeparatorDollar
+    | SeparatorComma
+    | SeparatorColon
+    | SeparatorColonColon
+    | SeparatorNewline
+    | SeparatorVerticalBar
+    | SeparatorAt
+    | SeparatorLeftParen
+    | SeparatorRightParen
+    | SeparatorLeftBrace
+    | SeparatorRightBrace
+    | SeparatorLeftHook
+    | SeparatorRightHook
+
+type operator = 
+    | OperatorPlus
+    | OperatorMinus
+    | OperatorStar
+    | OperatorSlash
+    | OperatorPercentage
+    | OperatorHat
+    | OperatorPlusPlus
+    | OperatorMinusMinus
+    | OperatorPlusEq
+    | OperatorMinusEq
+    | OperatorStarEq
+    | OperatorSlashEq
+    | OperatorPercentageEq
+    | OperatorHatEq
+    | OperatorEq
+    | OperatorEqEq
+    | OperatorEqDotDot
+    | OperatorDotDot
+    | OperatorDotDotEq
+    | OperatorLeftShift
+    | OperatorRightShift
+    | OperatorLeftShiftEq
+    | OperatorRightShiftEq
+    | OperatorInterogation
+
 type keyword = 
     | KeywordExplicit
     | KeywordPub
@@ -60,5 +102,22 @@ type keyword =
     | KeywordBool
     | KeywordUnit
 
-type token_kind = 
-    Keyword of keyword
+type literal = 
+    | LiteralInt of int
+    | LiteralFloat of float
+    | LiteralChar of char
+    | LiteralString of string
+
+type comment = 
+    | CommentOneLine
+    | CommentMultiLine
+    | CommentDoc of string
+
+type 'a token = 
+    | Separator of separator
+    | Operator of operator
+    | Keyword of keyword
+    | Literal of literal
+    | Comment of comment
+
+val token_to_str : 'a token -> string 

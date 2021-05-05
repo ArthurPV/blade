@@ -1,0 +1,8 @@
+myloop :: i32 -> i32
+fun myloop max = 
+	var n = 0
+	while n < max
+	 	n+=1
+	end
+	n
+end

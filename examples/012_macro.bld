@@ -1,0 +1,8 @@
+** define simple macro
+macro add x = x*x end
+
+** call macro
+@add(3) ** 9
+
+macro PI = 3.14159265359 end
+@PI() ** 3.14159265359

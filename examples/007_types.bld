@@ -1,0 +1,19 @@
+** create type
+type Person =
+	name: string, 
+	age: i8 
+end
+
+new_person :: string|i8 -> Person
+fun new_person name age = 
+	Person {	
+		name = name,
+		age = age
+	}
+end
+
+** define data
+data Work = 
+	Name of string,
+	Salary of i32,
+end
