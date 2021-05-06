@@ -1,4 +1,5 @@
 open Error
+open Keyword
 open Read
 open Token
 
@@ -65,15 +66,86 @@ module UtilLexer = struct
     let get_next_char lex = lex.read.content.[lex.info.pos+1]
 end
 
+module RecognizeChar = struct
+    let is_identifier lex = 
+        (lex.read.c >= 'a' && lex.read.c <= 'z') || (lex.read.c >= 'A' && lex.read.c <= 'Z') || lex.read.c = '_'
+
+    let is_hex lex = 
+        (lex.read.c >= 'a' && lex.read.c <= 'f') || (lex.read.c >= 'A' && lex.read.c <= 'F') || (lex.read.c >= '0' && lex.read.c <= '9')
+
+    let is_bin lex = 
+        (lex.read.c >= '0' && lex.read.c <= '1')
+end
+
 module ScanChar = struct
     let rec scan_comment_one_line lex = 
         if lex.read.c != '\n' then
             (UtilLexer.next_char lex;
             scan_comment_one_line (lex))
+        else
+            UtilLexer.previous_char lex
+
+    let scan_identifier lex = 
+        let value = ref [] in
+        let rec loop lex =
+        if RecognizeChar.is_identifier lex then 
+            (value := !value @ [String.make 1 lex.read.c];
+             UtilLexer.next_char lex;
+             loop (lex)) in 
+        loop (lex);
+        UtilLexer.previous_char lex;
+        String.concat "" !value
+
+    let scan_char lex = 
+        UtilLexer.next_char lex;
+        if lex.read.c != '\'' then 
+            (UtilLexer.next_char lex;
+             if lex.read.c != '\'' then 
+                 Error (ErrorIdInvalidCharLiteral)
+             else Ok lex.read.content.[lex.info.pos-1])
+        else Error (ErrorIdInvalidCharLiteral)
+
+    let scan_string lex = 
+        UtilLexer.next_char lex;
+        let value = ref [] in
+        let rec loop lex = 
+            if lex.read.c != '\"' && lex.info.pos < lex.read.length-1 then 
+                (value := !value @ [String.make 1 lex.read.c];
+                 UtilLexer.next_char lex;
+                 loop (lex)) in
+        loop (lex);
+        if lex.read.c != '\"' then Error (ErrorIdInvalidStringLiteral)
+        else Ok (String.concat "" !value)
+
+    let scan_hex lex = 
+        let value = ref [] in
+        value := !value @ [String.make 1 lex.read.c];
+        UtilLexer.next_char lex; (* 0 *)
+        value := !value @ [String.make 1 lex.read.c];
+        UtilLexer.next_char lex; (* x *)
+
+        let rec loop lex = 
+            if RecognizeChar.is_hex lex then 
+                (value := !value @ [String.make 1 lex.read.c];
+                 UtilLexer.next_char lex;
+                 loop (lex)) in 
+        loop (lex);
+        UtilLexer.previous_char lex;
+
+        match String.concat "" !value with
+        | "0x" -> Error ErrorIdInvalidStringLiteral
+        | _ -> Ok (int_of_string (String.concat "" !value))
 end
 
 let tokenizer lex = 
     UtilLexer.start_token lex;
+
+    let rec loop lex = 
+        if lex.read.c = ' ' || lex.read.c = '\t' then
+            (UtilLexer.next_char lex;
+             loop (lex)) in 
+    loop (lex);
+
     match lex.read.c with
     | '$' -> Ok (Separator SeparatorDollar)
     | ',' -> Ok (Separator SeparatorComma)
@@ -150,12 +222,27 @@ let tokenizer lex =
                                 Ok (Operator OperatorDotDot)))
               | _ -> Ok (Separator SeparatorDot))
     | '?' -> Ok (Operator OperatorInterogation)
-    | _ -> Error ErrorIdUnexpectedToken
+    | '\'' -> (match ScanChar.scan_char lex with
+               | Ok c -> Ok (Literal (LiteralChar (c)))
+               | Error e -> Error e)
+    | '\"' -> (match ScanChar.scan_string lex with
+               | Ok t -> Ok (Literal (LiteralString (t)))
+               | Error e -> Error e)
+    | '0' -> (match UtilLexer.get_next_char lex with
+              | 'x' -> (match ScanChar.scan_hex lex with
+                        | Ok i -> Ok (Literal (LiteralInt (i, Hexadecimal)))
+                        | Error e -> Error e)
+              | _ -> Ok (Literal (LiteralInt (0, Normal))))
+    | _ -> (if RecognizeChar.is_identifier lex then 
+                (match value_to_keyword (ScanChar.scan_identifier lex) with 
+                 | Ok t -> Ok t
+                 | Error e -> Ok e)
+            else Error ErrorIdUnexpectedToken)
 
 let rec run_tokenizer lex = 
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
-        | Ok t -> (Printf.printf "%s\n" (token_to_str t);
+        | Ok t -> (Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str t);
                    UtilLexer.next_char lex;
                    run_tokenizer (lex))
         | Error _ -> Printf.printf "error\n";

@@ -29,8 +29,18 @@ module UtilLexer : sig
     val get_next_char : 'a lexer -> char
 end
 
+module RecognizeChar : sig 
+    val is_identifier : 'a lexer -> bool
+    val is_hex : 'a lexer -> bool
+    val is_bin : 'a lexer -> bool
+end
+
 module ScanChar : sig 
     val scan_comment_one_line : 'a lexer -> unit
+    val scan_identifier : 'a lexer -> string
+    val scan_char : 'a lexer -> (char, error_id) result
+    val scan_string : 'a lexer -> (string, error_id) result
+    val scan_hex : 'a lexer -> (int, error_id) result
 end
 
 val tokenizer : 'a lexer -> ('a token, error_id) result

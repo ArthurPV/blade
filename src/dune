@@ -1,1 +1,1 @@
-(dirs command front llvm)
+(dirs command front gc llvm)
