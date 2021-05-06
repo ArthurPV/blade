@@ -35,6 +35,8 @@ module RecognizeChar : sig
     val is_bin : 'a lexer -> bool
 end
 
+val get_escape : 'a lexer -> (string, error_id) result
+
 module ScanChar : sig 
     val scan_comment_one_line : 'a lexer -> unit
     val scan_identifier : 'a lexer -> string

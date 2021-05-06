@@ -77,6 +77,22 @@ module RecognizeChar = struct
         (lex.read.c >= '0' && lex.read.c <= '1')
 end
 
+let get_escape lex = 
+    match lex.read.c with
+    | '\\' -> (match UtilLexer.get_next_char lex with
+               | 'n' -> (UtilLexer.next_char lex;
+                         Ok "\\n")
+               | 't' -> (UtilLexer.next_char lex;
+                         Ok "\\t")
+               | 'v' -> (UtilLexer.next_char lex;
+                         Ok "\\v")
+               | 'r' -> (UtilLexer.next_char lex;
+                         Ok "\\r")
+               | '\000' -> (UtilLexer.next_char lex;
+                            Ok "\\0")
+               | _ -> Error ErrorIdInvalidEscape)
+    | _ -> Ok (String.make 1 lex.read.c)
+
 module ScanChar = struct
     let rec scan_comment_one_line lex = 
         if lex.read.c != '\n' then
@@ -110,11 +126,15 @@ module ScanChar = struct
         let value = ref [] in
         let rec loop lex = 
             if lex.read.c != '\"' && lex.info.pos < lex.read.length-1 then 
-                (value := !value @ [String.make 1 lex.read.c];
-                 UtilLexer.next_char lex;
-                 loop (lex)) in
+                (match get_escape lex with
+                 | Error _ -> ()
+                 | Ok s -> (value := !value @ [s];
+                            UtilLexer.next_char lex;
+                            loop (lex))) in
         loop (lex);
-        if lex.read.c != '\"' then Error (ErrorIdInvalidStringLiteral)
+        if lex.read.c != '\"' then
+            (if lex.info.pos != lex.read.length-1 then Error ErrorIdInvalidStringLiteral
+             else Error ErrorIdInvalidEscape)
         else Ok (String.concat "" !value)
 
     let scan_hex lex = 
