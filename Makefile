@@ -1,11 +1,3 @@
-builddir = build
-
-# Objects
-sources_front = $(wildcard src/front/*.ml)
-header_front = $(wildcard src/front/*.mli)
-
-# Command library
-
 ifndef verbose
   SILENT = @
 endif
