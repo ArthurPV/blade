@@ -1,0 +1,4 @@
+(library
+  (libraries
+    llvm)
+  (name blade_llvm))

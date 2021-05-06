@@ -6,6 +6,9 @@ type separator =
     | SeparatorColonColon
     | SeparatorNewline
     | SeparatorVerticalBar
+    | SeparatorArrow
+    | SeparatorInverseArrow
+    | SeparatorFatArrow
     | SeparatorAt
     | SeparatorLeftParen
     | SeparatorRightParen
@@ -127,6 +130,7 @@ type 'a token =
     | Separator of separator
     | Operator of operator
     | Keyword of keyword
+    | Identifier of string
     | Literal of literal
     | Comment of comment
 

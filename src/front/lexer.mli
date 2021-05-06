@@ -1,4 +1,6 @@
+open Error
 open Read
+open Token
 
 type lexer_info = {
     mutable line: int;
@@ -24,6 +26,13 @@ module UtilLexer : sig
     val previous_char : 'a lexer -> unit
     val start_token : 'a lexer -> unit
     val end_token : 'a lexer -> unit
+    val get_next_char : 'a lexer -> char
 end
 
-val lexer : 'a lexer -> unit
+module ScanChar : sig 
+    val scan_comment_one_line : 'a lexer -> unit
+end
+
+val tokenizer : 'a lexer -> ('a token, error_id) result
+
+val run_tokenizer : 'a lexer -> unit

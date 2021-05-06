@@ -6,6 +6,9 @@ type separator =
     | SeparatorColonColon
     | SeparatorNewline
     | SeparatorVerticalBar
+    | SeparatorArrow
+    | SeparatorInverseArrow
+    | SeparatorFatArrow
     | SeparatorAt
     | SeparatorLeftParen
     | SeparatorRightParen
@@ -127,6 +130,7 @@ type 'a token =
     | Separator of separator
     | Operator of operator
     | Keyword of keyword
+    | Identifier of string
     | Literal of literal
     | Comment of comment
 
@@ -139,6 +143,9 @@ let token_to_str tok =
     | Separator SeparatorColonColon -> "::"
     | Separator SeparatorNewline -> "Newline"
     | Separator SeparatorVerticalBar -> "|"
+    | Separator SeparatorArrow -> "->"
+    | Separator SeparatorInverseArrow -> "<-"
+    | Separator SeparatorFatArrow -> "=>"
     | Separator SeparatorAt -> "@"
     | Separator SeparatorLeftParen -> "("
     | Separator SeparatorRightParen -> ")"
@@ -230,10 +237,11 @@ let token_to_str tok =
     | Keyword KeywordString -> "string"
     | Keyword KeywordBool -> "bool"
     | Keyword KeywordUnit -> "unit"
+    | Identifier s -> Printf.sprintf "Identifier -> %s" s
     | Literal LiteralInt (l,_) -> Printf.sprintf "Integer -> %d" l
     | Literal LiteralFloat (l,_) -> Printf.sprintf "Float -> %f" l
     | Literal LiteralChar l -> Printf.sprintf "Char -> %c" l
     | Literal LiteralString l -> Printf.sprintf "String -> %s" l
     | Comment CommentOneLine -> "**"
     | Comment CommentMultiLine -> "(* *)"
-    | Comment CommentDoc s -> Printf.sprintf "(** %s **)" s
+    | Comment CommentDoc s -> Printf.sprintf "(** %s **)" s       
