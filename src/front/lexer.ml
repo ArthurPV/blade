@@ -189,26 +189,39 @@ let tokenizer lex =
 
     match lex.read.c with
     | '$' -> Ok (Separator SeparatorDollar)
+
     | ',' -> Ok (Separator SeparatorComma)
+
     | ':' -> (match UtilLexer.get_next_char lex with
               | ':' -> (UtilLexer.next_char lex;
                         Ok (Separator SeparatorColonColon))
               | _ -> Ok (Separator SeparatorColon))
+
     | '\n' -> Ok (Separator SeparatorNewline)
+
     | '|' -> Ok (Separator SeparatorVerticalBar)
+
     | '@' -> Ok (Separator SeparatorAt)
+
     | '(' -> Ok (Separator SeparatorLeftParen)
+
     | ')' -> Ok (Separator SeparatorRightParen)
+
     | '{' -> Ok (Separator SeparatorLeftBrace)
+
     | '}' -> Ok (Separator SeparatorRightBrace)
+
     | '[' -> Ok (Separator SeparatorLeftHook)
+
     | ']' -> Ok (Separator SeparatorRightHook)
+
     | '+' -> (match UtilLexer.get_next_char lex with
               | '+' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorPlusPlus))
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorPlusEq))
               | _ -> Ok (Operator OperatorPlus))
+
     | '-' -> (match UtilLexer.get_next_char lex with
               | '-' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorMinusMinus))
@@ -217,24 +230,29 @@ let tokenizer lex =
               | '>' -> (UtilLexer.next_char lex;
                         Ok (Separator SeparatorArrow))
               | _ -> Ok (Operator OperatorMinus))
+
     | '*' -> (match UtilLexer.get_next_char lex with
               | '*' -> (ScanChar.scan_comment_one_line lex;
                         Ok (Comment CommentOneLine))
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorStarEq))
               | _ -> Ok (Operator OperatorStar))
+
     | '/' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorSlashEq))
               | _ -> Ok (Operator OperatorSlash))
+
     | '%' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorPercentageEq))
               | _ -> Ok (Operator OperatorPercentage))
+
     | '^' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorHatEq))
               | _ -> Ok (Operator OperatorHat))
+
     | '=' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorEqEq))
@@ -244,16 +262,19 @@ let tokenizer lex =
                                   Ok (Operator OperatorEqDotDot))
                         | _ -> Error ErrorIdUnexpectedToken)
               | _ -> Ok (Operator OperatorEq))
+
     | '<' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorLeftShiftEq))
               | '-' -> (UtilLexer.next_char lex;
                         Ok (Separator SeparatorInverseArrow))
               | _ -> Ok (Operator OperatorLeftShift))
+
     | '>' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorRightShiftEq))
               | _ -> Ok (Operator OperatorRightShift))
+
     | '.' -> (match UtilLexer.get_next_char lex with
               | '.' -> (match lex.read.content.[lex.info.pos+2] with
                         | '=' -> (UtilLexer.next_char lex;
@@ -262,13 +283,17 @@ let tokenizer lex =
                         | _ -> (UtilLexer.next_char lex;
                                 Ok (Operator OperatorDotDot)))
               | _ -> Ok (Separator SeparatorDot))
+
     | '?' -> Ok (Operator OperatorInterogation)
+
     | '\'' -> (match ScanChar.scan_char lex with
                | Ok c -> Ok (Literal (LiteralChar (c)))
                | Error e -> Error e)
+
     | '\"' -> (match ScanChar.scan_string lex with
                | Ok t -> Ok (Literal (LiteralString (t)))
                | Error e -> Error e)
+
     | '0' -> (match UtilLexer.get_next_char lex with
               | 'x' -> (match ScanChar.scan_hex lex with
                         | Ok i -> Ok (Literal (LiteralInt (i, Hexadecimal)))
@@ -277,6 +302,7 @@ let tokenizer lex =
                         | Ok i -> Ok (Literal (LiteralInt (i, Octal)))
                         | Error e -> Error e)
               | _ -> Ok (Literal (LiteralInt (0, Normal))))
+
     | _ -> (if RecognizeChar.is_identifier lex then 
                 (match value_to_keyword (ScanChar.scan_identifier lex) with 
                  | Ok t -> Ok t
