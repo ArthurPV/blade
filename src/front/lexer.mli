@@ -30,6 +30,7 @@ module UtilLexer : sig
 end
 
 module RecognizeChar : sig 
+    val is_digit : 'a lexer -> bool
     val is_identifier : 'a lexer -> bool
     val is_hex : 'a lexer -> bool
     val is_bin : 'a lexer -> bool
@@ -43,6 +44,7 @@ module ScanChar : sig
     val scan_char : 'a lexer -> (char, error_id) result
     val scan_string : 'a lexer -> (string, error_id) result
     val scan_hex : 'a lexer -> (int, error_id) result
+    val scan_oct : 'a lexer -> (int, error_id) result
 end
 
 val tokenizer : 'a lexer -> ('a token, error_id) result

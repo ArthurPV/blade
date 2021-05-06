@@ -67,6 +67,8 @@ module UtilLexer = struct
 end
 
 module RecognizeChar = struct
+    let is_digit lex = 
+        (lex.read.c >= '0' && lex.read.c <= '9')
     let is_identifier lex = 
         (lex.read.c >= 'a' && lex.read.c <= 'z') || (lex.read.c >= 'A' && lex.read.c <= 'Z') || lex.read.c = '_'
 
@@ -154,6 +156,25 @@ module ScanChar = struct
 
         match String.concat "" !value with
         | "0x" -> Error ErrorIdInvalidStringLiteral
+        | _ -> Ok (int_of_string (String.concat "" !value))
+
+    let scan_oct lex = 
+        let value = ref [] in
+        value := !value @ [String.make 1 lex.read.c];
+        UtilLexer.next_char lex; (* 0 *)
+        value := !value @ [String.make 1 lex.read.c];
+        UtilLexer.next_char lex; (* o *)
+
+        let rec loop lex = 
+            if RecognizeChar.is_digit lex then
+                (value := !value @ [String.make 1 lex.read.c];
+                 UtilLexer.next_char lex;
+                 loop (lex)) in 
+        loop (lex);
+        UtilLexer.previous_char lex;
+
+        match String.concat "" !value with
+        | "0o" -> Error ErrorIdInvalidOctalLiteral
         | _ -> Ok (int_of_string (String.concat "" !value))
 end
 
@@ -251,6 +272,9 @@ let tokenizer lex =
     | '0' -> (match UtilLexer.get_next_char lex with
               | 'x' -> (match ScanChar.scan_hex lex with
                         | Ok i -> Ok (Literal (LiteralInt (i, Hexadecimal)))
+                        | Error e -> Error e)
+              | 'o' -> (match ScanChar.scan_oct lex with
+                        | Ok i -> Ok (Literal (LiteralInt (i, Octal)))
                         | Error e -> Error e)
               | _ -> Ok (Literal (LiteralInt (0, Normal))))
     | _ -> (if RecognizeChar.is_identifier lex then 
