@@ -9,13 +9,13 @@ type 'a location = {
     e_col: int;
 }
 
-let new_location = {
-    line = 1;
-    col = 1;
-    s_line = 1;
-    s_col = 1;
-    e_line = 1;
-    e_col = 1;
+let new_location line col s_line s_col e_line e_col = {
+    line = line;
+    col = col;
+    s_line = s_line;
+    s_col = s_col;
+    e_line = e_line;
+    e_col = e_col;
 }
 
 type 'a stream_token = {

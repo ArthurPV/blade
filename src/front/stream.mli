@@ -9,7 +9,7 @@ type 'a location = {
     e_col: int;
 }
 
-val new_location : 'a location
+val new_location : int -> int -> int -> int -> int -> int -> 'a location
 
 type 'a stream_token = {
     items: ('a token * 'a location) Stack.t

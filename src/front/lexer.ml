@@ -1,6 +1,7 @@
 open Error
 open Keyword
 open Read
+open Stream
 open Token
 
 type lexer_info = {
@@ -407,7 +408,8 @@ let tokenizer lex =
 let rec run_tokenizer lex = 
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
-        | Ok t -> (Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str t);
+        | Ok t -> ((*Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str t);*)
+                   push_token (new_stream_token) (t) (new_location lex.info.line lex.info.col lex.info.s_line lex.info.s_col lex.info.e_line lex.info.e_col);
                    UtilLexer.next_char lex;
                    run_tokenizer (lex))
         | Error _ -> Printf.printf "error\n";
