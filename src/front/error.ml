@@ -7,6 +7,7 @@ type error_id =
     | ErrorIdInvalidOctalLiteral
     | ErrorIdInvalidBinaryLiteral
     | ErrorIdInvalidNumLiteral
+    | ErrorIdInvalidBinop
 
 let error_id_to_str id =
     match id with
@@ -18,3 +19,4 @@ let error_id_to_str id =
     | ErrorIdInvalidOctalLiteral -> "invalid octal literal"
     | ErrorIdInvalidBinaryLiteral -> "invalid binary literal"
     | ErrorIdInvalidNumLiteral -> "invalid num literal"
+    | ErrorIdInvalidBinop -> "invalid binop"
