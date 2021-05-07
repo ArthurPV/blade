@@ -5,8 +5,10 @@ type error_id =
     | ErrorIdInvalidEscape
     | ErrorIdInvalidHexadecimalLiteral
     | ErrorIdInvalidOctalLiteral
+    | ErrorIdInvalidBinaryLiteral
+    | ErrorIdInvalidNumLiteral
 
-let error_id_to_str id = 
+let error_id_to_str id =
     match id with
     | ErrorIdUnexpectedToken -> "unexpected token"
     | ErrorIdInvalidCharLiteral -> "invalid char literal"
@@ -14,3 +16,5 @@ let error_id_to_str id =
     | ErrorIdInvalidEscape -> "invalid escape"
     | ErrorIdInvalidHexadecimalLiteral -> "invalid hexadecimal literal"
     | ErrorIdInvalidOctalLiteral -> "invalid octal literal"
+    | ErrorIdInvalidBinaryLiteral -> "invalid binary literal"
+    | ErrorIdInvalidNumLiteral -> "invalid num literal"

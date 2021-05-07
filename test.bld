@@ -1,19 +1,5 @@
-+
+var a = 3
 
-** this is a comment
-+
+(* this is a comment *)
 
-
-/=
-
-fffff
-
-'e'
-
-"eeee"
-
-"e\t\n"
-
-0x2F
-
-0o333
+(** this is a comment **)

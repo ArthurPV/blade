@@ -70,13 +70,18 @@ module RecognizeChar = struct
     let is_digit lex = 
         (lex.read.c >= '0' && lex.read.c <= '9')
     let is_identifier lex = 
-        (lex.read.c >= 'a' && lex.read.c <= 'z') || (lex.read.c >= 'A' && lex.read.c <= 'Z') || lex.read.c = '_'
+        (lex.read.c >= 'a' && lex.read.c <= 'z') || (lex.read.c >= 'A' && lex.read.c <= 'Z') || lex.read.c = '_' || is_digit lex
 
     let is_hex lex = 
         (lex.read.c >= 'a' && lex.read.c <= 'f') || (lex.read.c >= 'A' && lex.read.c <= 'F') || (lex.read.c >= '0' && lex.read.c <= '9')
 
     let is_bin lex = 
         (lex.read.c >= '0' && lex.read.c <= '1')
+
+    let is_num lex = 
+        if lex.info.pos < lex.read.length-1 then
+            (is_digit lex || (lex.read.c = '.' && UtilLexer.get_next_char lex != '.') || ((lex.read.c = 'e' || lex.read.c = 'E') && (UtilLexer.get_next_char lex >= '0' && UtilLexer.get_next_char lex <= '9') || UtilLexer.get_next_char lex = '-' || UtilLexer.get_next_char lex = '+'))
+        else false
 end
 
 let get_escape lex = 
@@ -102,6 +107,34 @@ module ScanChar = struct
             scan_comment_one_line (lex))
         else
             UtilLexer.previous_char lex
+
+    let scan_comment_multi_line lex = 
+        let rec loop lex = 
+            if (lex.read.c != '*' || UtilLexer.get_next_char lex != ')') then 
+                (UtilLexer.next_char lex;
+                 loop (lex)) in
+        loop (lex);
+
+        if UtilLexer.get_next_char lex != ')' then Error (ErrorIdInvalidStringLiteral)
+        else (UtilLexer.next_char lex;
+              Ok ())
+
+    let scan_comment_doc lex = 
+        let value = ref [] in 
+        UtilLexer.next_char lex;
+        UtilLexer.next_char lex;
+        UtilLexer.next_char lex;
+        let rec loop lex = 
+            if lex.read.c != '*' || UtilLexer.get_next_char lex != '*' || lex.read.content.[lex.info.pos+2] != ')' then 
+                (value := !value @ [String.make 1 lex.read.c];
+                 UtilLexer.next_char lex;
+                 loop (lex)) in 
+        loop (lex);
+
+         if lex.read.content.[lex.info.pos+2] != ')' then Error ErrorIdInvalidStringLiteral
+         else (UtilLexer.next_char lex;
+               UtilLexer.next_char lex;
+               Ok (String.concat "" !value))
 
     let scan_identifier lex = 
         let value = ref [] in
@@ -176,6 +209,50 @@ module ScanChar = struct
         match String.concat "" !value with
         | "0o" -> Error ErrorIdInvalidOctalLiteral
         | _ -> Ok (int_of_string (String.concat "" !value))
+
+    let scan_bin lex = 
+        let value = ref [] in
+        value := !value @ [String.make 1 lex.read.c];
+        UtilLexer.next_char lex; (* 0 *)
+        value := !value @ [String.make 1 lex.read.c];
+        UtilLexer.next_char lex; (* b *)
+
+        let rec loop lex = 
+            if RecognizeChar.is_bin lex then 
+                (value := !value @ [String.make 1 lex.read.c];
+                 UtilLexer.next_char lex;
+                 loop (lex)) in 
+        loop (lex);
+        UtilLexer.previous_char lex;
+
+        match String.concat "" !value with
+        | "0b" -> Error ErrorIdInvalidBinaryLiteral
+        | _ -> Ok (int_of_string (String.concat "" !value))
+
+    let scan_num lex = 
+        let is_float = ref false in
+        let is_sct = ref false in
+        let value = ref [] in 
+        
+        let rec loop lex = 
+            if RecognizeChar.is_num lex then
+                (if lex.read.c = '.' then is_float := true;
+                 if lex.read.c = 'e' || lex.read.c = 'E' then
+                     (is_sct := true; 
+                      if UtilLexer.get_next_char lex = '-' || UtilLexer.get_next_char lex = '+' then 
+                          (value := !value @ [String.make 1 lex.read.c];
+                           UtilLexer.next_char lex;
+                           value := !value @ [String.make 1 lex.read.c];
+                           UtilLexer.next_char lex));
+                 value := !value @ [String.make 1 lex.read.c];
+                 UtilLexer.next_char lex;
+                 loop (lex)) in 
+        loop (lex); 
+        UtilLexer.previous_char lex;
+
+        if !is_float = true then Ok (Literal (LiteralFloat ((float_of_string (String.concat "" !value)), Normal)))
+        else if !is_sct = true then Ok (Literal (LiteralFloat ((float_of_string (String.concat "" !value)), Scientific)))
+        else Ok (Literal (LiteralInt ((int_of_string (String.concat "" !value)), Normal)))
 end
 
 let tokenizer lex = 
@@ -203,7 +280,15 @@ let tokenizer lex =
 
     | '@' -> Ok (Separator SeparatorAt)
 
-    | '(' -> Ok (Separator SeparatorLeftParen)
+    | '(' -> (match UtilLexer.get_next_char lex with
+              | '*' -> (match lex.read.content.[lex.info.pos+2] with
+                        | '*' -> (match ScanChar.scan_comment_doc lex with
+                                  | Ok s -> Ok (Comment (CommentDoc s))
+                                  | Error e -> Error e)
+                        | _ -> (match ScanChar.scan_comment_multi_line lex with
+                                | Ok _ -> Ok (Comment (CommentMultiLine))
+                                | Error e -> Error e))
+              | _ -> Ok (Separator (SeparatorLeftParen)))
 
     | ')' -> Ok (Separator SeparatorRightParen)
 
@@ -301,13 +386,23 @@ let tokenizer lex =
               | 'o' -> (match ScanChar.scan_oct lex with
                         | Ok i -> Ok (Literal (LiteralInt (i, Octal)))
                         | Error e -> Error e)
+              | 'b' -> (match ScanChar.scan_bin lex with
+                        | Ok i -> Ok (Literal (LiteralInt (i, Binary)))
+                        | Error e -> Error e)
+              | '.' | '0' .. '9' | 'e' | 'E' -> (match ScanChar.scan_num lex with
+                        | Ok i -> Ok i
+                        | Error _ -> Error ErrorIdInvalidNumLiteral) 
               | _ -> Ok (Literal (LiteralInt (0, Normal))))
 
-    | _ -> (if RecognizeChar.is_identifier lex then 
-                (match value_to_keyword (ScanChar.scan_identifier lex) with 
-                 | Ok t -> Ok t
-                 | Error e -> Ok e)
-            else Error ErrorIdUnexpectedToken)
+    | '0' .. '9' -> (match ScanChar.scan_num lex with 
+                     | Ok i -> Ok i
+                     | Error _ -> Error ErrorIdInvalidNumLiteral)
+
+    | 'a' .. 'z' | 'A' .. 'Z' | '_' -> (match value_to_keyword (ScanChar.scan_identifier lex) with
+                     | Ok t -> Ok t
+                     | Error e -> Ok e)
+
+    | _ -> Error ErrorIdUnexpectedToken
 
 let rec run_tokenizer lex = 
     if lex.info.pos < lex.read.length-1 then
