@@ -19,12 +19,15 @@ let new_location line col s_line s_col e_line e_col = {
 }
 
 type 'a stream_token = {
-    items: ('a token * 'a location) Stack.t
+    tok: 'a token Stack.t;
+    loc: 'a location Stack.t;
 }
 
 let new_stream_token = {
-    items = Stack.create ();
+    tok = Stack.create ();
+    loc = Stack.create ();
 }
 
 let push_token st tok loc = 
-    Stack.push (tok, loc) st.items
+    Stack.push tok st.tok;
+    Stack.push loc st.loc

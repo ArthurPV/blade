@@ -1,4 +1,5 @@
 open Blade_front.Stream
+open Blade_front.Token
 
 type binop = 
     | BinopAdd
@@ -43,10 +44,27 @@ type expr =
     | ExprLiteralString of string
     | ExprLiteralChar of char
 
+type stmt =
+    | StmtIf
+    | StmtSwitch
+    | StmtBreak
+    | StmtWhile
+    | StmtFor
+    | StmtLoop
+
 type 'a ast_kind = 
     | Expr of expr
+    | Stmt of stmt
+
+(*let iter_stream_token st = 
+    Stack.iter st.tok*)
+
+(*let iter_stream_location st = 
+    Stack.iter st.loc*)
 
 type 'a ast = { 
     stream: 'a stream_token;
-    pos: int;
+    mutable current_token: 'a token;
+    mutable current_location: 'a location;
+    mutable pos: int;
 }

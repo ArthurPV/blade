@@ -12,7 +12,8 @@ type 'a location = {
 val new_location : int -> int -> int -> int -> int -> int -> 'a location
 
 type 'a stream_token = {
-    items: ('a token * 'a location) Stack.t
+    tok: 'a token Stack.t;
+    loc: 'a location Stack.t
 }
 
 val new_stream_token : 'a stream_token
