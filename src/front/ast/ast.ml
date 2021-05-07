@@ -13,6 +13,18 @@ type binop =
     | BinopDivAssign
     | BinopModAssign
     | BinopPowAssign
+    | BinopAssign
+    | BinopEq
+    | BinopIntervalEq
+    | BinopInterval
+    | BinopEqInterval
+    | BinopLess
+    | BinopLessEq
+    | BinopGreater
+    | BinopGreaterEq
+    | BinopCondition
+    | BinopAnd
+    | BinopOr
 
 type unary = 
     | UnaryPositive

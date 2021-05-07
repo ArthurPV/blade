@@ -18,4 +18,16 @@ let token_to_binop tok =
     | Operator OperatorSlashEq -> Ok BinopDivAssign
     | Operator OperatorPercentageEq -> Ok BinopModAssign
     | Operator OperatorHatEq -> Ok BinopPowAssign
+    | Operator OperatorEq -> Ok BinopAssign
+    | Operator OperatorEqEq -> Ok BinopEq
+    | Operator OperatorEqDotDot -> Ok BinopEqInterval
+    | Operator OperatorDotDot -> Ok BinopInterval
+    | Operator OperatorDotDotEq -> Ok BinopIntervalEq
+    | Operator OperatorLeftShift -> Ok BinopLess
+    | Operator OperatorLeftShiftEq -> Ok BinopLessEq 
+    | Operator OperatorRightShift -> Ok BinopGreater
+    | Operator OperatorRightShiftEq -> Ok BinopGreaterEq 
+    | Operator OperatorInterogation -> Ok BinopCondition
+    | Keyword KeywordAnd -> Ok BinopAnd
+    | Keyword KeywordOr -> Ok BinopOr
     | _ -> Error ErrorIdInvalidBinop
