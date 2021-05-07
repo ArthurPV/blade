@@ -1,3 +1,5 @@
+open Blade_front.Stream
+
 type binop = 
     | BinopAdd
     | BinopSub
@@ -34,11 +36,17 @@ type unary =
 type expr = 
     | ExprBinop of binop
     | ExprUnary of unary
+    | ExprIdentifier of string
     | ExprLiteralBool of bool
     | ExprLiteralInt of int
     | ExprLiteralFloat of float
     | ExprLiteralString of string
     | ExprLiteralChar of char
 
-type 'a ast = 
+type 'a ast_kind = 
     | Expr of expr
+
+type 'a ast = { 
+    stream: 'a stream_token;
+    pos: int;
+}
