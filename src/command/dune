@@ -1,4 +1,6 @@
 (library
   (libraries
-    blade_front)
+    blade_front
+    blade_ast
+    containers)
   (name blade_command))

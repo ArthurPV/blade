@@ -1,5 +1,6 @@
 (dirs ast)
 (library
   (libraries
-    ANSITerminal)
+    ANSITerminal
+    containers)
   (name blade_front))

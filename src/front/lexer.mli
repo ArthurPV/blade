@@ -1,6 +1,7 @@
 open Error
 open Read
 open Token
+open Stream
 
 type lexer_info = {
     mutable line: int;
@@ -54,4 +55,4 @@ end
 
 val tokenizer : 'a lexer -> ('a token, error_id) result
 
-val run_tokenizer : 'a lexer -> unit
+val run_tokenizer : 'a lexer -> 'a location -> unit

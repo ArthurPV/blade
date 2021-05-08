@@ -1,5 +1,4 @@
 open Blade_front.Stream
-open Blade_front.Token
 
 type binop = 
     | BinopAdd
@@ -64,7 +63,10 @@ type 'a ast_kind =
 
 type 'a ast = { 
     stream: 'a stream_token;
-    mutable current_token: 'a token;
-    mutable current_location: 'a location;
     mutable pos: int;
+}
+
+let new_ast st = {
+    stream = st;
+    pos = 0;
 }

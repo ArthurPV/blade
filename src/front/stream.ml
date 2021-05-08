@@ -19,15 +19,15 @@ let new_location line col s_line s_col e_line e_col = {
 }
 
 type 'a stream_token = {
-    tok: 'a token Stack.t;
-    loc: 'a location Stack.t;
+    mutable tok: 'a token CCVector.vector;
+    mutable loc: 'a location CCVector.vector;
 }
 
 let new_stream_token = {
-    tok = Stack.create ();
-    loc = Stack.create ();
+    tok = CCVector.create ();
+    loc = CCVector.create ();
 }
 
 let push_token st tok loc = 
-    Stack.push tok st.tok;
-    Stack.push loc st.loc
+    CCVector.push st.tok tok;
+    CCVector.push st.loc loc;
