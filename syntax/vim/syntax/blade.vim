@@ -21,7 +21,7 @@ syn keyword bladeKeyword data fun end in of import class try catch throw finally
 
 syn keyword bladeBoolean true false
 
-syn keyword bladeType char string bool unit int float
+syn keyword bladeType char string bool unit int float usize isize
 
 syn match bladeType "\v<[iuf][1-9]\d*>"
 
