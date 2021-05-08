@@ -1,4 +1,5 @@
 open Blade_front.Stream
+open Blade_front.Token
 
 type binop = 
     | BinopAdd
@@ -55,18 +56,16 @@ type 'a ast_kind =
     | Expr of expr
     | Stmt of stmt
 
-(*let iter_stream_token st = 
-    Stack.iter st.tok*)
-
-(*let iter_stream_location st = 
-    Stack.iter st.loc*)
-
 type 'a ast = { 
     stream: 'a stream_token;
+    mutable current_token: 'a token;
+    mutable current_location: 'a location;
     mutable pos: int;
 }
 
 let new_ast st = {
     stream = st;
+    current_token = CCVector.get st.tok 0;
+    current_location = CCVector.get st.loc 0;
     pos = 0;
 }

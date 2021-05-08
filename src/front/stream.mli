@@ -1,5 +1,4 @@
 open Token
-open CCVector
 
 type 'a location = {
     line: int;
@@ -13,8 +12,8 @@ type 'a location = {
 val new_location : int -> int -> int -> int -> int -> int -> 'a location
 
 type 'a stream_token = {
-    mutable tok: 'a token vector;
-    mutable loc: 'a location vector;
+    mutable tok: 'a token CCVector.vector;
+    mutable loc: 'a location CCVector.vector;
 }
 
 val new_stream_token : 'a stream_token
