@@ -62,4 +62,6 @@ let value_to_keyword value =
     | "string" -> Ok (Keyword KeywordString)
     | "bool" -> Ok (Keyword KeywordBool)
     | "unit" -> Ok (Keyword KeywordUnit)
+    | "usize" -> Ok (Keyword KeywordUsize)
+    | "iszie" -> Ok (Keyword KeywordIsize)
     | _ -> Error (Identifier value)

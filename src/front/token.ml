@@ -104,6 +104,8 @@ type keyword =
     | KeywordString
     | KeywordBool
     | KeywordUnit
+    | KeywordUsize
+    | KeywordIsize
 
 type int_format = 
     | Normal
@@ -237,6 +239,8 @@ let token_to_str tok =
     | Keyword KeywordString -> "string"
     | Keyword KeywordBool -> "bool"
     | Keyword KeywordUnit -> "unit"
+    | Keyword KeywordUsize -> "usize"
+    | Keyword KeywordIsize -> "isize"
     | Identifier s -> Printf.sprintf "Identifier -> %s" s
     | Literal LiteralInt (l,_) -> Printf.sprintf "Integer -> %d" l
     | Literal LiteralFloat (l,_) -> Printf.sprintf "Float -> %f" l

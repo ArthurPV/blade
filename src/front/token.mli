@@ -104,6 +104,8 @@ type keyword =
     | KeywordString
     | KeywordBool
     | KeywordUnit
+    | KeywordUsize
+    | KeywordIsize
 
 type int_format = 
     | Normal
