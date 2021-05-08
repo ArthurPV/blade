@@ -2,7 +2,7 @@ ifndef verbose
   SILENT = @
 endif
 
-.PHONY: all dune $(sources_front)
+.PHONY: all
 
 all:
 	@echo -e "\e[1;32m**\e[0m Check dependencies"
