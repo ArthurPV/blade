@@ -1,7 +1,7 @@
 open Blade_front.Stream
 open Blade_front.Token
 
-type binop = 
+type 'a binop = 
     | BinopAdd
     | BinopSub
     | BinopMul
@@ -29,14 +29,14 @@ type binop =
     | BinopAnd
     | BinopOr
 
-type unary = 
+type 'a unary = 
     | UnaryPositive
     | UnaryNegative
     | UnaryNot
 
-type expr = 
-    | ExprBinop of binop
-    | ExprUnary of unary
+type 'a expr = 
+    | ExprBinop of 'a binop
+    | ExprUnary of 'a unary
     | ExprIdentifier of string
     | ExprLiteralBool of bool
     | ExprLiteralInt of int
@@ -44,7 +44,7 @@ type expr =
     | ExprLiteralString of string
     | ExprLiteralChar of char
 
-type stmt =
+type 'a stmt =
     | StmtIf
     | StmtSwitch
     | StmtBreak
@@ -53,8 +53,8 @@ type stmt =
     | StmtLoop
 
 type 'a ast_kind = 
-    | Expr of expr
-    | Stmt of stmt
+    | Expr of 'a expr
+    | Stmt of 'a stmt
 
 type 'a ast = { 
     stream: 'a stream_token;

@@ -301,6 +301,7 @@ let tokenizer lex =
 
     | ']' -> Ok (Separator SeparatorRightHook)
 
+    (* ++ += +*)
     | '+' -> (match UtilLexer.get_next_char lex with
               | '+' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorPlusPlus))
@@ -308,6 +309,7 @@ let tokenizer lex =
                         Ok (Operator OperatorPlusEq))
               | _ -> Ok (Operator OperatorPlus))
 
+    (* -- -= -> - *)
     | '-' -> (match UtilLexer.get_next_char lex with
               | '-' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorMinusMinus))
@@ -317,6 +319,7 @@ let tokenizer lex =
                         Ok (Separator SeparatorArrow))
               | _ -> Ok (Operator OperatorMinus))
 
+    (* ** *= * *)
     | '*' -> (match UtilLexer.get_next_char lex with
               | '*' -> (ScanChar.scan_comment_one_line lex;
                         Ok (Comment CommentOneLine))
@@ -324,21 +327,25 @@ let tokenizer lex =
                         Ok (Operator OperatorStarEq))
               | _ -> Ok (Operator OperatorStar))
 
+    (* / /= *)
     | '/' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorSlashEq))
               | _ -> Ok (Operator OperatorSlash))
 
+    (* %= % *)
     | '%' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorPercentageEq))
               | _ -> Ok (Operator OperatorPercentage))
 
+    (* ^= ^ *)
     | '^' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorHatEq))
               | _ -> Ok (Operator OperatorHat))
 
+    (* == =.. = *)
     | '=' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorEqEq))
@@ -349,6 +356,7 @@ let tokenizer lex =
                         | _ -> Error ErrorIdUnexpectedToken)
               | _ -> Ok (Operator OperatorEq))
 
+    (* <= <- *)
     | '<' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorLeftShiftEq))
@@ -356,11 +364,13 @@ let tokenizer lex =
                         Ok (Separator SeparatorInverseArrow))
               | _ -> Ok (Operator OperatorLeftShift))
 
+    (* >= > *)
     | '>' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorRightShiftEq))
               | _ -> Ok (Operator OperatorRightShift))
 
+    (* ..= .. . *)
     | '.' -> (match UtilLexer.get_next_char lex with
               | '.' -> (match lex.read.content.[lex.info.pos+2] with
                         | '=' -> (UtilLexer.next_char lex;
