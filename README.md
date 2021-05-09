@@ -1,4 +1,4 @@
-# Blade
+# Kwhale
 
 ## Dependencies
 
@@ -14,6 +14,6 @@ opam install llvm ANSITerminal containers dune
 
 ## How to build?
 ``` bash
-cd blade
+cd kwhale
 make
 ```

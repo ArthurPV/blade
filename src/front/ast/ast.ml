@@ -1,5 +1,5 @@
-open Blade_front.Stream
-open Blade_front.Token
+open Kwhale_front.Stream
+open Kwhale_front.Token
 
 type 'a binop = 
     | BinopAdd
@@ -37,6 +37,7 @@ type 'a unary =
 type 'a expr = 
     | ExprBinop of 'a binop
     | ExprUnary of 'a unary
+    | ExprFunCall
     | ExprIdentifier of string
     | ExprLiteralBool of bool
     | ExprLiteralInt of int

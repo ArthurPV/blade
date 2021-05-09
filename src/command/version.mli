@@ -1,1 +1,1 @@
-val blade_version : string
+val kwhale_version : string

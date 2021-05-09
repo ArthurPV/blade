@@ -1,1 +1,1 @@
-let blade_version = "0.0.1"
+let kwhale_version = "0.0.1"

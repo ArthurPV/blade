@@ -2,10 +2,10 @@ open Help
 open Run
 open Version
 
-module BladeCommand = struct
-    let blade_help () = Printf.printf "%s" blade_help
+module KwhaleCommand = struct
+    let kwhale_help () = Printf.printf "%s" kwhale_help
 
-    let blade_run filename () = run filename
+    let kwhale_run filename () = run filename
 
-    let blade_version () = Printf.printf "blade v%s\n" blade_version
+    let kwhale_version () = Printf.printf "blade v%s\n" kwhale_version
 end

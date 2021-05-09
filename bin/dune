@@ -1,5 +1,5 @@
 (executable 
   (libraries
     ANSITerminal
-    blade_command)
-  (name blade))
+    kwhale_command)
+  (name kwhale))

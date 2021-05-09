@@ -1,5 +1,5 @@
 (library
   (libraries
-    blade_front
+    kwhale_front
     containers)
-  (name blade_ast))
+  (name kwhale_ast))

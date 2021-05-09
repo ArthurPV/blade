@@ -2,4 +2,4 @@
   (libraries
     llvm
     llvm.linker)
-  (name blade_llvm))
+  (name kwhale_llvm))

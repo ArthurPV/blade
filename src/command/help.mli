@@ -1,1 +1,1 @@
-val blade_help : string
+val kwhale_help : string

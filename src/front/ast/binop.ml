@@ -1,6 +1,6 @@
 open Ast
-open Blade_front.Error
-open Blade_front.Token
+open Kwhale_front.Error
+open Kwhale_front.Token
 
 let token_to_binop tok = 
     match tok with

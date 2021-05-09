@@ -3,4 +3,4 @@
   (libraries
     ANSITerminal
     containers)
-  (name blade_front))
+  (name kwhale_front))

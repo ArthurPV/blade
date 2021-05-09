@@ -1,4 +1,4 @@
-let blade_help = {|usage: blade [command] [options]
+let kwhale_help = {|usage: kwhale [command] [options]
 
 Commands:
 

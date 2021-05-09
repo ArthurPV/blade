@@ -1,7 +1,7 @@
-open Blade_ast.Ast
-open Blade_front.Lexer
-open Blade_front.Read
-open Blade_front.Stream
+open Kwhale_ast.Ast
+open Kwhale_front.Lexer
+open Kwhale_front.Read
+open Kwhale_front.Stream
 
 let run filename =
     match GetFileContent.get_file_content (GetFileContent.read_lines filename) with

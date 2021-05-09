@@ -1,6 +1,6 @@
 (library
   (libraries
-    blade_front
-    blade_ast
+    kwhale_front
+    kwhale_ast
     containers)
-  (name blade_command))
+  (name kwhale_command))
