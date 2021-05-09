@@ -1,1 +1,1 @@
-au BufRead,BufNewFile *.bld set filetype=blade
+au BufRead,BufNewFile *.kw set filetype=blade
