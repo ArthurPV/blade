@@ -25,21 +25,28 @@ module GetFileContent = struct
         Printf.printf "\027[1m\027[31mError\027[0m\027[1m: the file is a directory: \'%s\'\027[0m\n" filename;
         exit 1
 
+    let msg_bad_extensions filename = 
+        Printf.printf "\027[1m\027[31mError\027[0m\027[1m: bad extensions: \'%s\'\027[0m\n" filename;
+        exit 1
+
     let read_lines filename =
         if Sys.file_exists filename <> true then
             msg_not_exists filename
         else
             if Sys.is_directory filename <> false then
                 msg_is_dir filename
-            else
-                let ic = open_in filename in
-                let try_read () =
-                    try Some (input_line ic) with End_of_file -> None in
-                let rec loop acc =
-                    match try_read () with
-                    | Some s -> loop (s :: acc)
-                    | None -> close_in ic; List.rev acc in
-                loop []
+            else 
+                if Filename.extension filename <> ".kw" then
+                   msg_bad_extensions filename
+                else
+                    let ic = open_in filename in
+                    let try_read () =
+                        try Some (input_line ic) with End_of_file -> None in
+                    let rec loop acc =
+                        match try_read () with
+                        | Some s -> loop (s :: acc)
+                        | None -> close_in ic; List.rev acc in
+                    loop []
 
     let get_file_content content =
         match content with
