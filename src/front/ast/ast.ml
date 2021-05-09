@@ -34,16 +34,19 @@ type 'a unary =
     | UnaryNegative
     | UnaryNot
 
+type 'a literal =
+    | LiteralBool of bool
+    | LiteralInt of int
+    | LiteralFloat of float
+    | LiteralString of string
+    | LiteralChar of char
+
 type 'a expr = 
     | ExprBinop of 'a binop
     | ExprUnary of 'a unary
     | ExprFunCall
     | ExprIdentifier of string
-    | ExprLiteralBool of bool
-    | ExprLiteralInt of int
-    | ExprLiteralFloat of float
-    | ExprLiteralString of string
-    | ExprLiteralChar of char
+    | ExprLiteral of 'a literal
 
 type 'a stmt =
     | StmtIf

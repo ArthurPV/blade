@@ -9,6 +9,7 @@ type error_id =
     | ErrorIdInvalidNumLiteral
     | ErrorIdInvalidBinop
     | ErrorIdInvalidUnary
+    | ErrorIdInvalidPrimaryType
 
 let error_id_to_str id =
     match id with
@@ -22,3 +23,4 @@ let error_id_to_str id =
     | ErrorIdInvalidNumLiteral -> "invalid num literal"
     | ErrorIdInvalidBinop -> "invalid binop"
     | ErrorIdInvalidUnary -> "invalid unary"
+    | ErrorIdInvalidPrimaryType -> "invalid primary type"
