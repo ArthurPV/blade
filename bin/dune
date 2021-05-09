@@ -1,5 +1,5 @@
 (executable 
   (libraries
     ANSITerminal
-    kwhale_command)
-  (name kwhale))
+    lilyCommand)
+  (name lily))

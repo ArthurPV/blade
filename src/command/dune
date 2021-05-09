@@ -1,6 +1,6 @@
 (library
   (libraries
-    kwhale_front
-    kwhale_ast
+    lilyFront
+    lilyAst
     containers)
-  (name kwhale_command))
+  (name lilyCommand))

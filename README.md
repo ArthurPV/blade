@@ -1,4 +1,4 @@
-# Kwhale
+# Lily
 
 ## Dependencies
 
@@ -14,6 +14,6 @@ opam install llvm ANSITerminal containers dune
 
 ## How to build?
 ``` bash
-cd kwhale
+cd lily
 make
 ```

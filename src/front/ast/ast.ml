@@ -1,5 +1,5 @@
-open Kwhale_front.Stream
-open Kwhale_front.Token
+open LilyFront.Stream
+open LilyFront.Token
 
 type 'a binop = 
     | BinopAdd

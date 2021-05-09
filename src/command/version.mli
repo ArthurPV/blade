@@ -1,1 +1,1 @@
-val kwhale_version : string
+val lily_v : string

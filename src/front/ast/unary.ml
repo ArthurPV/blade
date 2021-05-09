@@ -1,6 +1,6 @@
 open Ast
-open Kwhale_front.Error
-open Kwhale_front.Token
+open LilyFront.Error
+open LilyFront.Token
 
 let token_to_unary tok = 
     match tok with

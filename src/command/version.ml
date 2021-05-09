@@ -1,1 +1,1 @@
-let kwhale_version = "0.0.1"
+let lily_v = "0.0.1"

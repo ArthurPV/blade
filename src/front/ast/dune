@@ -1,5 +1,5 @@
 (library
   (libraries
-    kwhale_front
+    lilyFront
     containers)
-  (name kwhale_ast))
+  (name lilyAst))

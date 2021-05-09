@@ -3,4 +3,4 @@
   (libraries
     ANSITerminal
     containers)
-  (name kwhale_front))
+  (name lilyFront))

@@ -1,5 +1,5 @@
 open Ast
-open Kwhale_front.Error
-open Kwhale_front.Token
+open LilyFront.Error
+open LilyFront.Token
 
 val token_to_binop : 'a token -> ('a binop, error_id) result

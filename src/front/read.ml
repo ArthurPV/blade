@@ -36,7 +36,7 @@ module GetFileContent = struct
             if Sys.is_directory filename <> false then
                 msg_is_dir filename
             else 
-                if Filename.extension filename <> ".kw" then
+                if Filename.extension filename <> ".li" then
                    msg_bad_extensions filename
                 else
                     let ic = open_in filename in
