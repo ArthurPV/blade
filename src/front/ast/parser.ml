@@ -31,12 +31,32 @@ module ParseExpr = struct
       let right = parse_expr_value (get_next_token ast) in
       match (left, right) with
       | (Ok x1, Ok x2) -> (match token_to_binop ast.current_token with
-                           | Ok b -> (next_token ast;
-                                      next_token ast;
-                                      Ok (Expr (ExprBinop (x1,b,x2))))
+                           | Ok b -> Ok (Expr (ExprBinop (x1,b,x2)))
                            | Error e -> Error e)
       | _ -> Error (ErrorIdInvalidValue)
 end
 
 module ParseStmt = struct
 end
+
+let parser ast =
+  match ast.current_token with
+  | Operator OperatorPlus -> Some (ParseExpr.parse_binop_operator ast)
+  | Operator OperatorMinus -> Some (ParseExpr.parse_binop_operator ast)
+  | Operator OperatorStar -> Some (ParseExpr.parse_binop_operator ast)
+  | Operator OperatorSlash -> Some (ParseExpr.parse_binop_operator ast)
+  | Operator OperatorPercentage -> Some (ParseExpr.parse_binop_operator ast)
+  | Operator OperatorHat -> Some (ParseExpr.parse_binop_operator ast)
+  | _ -> None
+
+let run_parser ast =
+  let rec loop ast =
+    if ast.pos < CCVector.length (ast.stream.tok) then
+      match parser ast with
+      | Some (Error _) -> Printf.printf "error\n"
+      | Some (Ok p) -> (Printf.printf "%s\n" (ast_kind_to_str (p));
+                        next_token ast;
+                        loop (ast))
+      | None -> (next_token ast;
+                 loop (ast)) in
+  loop (ast)

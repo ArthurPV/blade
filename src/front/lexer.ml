@@ -238,22 +238,28 @@ module ScanChar = struct
         let rec loop lex = 
             if RecognizeChar.is_num lex then
                 (if lex.read.c = '.' then is_float := true;
-                 if lex.read.c = 'e' || lex.read.c = 'E' then
-                     (is_sct := true; 
-                      if UtilLexer.get_next_char lex = '-' || UtilLexer.get_next_char lex = '+' then 
+                 if lex.read.c = 'e' || lex.read.c = 'E' then 
+                     (is_sct := true;
+                        if UtilLexer.get_next_char lex = '-' || UtilLexer.get_next_char lex = '+' then 
                           (value := !value @ [String.make 1 lex.read.c];
                            UtilLexer.next_char lex;
                            value := !value @ [String.make 1 lex.read.c];
                            UtilLexer.next_char lex));
                  value := !value @ [String.make 1 lex.read.c];
                  UtilLexer.next_char lex;
-                 loop (lex)) in 
+                 loop (lex)) in
         loop (lex); 
         UtilLexer.previous_char lex;
 
-        if !is_float = true then Ok (Literal (LiteralFloat ((float_of_string (String.concat "" !value)), Normal)))
-        else if !is_sct = true then Ok (Literal (LiteralFloat ((float_of_string (String.concat "" !value)), Scientific)))
-        else Ok (Literal (LiteralInt ((int_of_string (String.concat "" !value)), Normal)))
+        let value_str = String.concat "" !value in 
+        let final_value = match value_str.[(String.length value_str)-1] with
+        | ' ' -> String.sub value_str 0 ((String.length value_str)-1)
+        | _ -> value_str
+        in
+
+        if !is_float = true then Ok (Literal (LiteralFloat ((float_of_string final_value), Normal)))
+        else if !is_sct = true then Ok (Literal (LiteralFloat ((float_of_string final_value), Scientific)))
+        else Ok (Literal (LiteralInt ((int_of_string final_value), Normal)))
 end
 
 let tokenizer lex = 
@@ -422,7 +428,7 @@ let run_tokenizer lex loc =
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
         | Error _ -> Printf.printf "error\n";
-        | Ok tok -> ((*Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str t);*)
+        | Ok tok -> (Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str tok);
                      UtilLexer.end_token lex;
                      push_token new_stream_token tok loc;
                      UtilLexer.next_char lex;

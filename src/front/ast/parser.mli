@@ -5,7 +5,6 @@ open LilyFront.Error
 val next_token : 'a ast -> unit
 
 val get_next_token : 'a ast -> 'a token
-
 val get_previous_token : 'a ast -> 'a token
 
 module ParseExpr : sig
@@ -16,3 +15,7 @@ end
 
 module ParseStmt : sig
 end
+
+val parser : 'a ast -> (('a ast_kind, error_id) result) option
+
+val run_parser : 'a ast -> unit

@@ -1,4 +1,5 @@
 open LilyAst.Ast
+open LilyAst.Parser
 open LilyFront.Lexer
 open LilyFront.Read
 open LilyFront.Stream
@@ -12,7 +13,9 @@ let run filename =
                           let stream_token_location = new_location lexer.info.line lexer.info.col lexer.info.s_line lexer.info.e_line lexer.info.s_col lexer.info.e_col in
                           run_tokenizer lexer stream_token_location;
                           let stream_token = new_stream_token in
-                          let ast = new_ast (stream_token) in 
-                          Printf.printf "%d" (CCVector.length ast.stream.tok))
-               | Error e -> Printf.printf "%s" e)
+                          let ast = new_ast (stream_token) in
+                          (*run_tokenizer lexer stream_token_location;*)
+                          Printf.printf "%d\n" (CCVector.length ast.stream.tok);
+                          run_parser ast)
+               | Error e -> Printf.printf "%s\n" e)
     | Error e -> Printf.printf "%s" e
