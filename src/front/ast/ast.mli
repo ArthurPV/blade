@@ -42,8 +42,8 @@ type 'a literal =
     | LiteralChar of char
 
 type 'a expr = 
-    | ExprBinop of 'a binop
-    | ExprUnary of 'a unary
+    | ExprBinop of 'a expr * 'a binop * 'a expr
+    | ExprUnary of 'a expr * 'a unary
     | ExprFunCall
     | ExprIdentifier of string
     | ExprLiteral of 'a literal
@@ -68,3 +68,5 @@ type 'a ast = {
 }
 
 val new_ast : 'a stream_token -> 'a ast
+
+val ast_kind_to_str : 'a ast_kind -> string
