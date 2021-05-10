@@ -51,7 +51,7 @@ let parser ast =
 
 let run_parser ast =
   let rec loop ast =
-    if ast.pos < CCVector.length (ast.stream.tok) then
+    if ast.pos < (CCVector.length (ast.stream.tok))-1 then
       match parser ast with
       | Some (Error _) -> Printf.printf "error\n"
       | Some (Ok p) -> (Printf.printf "%s\n" (ast_kind_to_str (p));
