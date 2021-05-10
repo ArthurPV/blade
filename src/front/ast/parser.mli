@@ -2,7 +2,7 @@ open Ast
 open LilyFront.Token
 open LilyFront.Error
 
-module UtilParser : sig
+module ParserUtil : sig
     val next_token : 'a ast -> unit
     val get_next_token : 'a ast -> 'a token
     val get_previous_token : 'a ast -> 'a token

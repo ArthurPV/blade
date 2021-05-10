@@ -4,7 +4,7 @@ open LilyFront.Error
 
 module Token = LilyFront.Token
 
-module UtilParser = struct
+module ParserUtil = struct
     let next_token ast =
         ast.pos <- ast.pos + 1;
         ast.current_token <- CCVector.get ast.stream.tok ast.pos;
@@ -29,8 +29,8 @@ module ParseExpr = struct
 
     (* + - * / % ^ *)
     let parse_binop_operator ast =
-      let left = parse_expr_value (UtilParser.get_previous_token ast) in
-      let right = parse_expr_value (UtilParser.get_next_token ast) in
+      let left = parse_expr_value (ParserUtil.get_previous_token ast) in
+      let right = parse_expr_value (ParserUtil.get_next_token ast) in
       match (left, right) with
       | (Ok x1, Ok x2) -> (match token_to_binop ast.current_token with
                            | Ok b -> Ok (Expr (ExprBinop (x1,b,x2)))
@@ -57,8 +57,8 @@ let run_parser ast =
       match parser ast with
       | Some (Error _) -> Printf.printf "error\n"
       | Some (Ok p) -> (Printf.printf "%s\n" (ast_kind_to_str (p));
-                        UtilParser.next_token ast;
+                        ParserUtil.next_token ast;
                         loop (ast))
-      | None -> (UtilParser.next_token ast;
+      | None -> (ParserUtil.next_token ast;
                  loop (ast)) in
   loop (ast)

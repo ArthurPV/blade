@@ -22,7 +22,7 @@ val new_lexer_info : lexer_info
 
 val new_lexer : lexer_info -> 'a read -> 'a lexer
 
-module UtilLexer : sig
+module LexerUtil : sig
     val next_char : 'a lexer -> unit
     val previous_char : 'a lexer -> unit
     val start_token : 'a lexer -> unit
