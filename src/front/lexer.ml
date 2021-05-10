@@ -253,7 +253,7 @@ module ScanChar = struct
 
         let value_str = String.concat "" !value in 
         let final_value = match value_str.[(String.length value_str)-1] with
-        | ' ' -> String.sub value_str 0 ((String.length value_str)-1)
+        | ' ' | '\n' | '\t' -> String.sub value_str 0 ((String.length value_str)-1)
         | _ -> value_str
         in
 
