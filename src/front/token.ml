@@ -41,6 +41,7 @@ type operator =
     | OperatorRightShift
     | OperatorLeftShiftEq
     | OperatorRightShiftEq
+    | OperatorLeftShiftRightShift
     | OperatorInterogation
 
 type keyword = 
@@ -178,6 +179,7 @@ let token_to_str tok =
     | Operator OperatorRightShift -> ">"
     | Operator OperatorLeftShiftEq -> "<="
     | Operator OperatorRightShiftEq -> ">="
+    | Operator OperatorLeftShiftRightShift -> "<>"
     | Operator OperatorInterogation -> "?"
     | Keyword KeywordExplicit -> "explicit"
     | Keyword KeywordPub -> "pub"

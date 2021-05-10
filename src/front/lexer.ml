@@ -356,12 +356,14 @@ let tokenizer lex =
                         | _ -> Error ErrorIdUnexpectedToken)
               | _ -> Ok (Operator OperatorEq))
 
-    (* <= <- *)
+    (* <= <- <> <*)
     | '<' -> (match UtilLexer.get_next_char lex with
               | '=' -> (UtilLexer.next_char lex;
                         Ok (Operator OperatorLeftShiftEq))
               | '-' -> (UtilLexer.next_char lex;
                         Ok (Separator SeparatorInverseArrow))
+              | '>' -> (UtilLexer.next_char lex;
+                        Ok (Operator OperatorLeftShiftRightShift))
               | _ -> Ok (Operator OperatorLeftShift))
 
     (* >= > *)

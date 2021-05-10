@@ -10,5 +10,6 @@ type error_id =
     | ErrorIdInvalidBinop
     | ErrorIdInvalidUnary
     | ErrorIdInvalidPrimaryType
+    | ErrorIdInvalidValue
 
 val error_id_to_str : error_id -> string

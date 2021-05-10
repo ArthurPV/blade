@@ -41,6 +41,7 @@ type operator =
     | OperatorRightShift
     | OperatorLeftShiftEq
     | OperatorRightShiftEq
+    | OperatorLeftShiftRightShift
     | OperatorInterogation
 
 type keyword = 

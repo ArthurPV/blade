@@ -19,6 +19,7 @@ let token_to_binop tok =
     | Operator OperatorPercentageEq -> Ok BinopModAssign
     | Operator OperatorHatEq -> Ok BinopPowAssign
     | Operator OperatorEq -> Ok BinopAssign
+    | Operator OperatorLeftShiftRightShift -> Ok BinopNotEq
     | Operator OperatorEqEq -> Ok BinopEq
     | Operator OperatorEqDotDot -> Ok BinopEqInterval
     | Operator OperatorDotDot -> Ok BinopInterval

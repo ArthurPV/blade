@@ -1,15 +1,18 @@
-(*open Ast
+open Ast
+open LilyFront.Token
+open LilyFront.Error
 
 val next_token : 'a ast -> unit
 
-val get_next_token : 'a ast -> unit
+val get_next_token : 'a ast -> 'a token
 
-val get_previous_token : 'a ast -> unit
+val get_previous_token : 'a ast -> 'a token
 
 module ParseExpr : sig
-  val parse_binop : 'a ast_kind -> 
+  val parse_expr_value : 'a token -> ('a expr, error_id) result
+  val parse_binop_operator : 'a ast -> ('a ast_kind, error_id) result
+  (*val parse_expr : 'a ast -> 'a ast_kind*)
 end
 
 module ParseStmt : sig
 end
- *)

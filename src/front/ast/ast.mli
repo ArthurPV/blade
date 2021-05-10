@@ -18,6 +18,7 @@ type 'a binop =
     | BinopPowAssign
     | BinopAssign
     | BinopEq
+    | BinopNotEq
     | BinopIntervalEq
     | BinopInterval
     | BinopEqInterval

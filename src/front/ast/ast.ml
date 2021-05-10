@@ -18,6 +18,7 @@ type 'a binop =
     | BinopPowAssign
     | BinopAssign
     | BinopEq
+    | BinopNotEq
     | BinopIntervalEq
     | BinopInterval
     | BinopEqInterval
@@ -92,6 +93,7 @@ let ast_kind_to_str kind =
     | Expr (ExprBinop (_,BinopPowAssign,_)) -> "pow assign"
     | Expr (ExprBinop (_,BinopAssign,_)) -> "assign"
     | Expr (ExprBinop (_,BinopEq,_)) -> "eq"
+    | Expr (ExprBinop (_,BinopNotEq,_)) -> "not eq"
     | Expr (ExprBinop (_,BinopIntervalEq,_)) -> "interval eq"
     | Expr (ExprBinop (_,BinopInterval,_)) -> "interval"
     | Expr (ExprBinop (_,BinopEqInterval,_)) -> "eq interval"
