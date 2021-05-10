@@ -57,11 +57,11 @@ module ParseExpr = struct
           | (Error _,Ok _) -> parse_unary ast
           | _ -> Error (ErrorIdInvalidValue)
       else
-      match (left, right) with
-      | (Ok x1, Ok x2) -> (match token_to_binop ast.current_token with
-                           | Ok b -> Ok (Expr (ExprBinop (x1,b,x2)))
-                           | Error e -> Error e)
-      | _ -> Error (ErrorIdInvalidValue)
+          match (left, right) with
+          | (Ok x1, Ok x2) -> (match token_to_binop ast.current_token with
+                               | Ok b -> Ok (Expr (ExprBinop (x1,b,x2)))
+                               | Error e -> Error e)
+          | _ -> Error (ErrorIdInvalidValue)
 end
 
 module ParseStmt = struct
@@ -69,13 +69,13 @@ end
 
 let parser ast =
   match ast.current_token with
-  | Operator OperatorPlus -> Some (ParseExpr.parse_binop_operator ast)
-  | Operator OperatorMinus -> Some (ParseExpr.parse_binop_operator ast)
-  | Operator OperatorStar -> Some (ParseExpr.parse_binop_operator ast)
-  | Operator OperatorSlash -> Some (ParseExpr.parse_binop_operator ast)
-  | Operator OperatorPercentage -> Some (ParseExpr.parse_binop_operator ast)
-  | Operator OperatorHat -> Some (ParseExpr.parse_binop_operator ast)
-  | Keyword KeywordNot -> Some (ParseExpr.parse_unary ast)
+  | Token.Operator OperatorPlus -> Some (ParseExpr.parse_binop_operator ast)
+  | Token.Operator OperatorMinus -> Some (ParseExpr.parse_binop_operator ast)
+  | Token.Operator OperatorStar -> Some (ParseExpr.parse_binop_operator ast)
+  | Token.Operator OperatorSlash -> Some (ParseExpr.parse_binop_operator ast)
+  | Token.Operator OperatorPercentage -> Some (ParseExpr.parse_binop_operator ast)
+  | Token.Operator OperatorHat -> Some (ParseExpr.parse_binop_operator ast)
+  | Token.Keyword KeywordNot -> Some (ParseExpr.parse_unary ast)
   | _ -> None
 
 let run_parser ast =
