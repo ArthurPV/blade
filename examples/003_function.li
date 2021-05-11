@@ -23,7 +23,7 @@ fun start_loop max =
 	end
 end
 
-start_loop(0 10)
+start_loop(0, 10)
 
 merge_array :: [i32]|[i32] -> [i32]
 fun merge_array a b =

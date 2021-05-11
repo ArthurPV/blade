@@ -15,7 +15,7 @@ class Person =
 	fun print_person = println("name: {}, age: {}" name age) end
 end
 
-var person = new Person("theresa" 25)
+var person = new Person("theresa", 25)
 person.print_person() ** name: theresa, age: 25
 
 ** iheritance
