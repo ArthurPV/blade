@@ -1,5 +1,3 @@
-import String
-
 var s = "hello"
 var s_length = String.length(s)
 

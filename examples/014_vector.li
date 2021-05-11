@@ -1,5 +1,3 @@
-import Vector
-
 get_vector :: Vector.T<u32> -> Vector.T<u32>
 fun get_vector a = a end
 

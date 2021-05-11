@@ -1,1 +1,1 @@
-(dirs bin src)
+(dirs bin src tests)
