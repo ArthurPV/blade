@@ -238,8 +238,8 @@ module ScanChar = struct
         let rec loop lex = 
             if RecognizeChar.is_num lex then
                 (if lex.read.c = '.' then is_float := true;
-                 if lex.read.c = 'e' || lex.read.c = 'E' then 
-                     (is_sct := true;
+                 if lex.read.c = 'e' || lex.read.c = 'E' then
+                   (is_sct := true;
                         if LexerUtil.get_next_char lex = '-' || LexerUtil.get_next_char lex = '+' then 
                           (value := !value @ [String.make 1 lex.read.c];
                            LexerUtil.next_char lex;

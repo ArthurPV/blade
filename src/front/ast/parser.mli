@@ -11,6 +11,7 @@ end
 module ParseExpr : sig
     val parse_expr_value : ('a token, error_id) result -> ('a expr, error_id) result
     val parse_binop_operator : 'a ast -> ('a ast_kind, error_id) result
+    val parse_newline : 'a ast -> bool
     (*val parse_expr : 'a ast -> 'a ast_kind*)
 end
 

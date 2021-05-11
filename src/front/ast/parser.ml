@@ -41,7 +41,7 @@ module ParseExpr = struct
         let right = parse_expr_value (ParserUtil.get_next_token ast) in 
         match right with
         | Ok x1 -> (match token_to_unary ast.current_token with
-                    | Ok b -> Ok (Expr (ExprUnary (x1, b)))
+                    | Ok b -> (Ok (Expr (ExprUnary (x1, b))))
                     | Error e -> Error e)
         | _ -> Error (ErrorIdInvalidValue)
 
@@ -59,9 +59,15 @@ module ParseExpr = struct
       else
           match (left, right) with
           | (Ok x1, Ok x2) -> (match token_to_binop ast.current_token with
-                               | Ok b -> Ok (Expr (ExprBinop (x1,b,x2)))
+                               | Ok b -> (ParserUtil.next_token ast;
+                                          Ok (Expr (ExprBinop (x1,b,x2))))
                                | Error e -> Error e)
           | _ -> Error (ErrorIdInvalidValue)
+
+    let parse_newline ast =
+      match ast.current_token with
+      | Separator SeparatorNewline -> true
+      | _ -> false
 end
 
 module ParseStmt = struct
