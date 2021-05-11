@@ -5,7 +5,7 @@
 if exists("b:current_syntax")
   finish
 endif
-let b:current_syntax = "blade"
+let b:current_syntax = "lily"
 
 syn keyword bladeStorage explicit pub priv ref self virtual
 syn keyword bladeStatement break next

@@ -12,7 +12,7 @@ class Person =
 	end
 	fun get_name = name end
 	fun get_age = age end
-	fun print_person = print("name: {}, age: {}" name age) end
+	fun print_person = println("name: {}, age: {}" name age) end
 end
 
 var person = new Person("theresa" 25)

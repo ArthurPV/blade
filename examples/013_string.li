@@ -1,0 +1,9 @@
+import String
+
+var s = "hello"
+var s_length = String.length(s)
+
+println("{}", s_length)
+
+get_c :: string|u16 -> char
+fun get_c s p = s[p] end

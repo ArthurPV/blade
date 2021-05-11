@@ -1,1 +1,1 @@
-au BufRead,BufNewFile *.li set filetype=blade
+au BufRead,BufNewFile *.li set filetype=lily

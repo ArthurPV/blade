@@ -1,6 +1,6 @@
-import list
+import List
 
-doubleList :: [i32] -> [i32]
-fun doubleList l = l.map(x -> x*2) end
+doubleList :: List.T<u32> -> List.T<u32>
+fun doubleList l = List.map (l (x -> x*2)) end
 
-doubleList([1,2,3,4,5])
+doubleList({1,2,3,4,5})

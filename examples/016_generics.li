@@ -1,0 +1,17 @@
+import List
+import Vector
+
+** generic function
+my_generic_function :: T -> T
+fun my_generic_function a = a end
+
+my_generic_function(12) ** u32
+my_generic_function(2.2) ** f32
+my_generic_function([2,3,3]) ** [u32]
+my_generic_function((List.T<u32>){1,2,3,4,5}) ** list
+my_generic_function((Vector.T<u32>){1,2,3,4,5}) ** vector
+
+** generic user defined type
+type Value<T> = 
+	v: T
+end
