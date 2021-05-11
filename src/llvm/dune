@@ -2,4 +2,4 @@
   (libraries
     llvm
     llvm.linker)
-  (name kwhale_llvm))
+  (name lilyLlvm))

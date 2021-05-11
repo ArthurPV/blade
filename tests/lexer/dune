@@ -1,0 +1,9 @@
+(test
+  (name lexer_test)
+  (libraries
+    oUnit))
+
+; (rule
+;   (target lexer_test.ml)
+;   (alias DEFAULT)
+;   (action (run ./lexer_test.exe)))
