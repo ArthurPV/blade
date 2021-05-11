@@ -17,3 +17,9 @@ opam install llvm ANSITerminal containers dune
 cd lily
 make
 ```
+
+## How to test?
+```bash
+cd lily
+make test
+```
