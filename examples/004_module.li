@@ -13,10 +13,10 @@ module Calculator =
 end
 
 const calculator = Calculator
-calculator.add(2 3)
-calculator.sub(2 3)
-calculator.mul(2 3)
-calculator.div(2 3)
+calculator.add(2, 3)
+calculator.sub(2, 3)
+calculator.mul(2, 3)
+calculator.div(2, 3)
 
 ** share module in other module
 explicit module AdvanceCalculator = 
