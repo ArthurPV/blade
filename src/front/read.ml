@@ -6,7 +6,7 @@ type 'a read = {
 }
 
 let new_read filename content =
-    if String.length content > 1 then
+    if String.length content >= 1 then
         Ok {
             filename = filename;
             content = content;
