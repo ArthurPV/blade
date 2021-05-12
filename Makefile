@@ -13,7 +13,7 @@ all:
 
 test:
 	@echo -e "\e[1;32m**\e[0m Run tests"
-	$(SILENT)dune runtest
+	$(SILENT)dune runtest -f
 
 clean:
 	$(SILENT)rm -rf _build

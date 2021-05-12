@@ -4,8 +4,8 @@ open LilyFront.Stream
 
 (* test += ++ + *)
 let plus =
-    match GetFileContent.get_file_content (GetFileContent.read_lines "./input/plus.li") with
-    | Ok s -> (let read = new_read "./input/plus.li" s in 
+    match GetFileContent.get_file_content (GetFileContent.read_lines "./inputs/plus.li") with
+    | Ok s -> (let read = new_read "./inputs/plus.li" s in 
                match read with
                | Ok r -> (let lexer_info = new_lexer_info in
                           let lexer = new_lexer lexer_info r in 
