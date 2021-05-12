@@ -6,7 +6,8 @@ let operator_suite =
          "test_minus">:: Operator.test_minus;
          "test_star">:: Operator.test_star;
          "test_slash">:: Operator.test_slash;
-         "test_percentage">:: Operator.test_percentage]
+         "test_percentage">:: Operator.test_percentage;
+         "test_hat">:: Operator.test_hat]
 
 let _ =
     run_test_tt_main operator_suite

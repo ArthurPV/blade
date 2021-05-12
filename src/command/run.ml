@@ -14,7 +14,6 @@ let run filename =
                           run_tokenizer lexer stream_token_location;
                           let stream_token = new_stream_token in
                           let ast = new_ast (stream_token) in
-                          (*run_tokenizer lexer stream_token_location;*)
                           Printf.printf "%d\n" (CCVector.length ast.stream.tok);
                           run_parser ast)
                | Error e -> Printf.printf "%s\n" e)

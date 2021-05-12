@@ -38,3 +38,10 @@ let test_percentage test_ctxt =
     Utils.test "inputs/operators/percentage.li";
     assert_equal (CCVector.get st.tok 0) (Operator OperatorPercentageEq);
     assert_equal (CCVector.get st.tok 1) (Operator OperatorPercentage)
+
+(* ^= ^ *)
+let test_hat test_ctxt = 
+    let st = new_stream_token in
+    Utils.test "inputs/operators/hat.li";
+    assert_equal (CCVector.get st.tok 0) (Operator OperatorHatEq);
+    assert_equal (CCVector.get st.tok 1) (Operator OperatorHat)
