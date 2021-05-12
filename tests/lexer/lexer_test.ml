@@ -4,7 +4,7 @@ open LilyFront.Stream
 
 let test_plus test_ctxt =
   let st = new_stream_token in
-  Operator.plus;
+  Utils.test "./inputs/plus.li";
   assert_equal (CCVector.get st.tok 0) (Operator OperatorPlusEq);
   assert_equal (CCVector.get st.tok 1) (Operator OperatorPlusPlus);
   assert_equal (CCVector.get st.tok 2) (Operator OperatorPlus)
