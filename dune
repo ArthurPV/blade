@@ -1,1 +1,5 @@
 (dirs bin src tests)
+
+(env
+  (dev
+    (flags (:standard -w -27))))

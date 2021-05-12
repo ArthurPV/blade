@@ -1,7 +1,8 @@
 (test
   (name lexer_test)
   (libraries
-    oUnit))
+    oUnit
+    lilyFront))
 
 ; (rule
 ;   (target lexer_test.ml)
