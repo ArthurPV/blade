@@ -15,7 +15,8 @@ let special_operator_suite =
 let comparaison_operator_suite = 
     "comparaison_operator_suite">:::
         ["test_left_shift">:: Operator.test_left_shift;
-         "test_right_shift">:: Operator.test_right_shift;]
+         "test_right_shift">:: Operator.test_right_shift;
+         "test_other_operator">:: Operator.test_other_operator;]
 
 let _ =
     run_test_tt_main basic_operator_suite;
