@@ -18,7 +18,12 @@ let comparaison_operator_suite =
          "test_right_shift">:: Operator.test_right_shift;
          "test_other_operator">:: Operator.test_other_operator;]
 
+let keyword_suite =
+    "keyword_suite">:::
+        ["test_keyword">:: Keyword.test_keyword;]
+
 let _ =
     run_test_tt_main basic_operator_suite;
     run_test_tt_main special_operator_suite;
-    run_test_tt_main comparaison_operator_suite
+    run_test_tt_main comparaison_operator_suite;
+    run_test_tt_main keyword_suite
