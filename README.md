@@ -22,5 +22,6 @@ make
 ## How to test?
 ```bash
 cd lily
+make
 make test
 ```
