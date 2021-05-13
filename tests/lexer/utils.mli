@@ -1,8 +1,6 @@
 open LilyFront.Lexer
 open LilyFront.Token
 
-val test_tokenizer : 'a lexer -> 'a token
+val run_tokenizer : 'a lexer -> 'a token CCVector.vector
 
-val lexer_test : string -> 'a lexer
-
-val test : string -> 'a token
+val lexer_test : string -> 'a token CCVector.vector
