@@ -60,6 +60,7 @@ let test_right_shift test_ctxt =
     assert_equal (CCVector.get t 0) (Operator OperatorRightShiftEq);
     assert_equal (CCVector.get t 1) (Operator OperatorRightShift)
 
+(* == = ? *)
 let test_other_operator test_ctxt = 
     let filename = "inputs/operators/other.li" in
     let t = Utils.lexer_test filename in 
