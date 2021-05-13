@@ -54,3 +54,19 @@ let test_hat test_ctxt =
     assert_equal (Utils.test filename) (Operator OperatorHatEq);
     LexerUtil.next_char lexer;
     assert_equal (Utils.test filename) (Operator OperatorHat)
+
+(* <= < *)
+let test_left_shift test_ctxt = 
+    let filename = "inputs/operators/left_shift.li" in
+    let lexer = Utils.lexer_test filename in
+    assert_equal (Utils.test filename) (Operator OperatorLeftShiftEq);
+    LexerUtil.next_char lexer;
+    assert_equal (Utils.test filename) (Operator OperatorLeftShift)
+
+(* >= > *)
+let test_right_shift test_ctxt = 
+    let filename = "inputs/operators/right_shift.li" in
+    let lexer = Utils.lexer_test filename in
+    assert_equal (Utils.test filename) (Operator OperatorRightShiftEq);
+    LexerUtil.next_char lexer;
+    assert_equal (Utils.test filename) (Operator OperatorRightShift)
