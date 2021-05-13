@@ -1,7 +1,7 @@
 open OUnit2
 open LilyFront.Token
 
-let test_keyword test_ctxt = 
+let test_keywords test_ctxt = 
     let filename = "inputs/keywords/keywords.li" in
     let t = Utils.lexer_test filename in 
     assert_equal (CCVector.get t 0) (Keyword KeywordExplicit);

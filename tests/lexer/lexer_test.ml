@@ -20,7 +20,7 @@ let comparaison_operator_suite =
 
 let keyword_suite =
     "keyword_suite">:::
-        ["test_keyword">:: Keyword.test_keyword;]
+        ["test_keywords">:: Keyword.test_keywords;]
 
 let _ =
     run_test_tt_main basic_operator_suite;
