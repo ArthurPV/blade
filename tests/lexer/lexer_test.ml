@@ -30,10 +30,16 @@ let comment_suite =
     "comment_suite">:::
         ["test_comments">:: Comment.test_comments;]
 
+let identifier_suite = 
+    "identifier_suite">:::
+        ["test_identifiers">:: Identifier.test_identifiers;
+         "test_failed_identifiers">:: Identifier.test_failed_identifiers;]
+
 let _ =
     run_test_tt_main basic_operator_suite;
     run_test_tt_main special_operator_suite;
     run_test_tt_main comparaison_operator_suite;
     run_test_tt_main keyword_suite;
     run_test_tt_main separator_suite;
-    run_test_tt_main comment_suite
+    run_test_tt_main comment_suite;
+    run_test_tt_main identifier_suite
