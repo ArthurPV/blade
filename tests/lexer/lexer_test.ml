@@ -22,8 +22,13 @@ let keyword_suite =
     "keyword_suite">:::
         ["test_keywords">:: Keyword.test_keywords;]
 
+let separator_suite = 
+    "separator_suite">:::
+        ["test_separators">:: Separator.test_separators;]
+
 let _ =
     run_test_tt_main basic_operator_suite;
     run_test_tt_main special_operator_suite;
     run_test_tt_main comparaison_operator_suite;
-    run_test_tt_main keyword_suite
+    run_test_tt_main keyword_suite;
+    run_test_tt_main separator_suite

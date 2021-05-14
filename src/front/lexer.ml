@@ -351,7 +351,7 @@ let tokenizer lex =
                         Ok (Operator OperatorHatEq))
               | _ -> Ok (Operator OperatorHat))
 
-    (* == =.. = *)
+    (* == =.. => = *)
     | '=' -> (match LexerUtil.get_next_char lex with
               | '=' -> (LexerUtil.next_char lex;
                         Ok (Operator OperatorEqEq))
@@ -360,6 +360,8 @@ let tokenizer lex =
                                   LexerUtil.next_char lex;
                                   Ok (Operator OperatorEqDotDot))
                         | _ -> Error ErrorIdUnexpectedToken)
+              | '>' -> (LexerUtil.next_char lex;
+                        Ok (Separator SeparatorFatArrow))
               | _ -> Ok (Operator OperatorEq))
 
     (* <= <- <> <*)
@@ -428,7 +430,7 @@ let run_tokenizer lex loc =
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
         | Error _ -> Printf.printf "error\n";
-        | Ok tok -> ((*Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str tok);*)
+        | Ok tok -> (Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str tok);
                      LexerUtil.end_token lex;
                      push_token new_stream_token tok loc;
                      LexerUtil.next_char lex;
