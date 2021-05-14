@@ -4,7 +4,7 @@ type Person =
 	age: i8 
 end
 
-new_person :: string|i8 -> Person
+new_person :: string i8 -> Person
 fun new_person name age = 
 	Person {	
 		name = name,

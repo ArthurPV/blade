@@ -1,5 +1,5 @@
 explicit class Person =
-	Person :: string|u8 -> Person
+	Person :: string u8 -> Person
 	pub get_name :: string -> string
 	pub get_age :: u8 -> u8
 	pub print_person :: unit -> unit
@@ -20,7 +20,7 @@ person.print_person() ** name: theresa, age: 25
 
 ** iheritance
 explicit class Work = 
-	Work :: string|u32 -> Work
+	Work :: string u32 -> Work
 	pub get_work_name :: string -> string
 	pub get_salary :: u32 -> u32
 end

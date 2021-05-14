@@ -3,15 +3,15 @@
 ** syntax like ruby with end keyword
 
 ** functions
-add :: i32|i32 -> i32
+add :: i32 i32 -> i32
 fun add x y = x+y end
 
-div :: i32|i32 -> i32
+div :: i32 i32 -> i32
 fun div x y = x/y end
 
 ** anonymous functions
-var add = (x|y -> x+y)3
-var div = (x|y -> x/y)3
+var add = (x y -> x+y)3
+var div = (x y -> x/y)3
 
 ** define types in function
 start_loop :: i32 -> unit
@@ -25,12 +25,12 @@ end
 
 start_loop(0, 10)
 
-merge_array :: [i32]|[i32] -> [i32]
+merge_array :: [i32] [i32] -> [i32]
 fun merge_array a b =
 	a ++ b
 end
 
-merge_array([1..5] [6..10]) ** [1,2,3,4,5,6,7,8,9,10]
+merge_array([1..5], [6..10]) ** [1,2,3,4,5,6,7,8,9,10]
 
 pow :: i32 -> i32
 fun pow x = x*x end

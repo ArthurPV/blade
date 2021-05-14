@@ -1,8 +1,8 @@
 explicit module Calculator = 
-	add :: f32|f32 -> f32
-	sub :: f32|f32 -> f32
-	mul :: f32|f32 -> f32
-	div :: f32|f32 -> f32
+	add :: f32 f32 -> f32
+	sub :: f32 f32 -> f32
+	mul :: f32 f32 -> f32
+	div :: f32 f32 -> f32
 end
 
 module Calculator =
@@ -21,7 +21,7 @@ calculator.div(2, 3)
 ** share module in other module
 explicit module AdvanceCalculator = 
 	pow :: f32 -> f32	
-	mod :: f32|f32 -> f32
+	mod :: f32 f32 -> f32
 end
 
 module AdvanceCalculator = 

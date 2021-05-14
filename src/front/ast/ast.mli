@@ -45,6 +45,16 @@ type 'a literal =
 type 'a expr = 
     | ExprBinop of 'a expr * 'a binop * 'a expr
     | ExprUnary of 'a expr * 'a unary
+    | ExprVarDefine
+    | ExprVarDeclareType
+    | ExprVarDeclare
+    | ExprVarCall
+    | ExprConstDefine
+    | ExprConstDeclareType
+    | ExprConstDeclare
+    | ExprConstCall
+    | ExprFunDefine
+    | ExprFunDeclare
     | ExprFunCall
     | ExprIdentifier of string
     | ExprLiteral of 'a literal

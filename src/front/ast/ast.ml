@@ -45,6 +45,16 @@ type 'a literal =
 type 'a expr = 
     | ExprBinop of 'a expr * 'a binop * 'a expr
     | ExprUnary of 'a expr * 'a unary
+    | ExprVarDefine (* var a *)
+    | ExprVarDeclareType (* var a :: <type> = <value> *)
+    | ExprVarDeclare (* var a = <value> *)
+    | ExprVarCall (* a *)
+    | ExprConstDefine (* const a *)
+    | ExprConstDeclareType (* const a :: <type> = <value> *)
+    | ExprConstDeclare (* const a = <value> *)
+    | ExprConstCall (* a *)
+    | ExprFunDefine (* sum :: <type>|<type> -> <return value> *)
+    | ExprFunDeclare
     | ExprFunCall
     | ExprIdentifier of string
     | ExprLiteral of 'a literal
