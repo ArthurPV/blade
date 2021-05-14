@@ -46,18 +46,36 @@ type 'a value =
     | Literal of 'a literal
     | Array
 
+type lily_type = 
+    | LilyTypeBool
+    | LilyTypeString
+    | LilyTypeChar
+    | LilyTypeI8
+    | LilyTypeI16
+    | LilyTypeI32
+    | LilyTypeI64
+    | LilyTypeI128
+    | LilyTypeU8
+    | LilyTypeU16
+    | LilyTypeU32
+    | LilyTypeU64
+    | LilyTypeU128
+    | LilyTypeArray
+    | LilyTypeUnit
+    | LilyTypeUserDefinedType of string
+
 type 'a expr = 
     | ExprBinop of 'a expr * 'a binop * 'a expr
     | ExprUnary of 'a expr * 'a unary
     | ExprVarDefine of 'a expr (* var a *)
-    | ExprVarDeclareType(* var a :: <type> = <value> *)
-    | ExprVarDeclare (* var a = <value> *)
-    | ExprVarCall (* a *)
-    | ExprConstDefine (* const a *)
-    | ExprConstDeclareType (* const a :: <type> = <value> *)
-    | ExprConstDeclare (* const a = <value> *)
-    | ExprConstCall (* a *)
-    | ExprFunDefine (* sum :: <type>|<type> -> <return value> *)
+    | ExprVarDeclareType of 'a expr * lily_type * 'a value (* var a :: <type> = <value> *)
+    | ExprVarDeclare of 'a expr * 'a value (* var a = <value> *)
+    | ExprVarCall of 'a expr (* a *)
+    | ExprConstDefine of 'a expr (* const a *)
+    | ExprConstDeclareType of 'a expr * lily_type * 'a value (* const a :: <type> = <value> *)
+    | ExprConstDeclare of 'a expr * 'a value (* const a = <value> *)
+    | ExprConstCall of 'a expr (* a *)
+    | ExprFunDefine of 'a expr * (lily_type CCVector.vector) * 'a value (* sum :: <type>|<type> -> <return value> *)
     | ExprFunDeclare (* fun sum <id> <id> =  *)
     | ExprFunCall (* sum(3, 4) *)
     | ExprIdentifier of string
@@ -122,13 +140,13 @@ let ast_kind_to_str kind =
     | Expr (ExprUnary (_,UnaryNegative)) -> "negative"
     | Expr (ExprUnary (_,UnaryNot)) -> "not"
     | Expr (ExprVarDefine _) -> "var define"
-    | Expr (ExprVarDeclareType) -> "var declare type"
-    | Expr (ExprVarDeclare) -> "var declare"
-    | Expr (ExprVarCall) -> "var call"
-    | Expr (ExprConstDefine) -> "const define"
-    | Expr (ExprConstDeclareType) -> "const declare type"
-    | Expr (ExprConstDeclare) -> "const declare"
-    | Expr (ExprFunDefine) -> "fun define"
+    | Expr (ExprVarDeclareType (_,_,_)) -> "var declare type"
+    | Expr (ExprVarDeclare (_,_)) -> "var declare"
+    | Expr (ExprVarCall _) -> "var call"
+    | Expr (ExprConstDefine _) -> "const define"
+    | Expr (ExprConstDeclareType (_,_,_)) -> "const declare type"
+    | Expr (ExprConstDeclare (_,_)) -> "const declare"
+    | Expr (ExprFunDefine (_,_,_)) -> "fun define"
     | Expr (ExprFunDeclare) -> "fun declare"
     | Expr (ExprFunCall) -> "fun call"
     | _ -> "unknwon"

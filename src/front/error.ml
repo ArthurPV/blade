@@ -11,6 +11,7 @@ type error_id =
     | ErrorIdInvalidUnary
     | ErrorIdInvalidPrimaryType
     | ErrorIdInvalidValue
+    | ErrorIdUnexpectedType
 
 let error_id_to_str id =
     match id with
@@ -26,3 +27,4 @@ let error_id_to_str id =
     | ErrorIdInvalidUnary -> "invalid unary"
     | ErrorIdInvalidPrimaryType -> "invalid primary type"
     | ErrorIdInvalidValue -> "invalid value"
+    | ErrorIdUnexpectedType -> "unexpected type"

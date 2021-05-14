@@ -46,18 +46,36 @@ type 'a value =
     | Literal of 'a literal
     | Array
 
+type lily_type = 
+    | LilyTypeBool
+    | LilyTypeString
+    | LilyTypeChar
+    | LilyTypeI8
+    | LilyTypeI16
+    | LilyTypeI32
+    | LilyTypeI64
+    | LilyTypeI128
+    | LilyTypeU8
+    | LilyTypeU16
+    | LilyTypeU32
+    | LilyTypeU64
+    | LilyTypeU128
+    | LilyTypeArray
+    | LilyTypeUnit
+    | LilyTypeUserDefinedType of string
+
 type 'a expr = 
     | ExprBinop of 'a expr * 'a binop * 'a expr
     | ExprUnary of 'a expr * 'a unary
     | ExprVarDefine of 'a expr
-    | ExprVarDeclareType
-    | ExprVarDeclare
-    | ExprVarCall
-    | ExprConstDefine
-    | ExprConstDeclareType
-    | ExprConstDeclare
-    | ExprConstCall
-    | ExprFunDefine
+    | ExprVarDeclareType of 'a expr * lily_type * 'a value
+    | ExprVarDeclare of 'a expr * 'a value
+    | ExprVarCall of 'a expr
+    | ExprConstDefine of 'a expr
+    | ExprConstDeclareType of 'a expr * lily_type * 'a value
+    | ExprConstDeclare of 'a expr * 'a value
+    | ExprConstCall of 'a expr
+    | ExprFunDefine of 'a expr * (lily_type CCVector.vector) * 'a value
     | ExprFunDeclare
     | ExprFunCall
     | ExprIdentifier of string
