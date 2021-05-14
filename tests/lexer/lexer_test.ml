@@ -35,6 +35,14 @@ let identifier_suite =
         ["test_identifiers">:: Identifier.test_identifiers;
          "test_failed_identifiers">:: Identifier.test_failed_identifiers;]
 
+let integer_suite = 
+    "integer_suite">:::
+        ["test_integer">:: Integer.test_integer;]
+
+let float_suite = 
+    "float_suite">:::
+        ["test_floats">:: Float.test_floats;]
+
 let _ =
     run_test_tt_main basic_operator_suite;
     run_test_tt_main special_operator_suite;
@@ -42,4 +50,6 @@ let _ =
     run_test_tt_main keyword_suite;
     run_test_tt_main separator_suite;
     run_test_tt_main comment_suite;
-    run_test_tt_main identifier_suite
+    run_test_tt_main identifier_suite;
+    run_test_tt_main integer_suite;
+    run_test_tt_main float_suite
