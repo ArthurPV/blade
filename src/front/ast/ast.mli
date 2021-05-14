@@ -62,6 +62,7 @@ type lily_type =
     | LilyTypeU128
     | LilyTypeArray
     | LilyTypeUnit
+    | LilyTypeGeneric
     | LilyTypeUserDefinedType of string
 
 type 'a expr = 
