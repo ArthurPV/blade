@@ -42,10 +42,14 @@ type 'a literal =
     | LiteralString of string
     | LiteralChar of char
 
+type 'a value = 
+    | Literal of 'a literal
+    | Array
+
 type 'a expr = 
     | ExprBinop of 'a expr * 'a binop * 'a expr
     | ExprUnary of 'a expr * 'a unary
-    | ExprVarDefine
+    | ExprVarDefine of 'a expr
     | ExprVarDeclareType
     | ExprVarDeclare
     | ExprVarCall

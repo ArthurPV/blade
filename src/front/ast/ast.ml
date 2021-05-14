@@ -42,11 +42,15 @@ type 'a literal =
     | LiteralString of string
     | LiteralChar of char
 
+type 'a value = 
+    | Literal of 'a literal
+    | Array
+
 type 'a expr = 
     | ExprBinop of 'a expr * 'a binop * 'a expr
     | ExprUnary of 'a expr * 'a unary
-    | ExprVarDefine (* var a *)
-    | ExprVarDeclareType (* var a :: <type> = <value> *)
+    | ExprVarDefine of 'a expr (* var a *)
+    | ExprVarDeclareType(* var a :: <type> = <value> *)
     | ExprVarDeclare (* var a = <value> *)
     | ExprVarCall (* a *)
     | ExprConstDefine (* const a *)
@@ -54,8 +58,8 @@ type 'a expr =
     | ExprConstDeclare (* const a = <value> *)
     | ExprConstCall (* a *)
     | ExprFunDefine (* sum :: <type>|<type> -> <return value> *)
-    | ExprFunDeclare
-    | ExprFunCall
+    | ExprFunDeclare (* fun sum <id> <id> =  *)
+    | ExprFunCall (* sum(3, 4) *)
     | ExprIdentifier of string
     | ExprLiteral of 'a literal
 
@@ -117,4 +121,14 @@ let ast_kind_to_str kind =
     | Expr (ExprUnary (_,UnaryPositive)) -> "positive"
     | Expr (ExprUnary (_,UnaryNegative)) -> "negative"
     | Expr (ExprUnary (_,UnaryNot)) -> "not"
+    | Expr (ExprVarDefine _) -> "var define"
+    | Expr (ExprVarDeclareType) -> "var declare type"
+    | Expr (ExprVarDeclare) -> "var declare"
+    | Expr (ExprVarCall) -> "var call"
+    | Expr (ExprConstDefine) -> "const define"
+    | Expr (ExprConstDeclareType) -> "const declare type"
+    | Expr (ExprConstDeclare) -> "const declare"
+    | Expr (ExprFunDefine) -> "fun define"
+    | Expr (ExprFunDeclare) -> "fun declare"
+    | Expr (ExprFunCall) -> "fun call"
     | _ -> "unknwon"
