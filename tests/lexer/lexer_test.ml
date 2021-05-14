@@ -26,9 +26,14 @@ let separator_suite =
     "separator_suite">:::
         ["test_separators">:: Separator.test_separators;]
 
+let comment_suite = 
+    "comment_suite">:::
+        ["test_comments">:: Comment.test_comments;]
+
 let _ =
     run_test_tt_main basic_operator_suite;
     run_test_tt_main special_operator_suite;
     run_test_tt_main comparaison_operator_suite;
     run_test_tt_main keyword_suite;
-    run_test_tt_main separator_suite
+    run_test_tt_main separator_suite;
+    run_test_tt_main comment_suite
