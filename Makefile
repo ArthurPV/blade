@@ -18,3 +18,12 @@ test:
 clean:
 	$(SILENT)rm -rf _build
 	@echo -e "\e[1;32m**\e[0m Clean project"
+
+help:
+	@echo "Lily help"
+	@echo ""
+	@echo "Commands:"
+	@echo ""
+	@echo "    all: build project"
+	@echo "    test: run tests"
+	@echo "    clean: clean project"
