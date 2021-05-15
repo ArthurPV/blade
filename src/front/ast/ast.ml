@@ -76,7 +76,7 @@ type 'a expr =
     | ExprConstDeclareType of 'a expr * lily_type * 'a value (* const a :: <type> = <value> *)
     | ExprConstDeclare of 'a expr * 'a value (* const a = <value> *)
     | ExprConstCall of 'a expr (* a *)
-    | ExprFunDefine of 'a expr * (lily_type CCVector.vector) * 'a value (* sum :: <type>|<type> -> <return value> *)
+    | ExprFunDefine of 'a expr * (lily_type CCVector.vector) * 'a value (* sum :: <type> -> <type> -> <return value> *)
     | ExprFunDeclare (* fun sum <id> <id> =  *)
     | ExprFunCall (* sum(3, 4) *)
     | ExprIdentifier of string
