@@ -27,3 +27,11 @@ cd lily
 make
 make test
 ```
+## Examples
+
+```
+sum :: i32 -> i32
+fun sum x y = 
+	x + y
+end
+```
