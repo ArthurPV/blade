@@ -4,6 +4,7 @@ open Read
 open Stream
 open Token
 
+(* locations *)
 type lexer_info = {
     mutable line: int;
     mutable col: int;
@@ -15,10 +16,11 @@ type lexer_info = {
 }
 
 type lexer = {
-    info: lexer_info; 
-    read: read;
+    info: lexer_info;
+    read: read; (* get filename and read file*)
 }
 
+(* init lexer_info type *)
 let new_lexer_info = {
     line = 1;
     col = 1;
@@ -29,6 +31,7 @@ let new_lexer_info = {
     pos = 0;
 }
 
+(* init lexer type *)
 let new_lexer info read = {
     info = info;
     read = read;
@@ -85,6 +88,7 @@ module RecognizeChar = struct
         else false
 end
 
+(* convert escape char to string *)
 let get_escape lex = 
     match lex.read.c with
     | '\\' -> (match LexerUtil.get_next_char lex with

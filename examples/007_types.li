@@ -5,8 +5,7 @@ type Person =
 end
 
 new_person :: String -> I8 -> Person
-fun new_person name age = 
-	Person {	
+fun new_person name age = Person {	
 		name = name,
 		age = age
 	}
@@ -14,6 +13,6 @@ end
 
 ** define data
 data Work = 
-	Name of String,
+	Name of String String,
 	Salary of I32,
 end

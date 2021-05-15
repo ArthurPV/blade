@@ -32,7 +32,7 @@ end
 
 ** type in module
 module MyNum = 
-	type t = 
+	type T = 
 		value: i32
 	end
 end
