@@ -20,7 +20,7 @@ person.print_person() ** name: theresa, age: 25
 
 ** iheritance
 explicit class work = 
-	Work :: string u32 -> Work
+	Work :: string -> u32 -> Work
 	pub get_work_name :: string -> string
 	pub get_salary :: u32 -> u32
 end

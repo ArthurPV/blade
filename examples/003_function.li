@@ -3,10 +3,10 @@
 ** syntax like ruby with end keyword
 
 ** functions
-add :: i32 i32 -> i32
+add :: i32 -> i32 -> i32
 fun add x y = x+y end
 
-div :: i32 i32 -> i32
+div :: i32 -> i32 -> i32
 fun div x y = x/y end
 
 ** anonymous functions
@@ -25,7 +25,7 @@ end
 
 start_loop(0, 10)
 
-merge_array :: [i32] [i32] -> [i32]
+merge_array :: [i32] -> [i32] -> [i32]
 fun merge_array a b =
 	a ++ b
 end
