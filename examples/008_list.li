@@ -1,4 +1,4 @@
-doubleList :: List.T<u32> -> List.T<u32>
+doubleList :: List.t<u32> -> List.t<u32>
 fun doubleList l = List.map(l, (x -> x*2)) end
 
 doubleList({1,2,3,4,5})

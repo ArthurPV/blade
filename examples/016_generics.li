@@ -5,10 +5,10 @@ fun my_generic_function a = a end
 my_generic_function(12) ** u32
 my_generic_function(2.2) ** f32
 my_generic_function([2,3,3]) ** [u32]
-my_generic_function((List.T<u32>){1,2,3,4,5}) ** List.T<u32>
-my_generic_function((Vector.T<u32>){1,2,3,4,5}) ** Vector.T<u32>
+my_generic_function((List.t<u32>){1,2,3,4,5}) ** List.T<u32>
+my_generic_function((Vector.t<u32>){1,2,3,4,5}) ** Vector.T<u32>
 
 ** generic user defined type
-type Value<T> = 
+type value<T> = 
 	v: T
 end

@@ -1,4 +1,4 @@
-get_vector :: Vector.T<u32> -> Vector.T<u32>
+get_vector :: Vector.t<u32> -> Vector.t<u32>
 fun get_vector a = a end
 
 get_vector({2, 4, 6, 8, 10})
