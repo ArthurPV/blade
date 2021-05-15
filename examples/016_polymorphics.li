@@ -1,12 +1,12 @@
 ** polymorphic with function
-my_poly_function :: a -> a
-fun my_poly_function x = x end
+my_poly_function<a> :: a -> a
+fun my_poly_function<a> x = x end
 
-my_poly_function(12) ** u32
-my_poly_function(2.2) ** f32
-my_poly_function([2,3,3]) ** [u32]
-my_poly_function((List.t<U32>){1,2,3,4,5}) ** List.T<u32>
-my_poly_function((Vector.t<U32>){1,2,3,4,5}) ** Vector.T<u32>
+my_poly_function(12) ** U32
+my_poly_function(2.2) ** F32
+my_poly_function([2,3,3]) ** [U32]
+my_poly_function((List.t<U32>){1,2,3,4,5}) ** List.T<U32>
+my_poly_function((Vector.t<U32>){1,2,3,4,5}) ** Vector.T<U32>
 
 ** generic user defined type
 type value<a> = 
