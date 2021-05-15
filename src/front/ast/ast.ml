@@ -77,8 +77,8 @@ type expr =
     | ExprConstDeclare of expr * value (* const a = <value> *)
     | ExprConstCall of expr (* a *)
     | ExprFunDefine of expr * (lily_type CCVector.vector) * value (* sum :: <type> -> <type> -> <return value> *)
-    | ExprFunDeclare (* fun sum <id> <id> =  *)
-    | ExprFunCall (* sum(3, 4) *)
+    | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector) (* fun sum <id> <id> =  *)
+    | ExprFunCall of expr * (expr CCVector.vector) (* sum(3, 4) *)
     | ExprIdentifier of string
     | ExprLiteral of literal
 
@@ -148,6 +148,6 @@ let ast_kind_to_str kind =
     | Expr (ExprConstDeclareType (_,_,_)) -> "const declare type"
     | Expr (ExprConstDeclare (_,_)) -> "const declare"
     | Expr (ExprFunDefine (_,_,_)) -> "fun define"
-    | Expr (ExprFunDeclare) -> "fun declare"
-    | Expr (ExprFunCall) -> "fun call"
+    | Expr (ExprFunDeclare (_,_,_)) -> "fun declare"
+    | Expr (ExprFunCall (_,_)) -> "fun call"
     | _ -> "unknwon"

@@ -1,3 +1,4 @@
+open Ast
 open LilyFront.Error
 
-val token_to_literal : Ast.ast -> (Ast.literal, error_id) result
+val token_to_literal : ast -> (literal, error_id) result

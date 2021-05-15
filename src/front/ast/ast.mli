@@ -77,8 +77,8 @@ type expr =
     | ExprConstDeclare of expr * value
     | ExprConstCall of expr
     | ExprFunDefine of expr * (lily_type CCVector.vector) * value
-    | ExprFunDeclare
-    | ExprFunCall
+    | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector)
+    | ExprFunCall of expr * (expr CCVector.vector)
     | ExprIdentifier of string
     | ExprLiteral of literal
 
