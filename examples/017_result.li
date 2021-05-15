@@ -1,0 +1,6 @@
+** return result type in function
+isPositive :: I32 -> Result.t<I32, Bool>
+fun isPositive x =
+	if x == 0 then Ok(x)
+	else Error(false)
+end

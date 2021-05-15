@@ -1,19 +1,19 @@
 ** create type
-type person =
-	name: string, 
-	age: i8 
+type Person =
+	name: String, 
+	age: I8 
 end
 
-new_person :: string i8 -> person
+new_person :: String -> I8 -> Person
 fun new_person name age = 
-	person {	
+	Person {	
 		name = name,
 		age = age
 	}
 end
 
 ** define data
-data work = 
+data Work = 
 	Name of string,
 	Salary of i32,
 end

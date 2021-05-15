@@ -3,5 +3,5 @@ var s_length = String.length(s)
 
 println("{}", s_length)
 
-get_c :: string -> u16 -> char
+get_c :: String -> U16 -> Char
 fun get_c s p = s[p] end

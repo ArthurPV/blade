@@ -1,5 +1,5 @@
 ** if
-sub :: i32 -> i32 -> i32
+sub :: I32 -> I32 -> I32
 fun sub x y =
 	if x == 0 and y == 0 then 0 end
 	x-y
@@ -9,7 +9,7 @@ sub(3, 5) ** -2
 sub(0, 3) ** 0
 
 ** if..elif
-isZero :: i32 -> i32 -> i32
+isZero :: I32 -> I32 -> I32
 fun isZero x y =
 	if x+y < 0 then false
 	elif x+y > 0 then false end
@@ -20,7 +20,7 @@ add(3, 5) ** false
 add(0, 2) ** false
 add(0, 0) ** true
 
-isNotZero :: i32 -> bool
+isNotZero :: I32 -> Bool
 fun isNotZero x =
 	switch x
 		0 => false,
@@ -28,7 +28,7 @@ fun isNotZero x =
 	end
 end
 
-greaterEqToZero :: i32 -> bool
+greaterEqToZero :: I32 -> Bool
 fun greaterEqToZero x = 
 	switch x
 		0=.. => true, ** greater or equal to 0

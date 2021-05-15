@@ -30,7 +30,7 @@ make test
 ## Examples
 
 ```
-sum :: i32 -> i32
+sum :: I32 -> I32
 fun sum x y = 
 	x + y
 end
