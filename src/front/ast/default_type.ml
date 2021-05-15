@@ -17,6 +17,6 @@ let token_to_type ast =
     | Keyword KeywordString -> Ok LilyTypeString
     | Keyword KeywordBool -> Ok LilyTypeBool
     | Keyword KeywordUnit -> Ok LilyTypeUnit
-    | Identifier s -> (if Stdlib.Char.uppercase_ascii (Stdlib.String.get s 0) = (Stdlib.String.get s 0) then Ok LilyTypeGeneric
+    | Identifier s -> (if Stdlib.Char.lowercase_ascii (Stdlib.String.get s 0) = (Stdlib.String.get s 0) then Ok LilyTypeGeneric
                        else Ok (LilyTypeUserDefinedType s))
     | _ -> Error ErrorIdUnexpectedType
