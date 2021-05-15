@@ -129,7 +129,7 @@ type comment =
     | CommentMultiLine
     | CommentDoc of string
 
-type 'a token = 
+type token = 
     | Separator of separator
     | Operator of operator
     | Keyword of keyword

@@ -1,6 +1,6 @@
 open Token
 
-type 'a location = {
+type location = {
     line: int;
     col: int;
     s_line: int;
@@ -9,13 +9,13 @@ type 'a location = {
     e_col: int;
 }
 
-val new_location : int -> int -> int -> int -> int -> int -> 'a location
+val new_location : int -> int -> int -> int -> int -> int -> location
 
-type 'a stream_token = {
-    mutable tok: 'a token CCVector.vector;
-    mutable loc: 'a location CCVector.vector;
+type stream_token = {
+    mutable tok: token CCVector.vector;
+    mutable loc: location CCVector.vector;
 }
 
-val new_stream_token : 'a stream_token
+val new_stream_token : stream_token
 
-val push_token : 'a stream_token -> 'a Token.token -> 'a location -> unit 
+val push_token : stream_token -> Token.token -> location -> unit 

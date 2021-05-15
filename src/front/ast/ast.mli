@@ -1,7 +1,7 @@
 open LilyFront.Stream
 open LilyFront.Token
 
-type 'a binop = 
+type binop = 
     | BinopAdd
     | BinopSub
     | BinopMul
@@ -30,20 +30,20 @@ type 'a binop =
     | BinopAnd
     | BinopOr
 
-type 'a unary = 
+type unary = 
     | UnaryPositive
     | UnaryNegative
     | UnaryNot
 
-type 'a literal =
+type literal =
     | LiteralBool of bool
     | LiteralInt of int
     | LiteralFloat of float
     | LiteralString of string
     | LiteralChar of char
 
-type 'a value = 
-    | Literal of 'a literal
+type value = 
+    | Literal of literal
     | Array
 
 type lily_type = 
@@ -65,24 +65,24 @@ type lily_type =
     | LilyTypeGeneric
     | LilyTypeUserDefinedType of string
 
-type 'a expr = 
-    | ExprBinop of 'a expr * 'a binop * 'a expr
-    | ExprUnary of 'a expr * 'a unary
-    | ExprVarDefine of 'a expr
-    | ExprVarDeclareType of 'a expr * lily_type * 'a value
-    | ExprVarDeclare of 'a expr * 'a value
-    | ExprVarCall of 'a expr
-    | ExprConstDefine of 'a expr
-    | ExprConstDeclareType of 'a expr * lily_type * 'a value
-    | ExprConstDeclare of 'a expr * 'a value
-    | ExprConstCall of 'a expr
-    | ExprFunDefine of 'a expr * (lily_type CCVector.vector) * 'a value
+type expr = 
+    | ExprBinop of expr * binop * expr
+    | ExprUnary of expr * unary
+    | ExprVarDefine of expr
+    | ExprVarDeclareType of expr * lily_type * value
+    | ExprVarDeclare of expr * value
+    | ExprVarCall of expr
+    | ExprConstDefine of expr
+    | ExprConstDeclareType of expr * lily_type * value
+    | ExprConstDeclare of expr * value
+    | ExprConstCall of expr
+    | ExprFunDefine of expr * (lily_type CCVector.vector) * value
     | ExprFunDeclare
     | ExprFunCall
     | ExprIdentifier of string
-    | ExprLiteral of 'a literal
+    | ExprLiteral of literal
 
-type 'a stmt =
+type stmt =
     | StmtIf
     | StmtSwitch
     | StmtBreak
@@ -90,17 +90,17 @@ type 'a stmt =
     | StmtFor
     | StmtLoop
 
-type 'a ast_kind = 
-    | Expr of 'a expr
-    | Stmt of 'a stmt
+type ast_kind = 
+    | Expr of expr
+    | Stmt of stmt
 
-type 'a ast = { 
-    stream: 'a stream_token;
-    mutable current_token: 'a token;
-    mutable current_location: 'a location;
+type ast = { 
+    stream: stream_token;
+    mutable current_token: token;
+    mutable current_location: location;
     mutable pos: int;
 }
 
-val new_ast : 'a stream_token -> 'a ast
+val new_ast : stream_token -> ast
 
-val ast_kind_to_str : 'a ast_kind -> string
+val ast_kind_to_str : ast_kind -> string

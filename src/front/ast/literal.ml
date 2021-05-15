@@ -2,8 +2,8 @@ open Ast
 open LilyFront.Token
 open LilyFront.Error
 
-let token_to_literal token =
-  match token with
+let token_to_literal ast =
+  match ast.current_token with
   | Keyword KeywordTrue -> Ok (LiteralBool (true))
   | Keyword KeywordFalse -> Ok (LiteralBool (false))
   | Literal (LiteralInt (v,_)) -> Ok (LiteralInt (v))

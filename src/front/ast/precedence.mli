@@ -1,3 +1,3 @@
 open LilyFront.Token
 
-val get_precedence : 'a token -> int option
+val get_precedence : token -> int option

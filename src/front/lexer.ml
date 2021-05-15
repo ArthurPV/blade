@@ -14,9 +14,9 @@ type lexer_info = {
     mutable pos: int;
 }
 
-type 'a lexer = {
+type lexer = {
     info: lexer_info; 
-    read: 'a read;
+    read: read;
 }
 
 let new_lexer_info = {

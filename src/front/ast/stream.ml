@@ -1,7 +1,7 @@
 open Ast
 
-type 'a stream_ast = {
-    mutable kind: 'a ast_kind CCVector.vector
+type stream_ast = {
+    mutable kind: ast_kind CCVector.vector
 }
 
 let new_stream_ast = {

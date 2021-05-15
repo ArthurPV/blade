@@ -1,4 +1,4 @@
-type 'a read = {
+type read = {
   filename: string;
   content: string;
   length: int;

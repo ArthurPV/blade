@@ -13,46 +13,46 @@ type lexer_info = {
     mutable pos: int;
 }
 
-type 'a lexer = {
+type lexer = {
     info: lexer_info; 
-    read: 'a read;
+    read: read;
 }
 
 val new_lexer_info : lexer_info
 
-val new_lexer : lexer_info -> 'a read -> 'a lexer
+val new_lexer : lexer_info -> read -> lexer
 
 module LexerUtil : sig
-    val next_char : 'a lexer -> unit
-    val previous_char : 'a lexer -> unit
-    val start_token : 'a lexer -> unit
-    val end_token : 'a lexer -> unit
-    val get_next_char : 'a lexer -> char
+    val next_char : lexer -> unit
+    val previous_char : lexer -> unit
+    val start_token : lexer -> unit
+    val end_token : lexer -> unit
+    val get_next_char : lexer -> char
 end
 
 module RecognizeChar : sig 
-    val is_digit : 'a lexer -> bool
-    val is_identifier : 'a lexer -> bool
-    val is_hex : 'a lexer -> bool
-    val is_bin : 'a lexer -> bool
-    val is_num : 'a lexer -> bool
+    val is_digit : lexer -> bool
+    val is_identifier : lexer -> bool
+    val is_hex : lexer -> bool
+    val is_bin : lexer -> bool
+    val is_num : lexer -> bool
 end
 
-val get_escape : 'a lexer -> (string, error_id) result
+val get_escape : lexer -> (string, error_id) result
 
 module ScanChar : sig 
-    val scan_comment_one_line : 'a lexer -> unit
-    val scan_comment_multi_line : 'a lexer -> (unit, error_id) result
-    val scan_comment_doc : 'a lexer -> (string, error_id) result
-    val scan_identifier : 'a lexer -> string
-    val scan_char : 'a lexer -> (char, error_id) result
-    val scan_string : 'a lexer -> (string, error_id) result
-    val scan_hex : 'a lexer -> (int, error_id) result
-    val scan_oct : 'a lexer -> (int, error_id) result
-    val scan_bin : 'a lexer -> (int, error_id) result
-    val scan_num : 'a lexer -> ('a token, error_id) result
+    val scan_comment_one_line : lexer -> unit
+    val scan_comment_multi_line : lexer -> (unit, error_id) result
+    val scan_comment_doc : lexer -> (string, error_id) result
+    val scan_identifier : lexer -> string
+    val scan_char : lexer -> (char, error_id) result
+    val scan_string : lexer -> (string, error_id) result
+    val scan_hex : lexer -> (int, error_id) result
+    val scan_oct : lexer -> (int, error_id) result
+    val scan_bin : lexer -> (int, error_id) result
+    val scan_num : lexer -> (token, error_id) result
 end
 
-val tokenizer : 'a lexer -> ('a token, error_id) result
+val tokenizer : lexer -> (token, error_id) result
 
-val run_tokenizer : 'a lexer -> 'a location -> unit
+val run_tokenizer : lexer -> location -> unit

@@ -1,7 +1,7 @@
 open LilyFront.Stream
 open LilyFront.Token
 
-type 'a binop = 
+type binop = 
     | BinopAdd
     | BinopSub
     | BinopMul
@@ -30,20 +30,20 @@ type 'a binop =
     | BinopAnd
     | BinopOr
 
-type 'a unary = 
+type unary = 
     | UnaryPositive
     | UnaryNegative
     | UnaryNot
 
-type 'a literal =
+type literal =
     | LiteralBool of bool
     | LiteralInt of int
     | LiteralFloat of float
     | LiteralString of string
     | LiteralChar of char
 
-type 'a value = 
-    | Literal of 'a literal
+type value = 
+    | Literal of literal
     | Array
 
 type lily_type = 
@@ -65,24 +65,24 @@ type lily_type =
     | LilyTypeGeneric
     | LilyTypeUserDefinedType of string
 
-type 'a expr = 
-    | ExprBinop of 'a expr * 'a binop * 'a expr
-    | ExprUnary of 'a expr * 'a unary
-    | ExprVarDefine of 'a expr (* var a *)
-    | ExprVarDeclareType of 'a expr * lily_type * 'a value (* var a :: <type> = <value> *)
-    | ExprVarDeclare of 'a expr * 'a value (* var a = <value> *)
-    | ExprVarCall of 'a expr (* a *)
-    | ExprConstDefine of 'a expr (* const a *)
-    | ExprConstDeclareType of 'a expr * lily_type * 'a value (* const a :: <type> = <value> *)
-    | ExprConstDeclare of 'a expr * 'a value (* const a = <value> *)
-    | ExprConstCall of 'a expr (* a *)
-    | ExprFunDefine of 'a expr * (lily_type CCVector.vector) * 'a value (* sum :: <type> -> <type> -> <return value> *)
+type expr = 
+    | ExprBinop of expr * binop * expr
+    | ExprUnary of expr * unary
+    | ExprVarDefine of expr (* var a *)
+    | ExprVarDeclareType of expr * lily_type * value (* var a :: <type> = <value> *)
+    | ExprVarDeclare of expr * value (* var a = <value> *)
+    | ExprVarCall of expr (* a *)
+    | ExprConstDefine of expr (* const a *)
+    | ExprConstDeclareType of expr * lily_type * value (* const a :: <type> = <value> *)
+    | ExprConstDeclare of expr * value (* const a = <value> *)
+    | ExprConstCall of expr (* a *)
+    | ExprFunDefine of expr * (lily_type CCVector.vector) * value (* sum :: <type> -> <type> -> <return value> *)
     | ExprFunDeclare (* fun sum <id> <id> =  *)
     | ExprFunCall (* sum(3, 4) *)
     | ExprIdentifier of string
-    | ExprLiteral of 'a literal
+    | ExprLiteral of literal
 
-type 'a stmt =
+type stmt =
     | StmtIf
     | StmtSwitch
     | StmtBreak
@@ -90,14 +90,14 @@ type 'a stmt =
     | StmtFor
     | StmtLoop
 
-type 'a ast_kind = 
-    | Expr of 'a expr
-    | Stmt of 'a stmt
+type ast_kind = 
+    | Expr of expr
+    | Stmt of stmt
 
-type 'a ast = { 
-    stream: 'a stream_token;
-    mutable current_token: 'a token;
-    mutable current_location: 'a location;
+type ast = { 
+    stream: stream_token;
+    mutable current_token: token;
+    mutable current_location: location;
     mutable pos: int;
 }
 

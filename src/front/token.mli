@@ -129,7 +129,7 @@ type comment =
     | CommentMultiLine
     | CommentDoc of string
 
-type 'a token = 
+type token = 
     | Separator of separator
     | Operator of operator
     | Keyword of keyword
@@ -137,4 +137,4 @@ type 'a token =
     | Literal of literal
     | Comment of comment
 
-val token_to_str : 'a token -> string 
+val token_to_str : token -> string 
