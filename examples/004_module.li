@@ -29,3 +29,10 @@ module AdvanceCalculator =
 	fun pow x = x*x end
 	fun mod x y = x%y end
 end
+
+** type in module
+module MyNum = 
+	type t = 
+		value: i32
+	end
+end
