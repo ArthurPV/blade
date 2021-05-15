@@ -8,7 +8,7 @@ my_poly_function([2,3,3]) ** [U32]
 my_poly_function((List.t<U32>){1,2,3,4,5}) ** List.T<U32>
 my_poly_function((Vector.t<U32>){1,2,3,4,5}) ** Vector.T<U32>
 
-** generic user defined type
+** polymorphic user defined type
 type value<a> = 
 	v: a
 end
