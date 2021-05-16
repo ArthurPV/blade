@@ -1,1 +1,7 @@
-I32
+var a = 'c'
+var b = false
+
+var c = true
+
+
+

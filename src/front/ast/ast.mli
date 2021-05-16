@@ -70,16 +70,17 @@ type expr =
     | ExprUnary of expr * unary
     | ExprVarDefine of expr
     | ExprVarDeclareType of expr * lily_type * value
-    | ExprVarDeclare of expr * value
+    | ExprVarDeclare of expr * expr
     | ExprVarCall of expr
     | ExprConstDefine of expr
     | ExprConstDeclareType of expr * lily_type * value
-    | ExprConstDeclare of expr * value
+    | ExprConstDeclare of expr * expr
     | ExprConstCall of expr
     | ExprFunDefine of expr * (lily_type CCVector.vector) * value
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector)
     | ExprFunCall of expr * (expr CCVector.vector)
     | ExprIdentifier of string
+    | ExprNewline
     | ExprLiteral of literal
 
 type stmt =

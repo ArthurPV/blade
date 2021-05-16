@@ -70,16 +70,17 @@ type expr =
     | ExprUnary of expr * unary
     | ExprVarDefine of expr (* var a *)
     | ExprVarDeclareType of expr * lily_type * value (* var a :: <type> = <value> *)
-    | ExprVarDeclare of expr * value (* var a = <value> *)
+    | ExprVarDeclare of expr * expr (* var a = <value> *)
     | ExprVarCall of expr (* a *)
     | ExprConstDefine of expr (* const a *)
     | ExprConstDeclareType of expr * lily_type * value (* const a :: <type> = <value> *)
-    | ExprConstDeclare of expr * value (* const a = <value> *)
+    | ExprConstDeclare of expr * expr (* const a = <value> *)
     | ExprConstCall of expr (* a *)
     | ExprFunDefine of expr * (lily_type CCVector.vector) * value (* sum :: <type> -> <type> -> <return value> *)
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector) (* fun sum <id> <id> =  *)
     | ExprFunCall of expr * (expr CCVector.vector) (* sum(3, 4) *)
     | ExprIdentifier of string
+    | ExprNewline
     | ExprLiteral of literal
 
 type stmt =
