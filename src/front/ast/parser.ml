@@ -1,6 +1,7 @@
 open Ast
 open Binop
 (*open Identifier*)
+open Stream
 open Unary
 open LilyFront.Error
 
@@ -148,6 +149,7 @@ let run_parser ast =
         | Error _ -> Printf.printf "pos: %d ; error\n" (ast.pos)
         | Ok (Expr (ExprNewline)) -> ParserUtil.next_token ast; loop (ast)
         | Ok p -> (Printf.printf "%s\n" (ast_kind_to_str (p));
+                   push_ast (new_stream_ast) p;
                    ParserUtil.next_token ast;
                    loop (ast)) in
     loop (ast)

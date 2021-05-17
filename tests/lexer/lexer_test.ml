@@ -43,6 +43,14 @@ let float_suite =
     "float_suite">:::
         ["test_floats">:: Float.test_floats;]
 
+let char_suite = 
+    "char_suite">:::
+        ["test_char">:: Char.test_char;]
+
+let string_suite = 
+    "string_suite">:::
+        ["test_string">:: String.test_string;]
+
 let _ =
     run_test_tt_main basic_operator_suite;
     run_test_tt_main special_operator_suite;
@@ -52,4 +60,6 @@ let _ =
     run_test_tt_main comment_suite;
     run_test_tt_main identifier_suite;
     run_test_tt_main integer_suite;
-    run_test_tt_main float_suite
+    run_test_tt_main float_suite;
+    run_test_tt_main char_suite;
+    run_test_tt_main string_suite
