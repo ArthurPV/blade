@@ -33,6 +33,10 @@ module ParserUtil = struct
             Ok (CCVector.get ast.stream.tok (ast.pos-1))
         else
             Error (ErrorIdUnexpectedToken)
+
+    let assert_eq_token ast tok = 
+        if ast.current_token = tok then true 
+        else false
 end
 
 module ParseExpr = struct

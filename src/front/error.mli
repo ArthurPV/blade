@@ -17,3 +17,5 @@ type error_id =
     | ErrorIdUnexpectedAst
 
 val error_id_to_str : error_id -> string
+
+val print_error : error_id -> int -> int -> unit

@@ -174,7 +174,7 @@ module ScanChar = struct
         loop (lex);
         if lex.read.c != '\"' then
             (if lex.info.pos != lex.read.length-1 then Error ErrorIdInvalidStringLiteral
-             else Error ErrorIdInvalidEscape)
+             else Error ErrorIdInvalidStringLiteral)
         else Ok (String.concat "" !value)
 
     let scan_hex lex = 
@@ -433,7 +433,7 @@ let run_tokenizer lex loc =
     let rec loop lex =
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
-        | Error _ -> Printf.printf "error\n";
+        | Error e -> print_error e lex.info.line lex.info.col;
         | Ok tok -> (Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str tok);
                      LexerUtil.end_token lex;
                      push_token new_stream_token tok loc;

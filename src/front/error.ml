@@ -34,3 +34,7 @@ let error_id_to_str id =
     | ErrorIdUnexpectedIdentifier -> "unexpected identifier"
     | ErrorIdUnexpectedExpr -> "unexpected expression"
     | ErrorIdUnexpectedAst -> "unexpected AST"
+
+let print_error err line col = 
+    Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: %s, location: %d:%d\027[0m\n" (error_id_to_str err) line col;
+    exit 1

@@ -7,6 +7,7 @@ module ParserUtil : sig
     val previous_token : ast -> unit
     val get_next_token : ast -> (token, error_id) result
     val get_previous_token : ast -> (token, error_id) result
+    val assert_eq_token : ast -> token -> bool
 end
 
 module ParseExpr : sig
