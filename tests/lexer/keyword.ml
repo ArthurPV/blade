@@ -66,3 +66,4 @@ let test_keywords test_ctxt =
     assert_equal (CCVector.get t 59) (Keyword KeywordUnit);
     assert_equal (CCVector.get t 60) (Keyword KeywordUsize);
     assert_equal (CCVector.get t 61) (Keyword KeywordIsize);
+    assert_equal (CCVector.get t 62) (Keyword KeywordReturn);
