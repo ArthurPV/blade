@@ -1,10 +1,10 @@
 ** create type
 type Person =
-	name: String, 
-	age: I8 
+	name: string, 
+	age: i8 
 end
 
-new_person :: String -> I8 -> Person
+new_person :: string -> i8 -> Person
 fun new_person name age = Person {	
 		name = name,
 		age = age
@@ -13,6 +13,6 @@ end
 
 ** define data
 data Work = 
-	Name of String String,
-	Salary of I32,
+	Name of string string,
+	Salary of i32,
 end

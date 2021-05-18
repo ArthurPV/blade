@@ -1,7 +1,9 @@
+const str = @import("Std.String")
+
 var s = "hello"
-var s_length = String.length(s)
+var s_length = str.length(s)
 
 println("{}", s_length)
 
-get_c :: String -> U16 -> Char
+get_c :: string -> u16 -> char
 fun get_c s p = s[p] end

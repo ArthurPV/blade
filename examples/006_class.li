@@ -1,8 +1,10 @@
+const io = @import("Std.Io")
+
 explicit class Person =
-	Person :: String -> U8 -> Person
-	pub get_name :: String -> String
-	pub get_age :: U8 -> U8
-	pub print_person :: Unit -> Unit
+	Person :: string -> u8 -> Person
+	pub get_name :: string -> string
+	pub get_age :: u8 -> u8
+	pub print_person :: unit -> unit
 end
 
 class Person = 
@@ -12,20 +14,20 @@ class Person =
 	end
 	fun get_name = name end
 	fun get_age = age end
-	fun print_person = println("name: {}, age: {}" name age) end
+	fun print_person = io.println("name: {}, age: {}", name, age) end
 end
 
 var person = new Person("theresa", 25)
 person.print_person() ** name: theresa, age: 25
 
-** iheritance
+** inheritance
 explicit class Work = 
-	Work :: String -> U32 -> Work
-	pub get_work_name :: String -> String
-	pub get_salary :: U32 -> U32
+	Work :: string -> u32 -> Work
+	pub get_work_name :: string -> string
+	pub get_salary :: u32 -> u32
 end
 
-class Work <- Person = 
+class Work <- Person =
 	init name salary = 
 		priv var name = name
 		priv var salary = salary

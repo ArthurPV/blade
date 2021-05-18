@@ -1,4 +1,4 @@
-myloop :: I32 -> I32
+myloop :: i32 -> i32
 fun myloop max = 
 	var n = 0
 	while n < max

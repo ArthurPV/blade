@@ -1,4 +1,6 @@
-get_vector :: Vector.T<U32> -> Vector.T<U32>
+const vec = @import(Ctn.Vector)
+
+get_vector :: vec.T<u32> -> vec.T<u32>
 fun get_vector a = a end
 
 get_vector({2, 4, 6, 8, 10})

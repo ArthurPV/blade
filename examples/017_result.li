@@ -1,5 +1,7 @@
+const result = @import("Std.Result")
+
 ** return result type in function
-isPositive :: I32 -> Result.T<I32, Bool>
+isPositive :: i32 -> result.T<i32, bool>
 fun isPositive x =
 	if x == 0 then Ok(x)
 	else Error(false)
