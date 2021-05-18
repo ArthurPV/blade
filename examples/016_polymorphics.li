@@ -1,5 +1,5 @@
-const vec = @import("Ctn.Vector")
-const list = @import("Ctn.List")
+const vec = @import("Container.Vector")
+const list = @import("Container.List")
 
 ** polymorphic with function
 ** polymorphic flag #<id>

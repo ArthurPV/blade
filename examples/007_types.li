@@ -5,10 +5,12 @@ type Person =
 end
 
 new_person :: string -> i8 -> Person
-fun new_person name age = Person {	
+fun new_person name age = 
+	const p = Person {	
 		name = name,
 		age = age
 	}
+	p
 end
 
 ** define data
