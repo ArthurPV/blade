@@ -11,5 +11,5 @@
 
 "augroup vim-blade
 "	autocmd!
-"	autocmd BufWritePre *.bld call s:fmt_autosave()
+"	autocmd BufWritePre *.li call s:fmt_autosave()
 "augroup end

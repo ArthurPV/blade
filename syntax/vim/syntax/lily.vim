@@ -1,11 +1,11 @@
 " Vim syntax file
-" Language: Blade
+" Language: Lily
 " Maintainer: ArthurPV
 
 if exists("b:current_syntax")
   finish
 endif
-let b:current_syntax = "lily"
+let b:current_syntax = "blade"
 
 syn keyword bladeStorage explicit pub priv ref self virtual
 syn keyword bladeStatement break next
@@ -14,14 +14,14 @@ syn keyword bladeRepeat while for loop
 syn keyword bladeVariableKeyword const var new
 syn keyword bladeVariableModifieurKeyword mutable
 
-syn keyword bladeModuleDefault List Array Map Math Object Std Matrix Http Fs 
+syn keyword bladeModuleDefault List Array Map Math String Vector Object Std Io Ctn Matrix Http Fs
 
 syn keyword bladeConstant nil undef
-syn keyword bladeKeyword data fun end in of import class try catch throw finally type async await is module as share init macro
+syn keyword bladeKeyword data fun end in of import class try catch throw finally type async await is module as share init macro return
 
 syn keyword bladeBoolean true false
 
-syn keyword bladeType char string bool unit int float usize isize
+syn keyword bladeType char string bool unit
 
 syn match bladeType "\v<[iuf][1-9]\d*>"
 
