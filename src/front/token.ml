@@ -1,5 +1,6 @@
 type separator = 
     | SeparatorDot
+    | SeparatorDotDotDot
     | SeparatorDollar
     | SeparatorComma
     | SeparatorColon
@@ -142,6 +143,7 @@ type token =
 let token_to_str tok = 
     match tok with
     | Separator SeparatorDot -> "."
+    | Separator SeparatorDotDotDot -> "..."
     | Separator SeparatorDollar -> "$"
     | Separator SeparatorComma -> ","
     | Separator SeparatorColon -> ":"

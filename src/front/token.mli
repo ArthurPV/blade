@@ -1,5 +1,6 @@
 type separator = 
     | SeparatorDot
+    | SeparatorDotDotDot
     | SeparatorDollar
     | SeparatorComma
     | SeparatorColon

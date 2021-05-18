@@ -392,6 +392,9 @@ let tokenizer lex =
                         | '=' -> (LexerUtil.next_char lex;
                                   LexerUtil.next_char lex;
                                   Ok (Operator OperatorDotDotEq))
+                        | '.' -> (LexerUtil.next_char lex;
+                                  LexerUtil.next_char lex;
+                                  Ok (Separator SeparatorDotDotDot))
                         | _ -> (LexerUtil.next_char lex;
                                 Ok (Operator OperatorDotDot)))
               | _ -> Ok (Separator SeparatorDot))

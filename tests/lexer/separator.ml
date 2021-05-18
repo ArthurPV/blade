@@ -21,4 +21,5 @@ let test_separators test_ctxt =
     assert_equal (CCVector.get t 14) (Separator SeparatorRightBrace);
     assert_equal (CCVector.get t 15) (Separator SeparatorLeftHook);
     assert_equal (CCVector.get t 16) (Separator SeparatorRightHook);
-    assert_equal (CCVector.get t 17) (Separator SeparatorHashtag)
+    assert_equal (CCVector.get t 17) (Separator SeparatorHashtag);
+    assert_equal (CCVector.get t 18) (Separator SeparatorDotDotDot)
