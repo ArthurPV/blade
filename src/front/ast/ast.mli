@@ -1,3 +1,4 @@
+open LilyFront.Lexer
 open LilyFront.Stream
 open LilyFront.Token
 
@@ -97,11 +98,12 @@ type ast_kind =
 
 type ast = { 
     stream: stream_token;
+    filename: string;
     mutable current_token: token;
     mutable current_location: location;
     mutable pos: int;
 }
 
-val new_ast : stream_token -> ast
+val new_ast : stream_token -> lexer -> ast
 
 val ast_kind_to_str : ast_kind -> string

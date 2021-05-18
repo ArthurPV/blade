@@ -26,7 +26,7 @@ module GetFileContent = struct
         exit 1
 
     let msg_bad_extensions filename = 
-        Printf.printf "\027[1m\027[31mError\027[0m\027[1m: bad extensions: \'%s\'\027[0m\n" filename;
+        Printf.printf "\027[1m\027[31mError\027[0m\027[1m: bad extensions of file: \'%s\'\027[0m\n" filename;
         exit 1
 
     let read_lines filename =

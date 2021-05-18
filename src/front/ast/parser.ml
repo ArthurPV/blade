@@ -26,13 +26,13 @@ module ParserUtil = struct
         if ast.pos+1 >= (CCVector.length (ast.stream.tok))-1 then
             Ok (CCVector.get ast.stream.tok (ast.pos+1))
         else 
-            Error (ErrorIdUnexpectedToken)
+            Error (ErrorIdMissToken)
 
     let get_previous_token ast = 
         if ast.pos-1 >= 0 then
             Ok (CCVector.get ast.stream.tok (ast.pos-1))
         else
-            Error (ErrorIdUnexpectedToken)
+            Error (ErrorIdMissToken)
 
     let assert_eq_token ast tok = 
         if ast.current_token = tok then true 
@@ -119,7 +119,7 @@ module ParseExpr = struct
                                                               if parse_newline ast = true then (Ok (ExprVarDeclare (id, expr)))
                                                               else Error (ErrorIdUnexpectedExpr))
                                                 | Error e -> Error e)
-                           | _ -> Error (ErrorIdUnexpectedToken))
+                           | _ -> Error (ErrorIdMissToken))
         | _ -> Error (ErrorIdUnexpectedIdentifier)
 end
 

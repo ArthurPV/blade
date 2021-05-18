@@ -363,7 +363,7 @@ let tokenizer lex =
                         | '.' -> (LexerUtil.next_char lex;
                                   LexerUtil.next_char lex;
                                   Ok (Operator OperatorEqDotDot))
-                        | _ -> Error ErrorIdUnexpectedToken)
+                        | _ -> Error (ErrorIdUnexpectedToken lex.read.c))
               | '>' -> (LexerUtil.next_char lex;
                         Ok (Separator SeparatorFatArrow))
               | _ -> Ok (Operator OperatorEq))
@@ -427,13 +427,13 @@ let tokenizer lex =
                      | Ok t -> Ok t
                      | Error e -> Ok e)
 
-    | _ -> Error ErrorIdUnexpectedToken
+    | _ -> Error (ErrorIdUnexpectedToken lex.read.c) 
 
 let run_tokenizer lex loc = 
     let rec loop lex =
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
-        | Error e -> print_error e lex.info.line lex.info.col;
+        | Error e -> print_error e lex.info.line lex.info.col lex.read.filename;
         | Ok tok -> (Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str tok);
                      LexerUtil.end_token lex;
                      push_token new_stream_token tok loc;

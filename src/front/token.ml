@@ -91,6 +91,7 @@ type keyword =
     | KeywordMacro
     | KeywordTrue
     | KeywordFalse
+    | KeywordReturn
     | KeywordChar
     | KeywordI8
     | KeywordI16
@@ -227,22 +228,23 @@ let token_to_str tok =
     | Keyword KeywordMacro -> "macro"
     | Keyword KeywordTrue -> "true"
     | Keyword KeywordFalse -> "false"
-    | Keyword KeywordChar -> "Char"
-    | Keyword KeywordI8 -> "I8"
-    | Keyword KeywordI16 -> "I16"
-    | Keyword KeywordI32 -> "I32"
-    | Keyword KeywordI64 -> "I64"
-    | Keyword KeywordI128 -> "I128"
-    | Keyword KeywordU8 -> "U8"
-    | Keyword KeywordU16 -> "U16"
-    | Keyword KeywordU32 -> "U32"
-    | Keyword KeywordU64 -> "U64"
-    | Keyword KeywordU128 -> "U128"
-    | Keyword KeywordString -> "String"
-    | Keyword KeywordBool -> "Bool"
-    | Keyword KeywordUnit -> "Unit"
-    | Keyword KeywordUsize -> "Usize"
-    | Keyword KeywordIsize -> "Isize"
+    | Keyword KeywordReturn -> "return"
+    | Keyword KeywordChar -> "char"
+    | Keyword KeywordI8 -> "i8"
+    | Keyword KeywordI16 -> "i16"
+    | Keyword KeywordI32 -> "i32"
+    | Keyword KeywordI64 -> "i64"
+    | Keyword KeywordI128 -> "i128"
+    | Keyword KeywordU8 -> "u8"
+    | Keyword KeywordU16 -> "u16"
+    | Keyword KeywordU32 -> "u32"
+    | Keyword KeywordU64 -> "u64"
+    | Keyword KeywordU128 -> "u128"
+    | Keyword KeywordString -> "string"
+    | Keyword KeywordBool -> "bool"
+    | Keyword KeywordUnit -> "unit"
+    | Keyword KeywordUsize -> "usize"
+    | Keyword KeywordIsize -> "isize"
     | Identifier s -> Printf.sprintf "Identifier -> %s" s
     | Literal LiteralInt (l,_) -> Printf.sprintf "Integer -> %d" l
     | Literal LiteralFloat (l,_) -> Printf.sprintf "Float -> %f" l

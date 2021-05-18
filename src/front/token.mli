@@ -91,6 +91,7 @@ type keyword =
     | KeywordMacro
     | KeywordTrue
     | KeywordFalse
+    | KeywordReturn
     | KeywordChar
     | KeywordI8
     | KeywordI16

@@ -1,5 +1,6 @@
 type error_id = 
-    | ErrorIdUnexpectedToken
+    | ErrorIdUnexpectedToken of char
+    | ErrorIdMissToken
     | ErrorIdInvalidCharLiteral
     | ErrorIdInvalidStringLiteral
     | ErrorIdInvalidEscape
@@ -18,4 +19,4 @@ type error_id =
 
 val error_id_to_str : error_id -> string
 
-val print_error : error_id -> int -> int -> unit
+val print_error : error_id -> int -> int -> string -> unit

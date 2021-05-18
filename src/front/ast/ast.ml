@@ -1,3 +1,4 @@
+open LilyFront.Lexer
 open LilyFront.Stream
 open LilyFront.Token
 
@@ -97,13 +98,15 @@ type ast_kind =
 
 type ast = { 
     stream: stream_token;
+    filename: string;
     mutable current_token: token;
     mutable current_location: location;
     mutable pos: int;
 }
 
-let new_ast st = {
+let new_ast st lex = {
     stream = st;
+    filename = lex.read.filename;
     current_token = CCVector.get st.tok 0;
     current_location = CCVector.get st.loc 0;
     pos = 0;
