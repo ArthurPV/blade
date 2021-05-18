@@ -1,4 +1,4 @@
-const list = @import("Container.List")
+const list = import Container.List
 
 doubleList :: list.T<u32> -> list.T<u32>
 fun doubleList l = 
