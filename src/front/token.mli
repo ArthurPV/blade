@@ -16,6 +16,7 @@ type separator =
     | SeparatorRightBrace
     | SeparatorLeftHook
     | SeparatorRightHook
+    | SeparatorHashtag
 
 type operator = 
     | OperatorPlus

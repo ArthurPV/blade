@@ -10,8 +10,8 @@ fun my_poly_function<#a> x = x end
 my_poly_function(12) ** u32
 my_poly_function(2.2) ** f32
 my_poly_function([2,3,3]) ** [u32]
-my_poly_function((list.t<u32>){1,2,3,4,5}) ** Ctn.List.T<u32>
-my_poly_function((vec.t<u32>){1,2,3,4,5}) ** Ctn.Vector.T<u32>
+my_poly_function((list.T<u32>){1,2,3,4,5}) ** Ctn.List.T<u32>
+my_poly_function((vec.T<u32>){1,2,3,4,5}) ** Ctn.Vector.T<u32>
 
 ** polymorphic user defined type
 type value<#a> = 

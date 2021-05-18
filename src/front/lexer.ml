@@ -278,6 +278,8 @@ let tokenizer lex =
     match lex.read.c with
     | '$' -> Ok (Separator SeparatorDollar)
 
+    | '#' -> Ok (Separator SeparatorHashtag)
+
     | ',' -> Ok (Separator SeparatorComma)
 
     | ':' -> (match LexerUtil.get_next_char lex with

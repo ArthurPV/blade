@@ -16,6 +16,7 @@ type separator =
     | SeparatorRightBrace
     | SeparatorLeftHook
     | SeparatorRightHook
+    | SeparatorHashtag
 
 type operator = 
     | OperatorPlus
@@ -157,6 +158,7 @@ let token_to_str tok =
     | Separator SeparatorRightBrace -> "}"
     | Separator SeparatorLeftHook -> "["
     | Separator SeparatorRightHook -> "]"
+    | Separator SeparatorHashtag -> "#"
     | Operator OperatorPlus -> "+"
     | Operator OperatorMinus-> "-"
     | Operator OperatorStar -> "*"
