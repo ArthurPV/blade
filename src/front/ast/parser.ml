@@ -79,10 +79,10 @@ module ParseExpr = struct
           | _ -> Error (ErrorIdInvalidValue)
 
     let parse_newline ast =
-        if ast.pos = (CCVector.length (ast.stream.tok))-1 then true
+        if ast.pos = (CCVector.length (ast.stream.tok))-1 then ()
         else match ast.current_token with
-             | Separator SeparatorNewline -> true
-             | _ -> false
+             | Separator SeparatorNewline -> ParserUtil.next_token ast
+             | _ -> print_error (ErrorIdExpectedNewline) ast.current_location.line ast.current_location.col ast.filename
 
     (* a = <expr> *)
     (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
@@ -128,19 +128,23 @@ module ParseExpr = struct
                                                (ParserUtil.next_token ast;
                                                 match read_expr ast with
                                                 | Ok expr -> (ParserUtil.next_token ast;
+                                                              parse_newline ast;
                                                               (Ok (ExprVarDeclareTypeAndAssign (id, tp, expr))))
                                                 | Error e -> Error e)
-                                           else (Ok (ExprVarDefineType (id, tp))))
+                                           else (parse_newline ast;
+                                                 Ok (ExprVarDefineType (id, tp))))
                                 | Error e -> Error e)
 
                            else if token_to_binop ast.current_token = (Ok BinopAssign) then
                                (ParserUtil.next_token ast;
                                 match read_expr ast with
                                 | Ok expr -> (ParserUtil.next_token ast;
+                                              parse_newline ast;
                                               (Ok (ExprVarAssign (id, expr))))
                                 | Error e -> Error e)
 
-                           else (Ok (ExprVarDefine (id))))
+                           else (parse_newline ast;
+                                 Ok (ExprVarDefine (id))))
         | _ -> Error (ErrorIdMissIdentifier)
 
     (* const <id> *)
@@ -162,19 +166,23 @@ module ParseExpr = struct
                                                (ParserUtil.next_token ast;
                                                 match read_expr ast with
                                                 | Ok expr -> (ParserUtil.next_token ast;
+                                                              parse_newline ast;
                                                               (Ok (ExprConstDeclareTypeAndAssign (id, tp, expr))))
                                                 | Error e -> Error e)
-                                           else (Ok (ExprConstDefineType (id, tp))))
+                                           else (parse_newline ast;
+                                                 Ok (ExprConstDefineType (id, tp))))
                                 | Error e -> Error e)
 
                            else if token_to_binop ast.current_token = (Ok BinopAssign) then
                                (ParserUtil.next_token ast;
                                 match read_expr ast with
                                 | Ok expr -> (ParserUtil.next_token ast;
+                                              parse_newline ast;
                                               (Ok (ExprConstAssign (id, expr))))
                                 | Error e -> Error e)
 
-                           else (Ok (ExprConstDefine (id))))
+                           else (parse_newline ast;
+                                 Ok (ExprConstDefine (id))))
         | _ -> Error (ErrorIdMissIdentifier)
 end
 
@@ -212,9 +220,5 @@ let run_parser ast =
         | Ok (Expr (ExprNewline)) -> ParserUtil.next_token ast; loop (ast)
         | Ok p -> (Printf.printf "%s\n" (ast_kind_to_str (p));
                    push_ast (new_stream_ast) p;
-
-                   if ParseExpr.parse_newline ast = true then ParserUtil.next_token ast
-                   else print_error (ErrorIdUnexpectedNewline) ast.current_location.line ast.current_location.col ast.filename;
-
                    loop (ast)) in
     loop (ast)
