@@ -1,4 +1,4 @@
 var a
 var b :: i32
-var c = true
-var d :: bool = false
+var c = 12
+var d :: i32 = 3

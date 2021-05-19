@@ -125,7 +125,8 @@ module ParseExpr = struct
                                            if token_to_binop ast.current_token = (Ok BinopAssign) then
                                                (ParserUtil.next_token ast;
                                                 match read_expr ast with
-                                                | Ok expr -> (Ok (ExprVarDeclareTypeAndAssign (id, tp, expr)))
+                                                | Ok expr -> (ParserUtil.next_token ast;
+                                                              (Ok (ExprVarDeclareTypeAndAssign (id, tp, expr))))
                                                 | Error e -> Error e)
                                            else (Ok (ExprVarDefineType (id, tp))))
                                 | Error e -> Error e)
@@ -133,7 +134,8 @@ module ParseExpr = struct
                            else if token_to_binop ast.current_token = (Ok BinopAssign) then
                                (ParserUtil.next_token ast;
                                 match read_expr ast with
-                                | Ok expr -> (Ok (ExprVarAssign (id, expr)))
+                                | Ok expr -> (ParserUtil.next_token ast;
+                                              (Ok (ExprVarAssign (id, expr))))
                                 | Error e -> Error e)
 
                            else (Ok (ExprVarDefine (id))))
@@ -171,6 +173,9 @@ let run_parser ast =
         | Ok (Expr (ExprNewline)) -> ParserUtil.next_token ast; loop (ast)
         | Ok p -> (Printf.printf "%s\n" (ast_kind_to_str (p));
                    push_ast (new_stream_ast) p;
-                   ParserUtil.next_token ast;
+
+                   if ParseExpr.parse_newline ast = true then ParserUtil.next_token ast
+                   else print_error (ErrorIdUnexpectedNewline) ast.current_location.line ast.current_location.col ast.filename;
+
                    loop (ast)) in
     loop (ast)
