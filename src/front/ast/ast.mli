@@ -70,12 +70,14 @@ type expr =
     | ExprBinop of expr * binop * expr
     | ExprUnary of expr * unary
     | ExprVarDefine of expr
-    | ExprVarDeclareType of expr * lily_type * value
-    | ExprVarDeclare of expr * expr
+    | ExprVarDeclareTypeAndAssign of expr * lily_type * expr
+    | ExprVarDefineType of expr * lily_type
+    | ExprVarAssign of expr * expr
     | ExprVarCall of expr
     | ExprConstDefine of expr
-    | ExprConstDeclareType of expr * lily_type * value
-    | ExprConstDeclare of expr * expr
+    | ExprConstDeclareTypeAndAssign of expr * lily_type * expr
+    | ExprConstDefineType of expr * lily_type
+    | ExprConstAssign of expr * expr
     | ExprConstCall of expr
     | ExprFunDefine of expr * (lily_type CCVector.vector) * value
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector)

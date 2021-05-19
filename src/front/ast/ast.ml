@@ -70,12 +70,14 @@ type expr =
     | ExprBinop of expr * binop * expr
     | ExprUnary of expr * unary
     | ExprVarDefine of expr (* var a *)
-    | ExprVarDeclareType of expr * lily_type * value (* var a :: <type> = <value> *)
-    | ExprVarDeclare of expr * expr (* var a = <value> *)
+    | ExprVarDeclareTypeAndAssign of expr * lily_type * expr (* var a :: <type> = <expr> *)
+    | ExprVarDefineType of expr * lily_type (* var a :: <type> *)
+    | ExprVarAssign of expr * expr (* var a = <expr> *)
     | ExprVarCall of expr (* a *)
     | ExprConstDefine of expr (* const a *)
-    | ExprConstDeclareType of expr * lily_type * value (* const a :: <type> = <value> *)
-    | ExprConstDeclare of expr * expr (* const a = <value> *)
+    | ExprConstDeclareTypeAndAssign of expr * lily_type * expr (* const a :: <type> = <expr> *)
+    | ExprConstDefineType of expr * lily_type (* const a :: <type> *)
+    | ExprConstAssign of expr * expr (* const a = <expr> *)
     | ExprConstCall of expr (* a *)
     | ExprFunDefine of expr * (lily_type CCVector.vector) * value (* sum :: <type> -> <type> -> <return value> *)
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector) (* fun sum <id> <id> =  *)
@@ -145,12 +147,14 @@ let ast_kind_to_str kind =
     | Expr (ExprUnary (_,UnaryNegative)) -> "Negative"
     | Expr (ExprUnary (_,UnaryNot)) -> "Not"
     | Expr (ExprVarDefine _) -> "Var Define"
-    | Expr (ExprVarDeclareType (_,_,_)) -> "Var Declare Type"
-    | Expr (ExprVarDeclare (_,_)) -> "Var Declare"
+    | Expr (ExprVarDeclareTypeAndAssign (_,_,_)) -> "Var Declare Type and Assign"
+    | Expr (ExprVarDefineType (_,_)) -> "Var Define Type"
+    | Expr (ExprVarAssign (_,_)) -> "Var Assign"
     | Expr (ExprVarCall _) -> "Var Call"
     | Expr (ExprConstDefine _) -> "Const Define"
-    | Expr (ExprConstDeclareType (_,_,_)) -> "Const Declare Type"
-    | Expr (ExprConstDeclare (_,_)) -> "Const Declare"
+    | Expr (ExprConstDeclareTypeAndAssign (_,_,_)) -> "Const Declare Type and Assign"
+    | Expr (ExprConstDefineType (_,_)) -> "Const Define Type"
+    | Expr (ExprConstAssign (_,_)) -> "Const Assign"
     | Expr (ExprFunDefine (_,_,_)) -> "Fun Define"
     | Expr (ExprFunDeclare (_,_,_)) -> "Fun Declare"
     | Expr (ExprFunCall (_,_)) -> "Fun Call"

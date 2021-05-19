@@ -3,6 +3,7 @@ open Binop
 (*open Identifier*)
 open Stream
 open Unary
+open Default_type
 open LilyFront.Error
 
 module Token = LilyFront.Token
@@ -106,21 +107,37 @@ module ParseExpr = struct
         | Token.Literal LiteralString (s) -> Ok (ExprLiteral (LiteralString (s)))
         | _ -> Error (ErrorIdUnexpectedExpr)
 
+    (* var <id> *)
+    (* var <id> :: <type> *)
     (* var <id> = <expr> *)
+    (* var <id> :: <type> = <expr> *)
     let parse_var ast = 
         ParserUtil.next_token ast;
         match ast.current_token with
         | Identifier s -> (let id = ExprIdentifier s in
                            ParserUtil.next_token ast;
-                           match token_to_binop ast.current_token with
-                           | Ok BinopAssign -> (ParserUtil.next_token ast;
-                                                match read_expr ast with
-                                                | Ok expr -> (ParserUtil.next_token ast;
-                                                              if parse_newline ast = true then (Ok (ExprVarDeclare (id, expr)))
-                                                              else Error (ErrorIdUnexpectedExpr))
-                                                | Error e -> Error e)
-                           | _ -> Error (ErrorIdMissToken))
-        | _ -> Error (ErrorIdUnexpectedIdentifier)
+
+                           if ast.current_token = (Separator SeparatorColonColon) then
+                               (ParserUtil.next_token ast;
+                                match token_to_type ast with
+                                | Ok t -> (let tp = t in 
+                                           ParserUtil.next_token ast;
+                                           match token_to_binop ast.current_token with
+                                           | Ok BinopAssign -> (ParserUtil.next_token ast;
+                                                                match read_expr ast with
+                                                                | Ok expr -> (Ok (ExprVarDeclareTypeAndAssign (id, tp, expr)))
+                                                                | Error e -> Error e)
+                                           | _ -> (Ok (ExprVarDefineType (id, tp))))
+                                | Error e -> Error e)
+
+                           else if token_to_binop ast.current_token = (Ok BinopAssign) then
+                               (ParserUtil.next_token ast;
+                                match read_expr ast with
+                                | Ok expr -> (Ok (ExprVarAssign (id, expr)))
+                                | Error e -> Error e)
+
+                           else (Ok (ExprVarDefine (id))))
+        | _ -> Error (ErrorIdMissIdentifier)
 end
 
 module ParseStmt = struct
@@ -153,7 +170,6 @@ let run_parser ast =
         | Error e -> print_error e ast.current_location.line ast.current_location.col ast.filename
         | Ok (Expr (ExprNewline)) -> ParserUtil.next_token ast; loop (ast)
         | Ok p -> (Printf.printf "%s\n" (ast_kind_to_str (p));
-                   Printf.printf "%d\n" (CCVector.get ast.stream.loc ast.pos).line;
                    push_ast (new_stream_ast) p;
                    ParserUtil.next_token ast;
                    loop (ast)) in
