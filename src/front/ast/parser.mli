@@ -18,6 +18,7 @@ module ParseExpr : sig
     val parse_identifier : ast -> (expr, error_id) result
     val read_expr : ast -> (expr, error_id) result
     val parse_var : ast -> (expr, error_id) result
+    val parse_const : ast -> (expr, error_id) result
     (*val parse_expr : 'a ast -> 'a ast_kind*)
 end
 

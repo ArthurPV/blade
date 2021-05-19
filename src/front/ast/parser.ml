@@ -140,6 +140,40 @@ module ParseExpr = struct
 
                            else (Ok (ExprVarDefine (id))))
         | _ -> Error (ErrorIdMissIdentifier)
+
+    (* const <id> *)
+    (* const <id> :: <type> *)
+    (* const <id> = <expr> *)
+    (* const <id> :: <type> = <expr> *)
+    let parse_const ast = 
+        ParserUtil.next_token ast;
+        match ast.current_token with
+        | Identifier s -> (let id = ExprIdentifier s in
+                           ParserUtil.next_token ast;
+
+                           if ast.current_token = (Separator SeparatorColonColon) then
+                               (ParserUtil.next_token ast;
+                                match token_to_type ast with
+                                | Ok t -> (let tp = t in 
+                                           ParserUtil.next_token ast;
+                                           if token_to_binop ast.current_token = (Ok BinopAssign) then
+                                               (ParserUtil.next_token ast;
+                                                match read_expr ast with
+                                                | Ok expr -> (ParserUtil.next_token ast;
+                                                              (Ok (ExprConstDeclareTypeAndAssign (id, tp, expr))))
+                                                | Error e -> Error e)
+                                           else (Ok (ExprConstDefineType (id, tp))))
+                                | Error e -> Error e)
+
+                           else if token_to_binop ast.current_token = (Ok BinopAssign) then
+                               (ParserUtil.next_token ast;
+                                match read_expr ast with
+                                | Ok expr -> (ParserUtil.next_token ast;
+                                              (Ok (ExprConstAssign (id, expr))))
+                                | Error e -> Error e)
+
+                           else (Ok (ExprConstDefine (id))))
+        | _ -> Error (ErrorIdMissIdentifier)
 end
 
 module ParseStmt = struct
@@ -162,6 +196,9 @@ let parser ast =
     | Token.Keyword KeywordVar -> (match ParseExpr.parse_var ast with
                                    | Ok v -> Ok (Expr (v))
                                    | Error e -> Error e)
+    | Token.Keyword KeywordConst -> (match ParseExpr.parse_const ast with
+                                     | Ok v -> Ok (Expr (v))
+                                     | Error e -> Error e)
     | Token.Separator SeparatorNewline -> Ok (Expr (ExprNewline))
     | _ -> Error (ErrorIdUnexpectedAst)
 
