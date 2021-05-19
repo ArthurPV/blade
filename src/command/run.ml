@@ -11,8 +11,7 @@ let run filename =
                match read with
                | Ok r -> (let lexer_info = new_lexer_info in
                           let lexer = new_lexer lexer_info r in 
-                          let stream_token_location = new_location lexer.info.line lexer.info.col lexer.info.s_line lexer.info.e_line lexer.info.s_col lexer.info.e_col in
-                          run_tokenizer lexer stream_token_location;
+                          run_tokenizer lexer;
                           let stream_token = new_stream_token in
                           let ast = new_ast (stream_token) lexer in
                           let stream_ast = new_stream_ast in

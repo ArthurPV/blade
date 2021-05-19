@@ -1,7 +1,7 @@
-var a = 'c'
+var a = 3
 var b = false
 
-var c = true
+var c = false
 
 
 

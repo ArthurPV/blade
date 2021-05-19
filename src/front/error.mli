@@ -13,6 +13,7 @@ type error_id =
     | ErrorIdInvalidPrimaryType
     | ErrorIdInvalidValue
     | ErrorIdUnexpectedType
+    | ErrorIdMissIdentifier
     | ErrorIdUnexpectedIdentifier
     | ErrorIdUnexpectedExpr
     | ErrorIdUnexpectedAst

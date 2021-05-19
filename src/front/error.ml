@@ -13,6 +13,7 @@ type error_id =
     | ErrorIdInvalidPrimaryType
     | ErrorIdInvalidValue
     | ErrorIdUnexpectedType
+    | ErrorIdMissIdentifier
     | ErrorIdUnexpectedIdentifier
     | ErrorIdUnexpectedExpr
     | ErrorIdUnexpectedAst
@@ -34,6 +35,7 @@ let error_id_to_str id =
     | ErrorIdInvalidValue -> "invalid value"
     | ErrorIdUnexpectedType -> "unexpected type"
     | ErrorIdUnexpectedIdentifier -> "unexpected identifier"
+    | ErrorIdMissIdentifier -> "miss identifier"
     | ErrorIdUnexpectedExpr -> "unexpected expression"
     | ErrorIdUnexpectedAst -> "unexpected AST"
 

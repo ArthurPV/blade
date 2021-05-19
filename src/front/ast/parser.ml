@@ -11,9 +11,9 @@ module ParserUtil = struct
     let next_token ast =
         if ast.pos < (CCVector.length (ast.stream.tok))-1 then
             (ast.pos <- ast.pos + 1;
-            ast.current_token <- CCVector.get ast.stream.tok ast.pos;
-            ast.current_location <- CCVector.get ast.stream.loc ast.pos;
-            ())
+             ast.current_token <- CCVector.get ast.stream.tok ast.pos;
+             ast.current_location <- CCVector.get ast.stream.loc ast.pos;
+             ())
         else ()
 
     let previous_token ast = 
@@ -35,7 +35,7 @@ module ParserUtil = struct
             Error (ErrorIdMissToken)
 
     let assert_eq_token ast tok = 
-        if ast.current_token = tok then true 
+        if ast.current_token = tok then true
         else false
 end
 
@@ -150,9 +150,10 @@ let run_parser ast =
     let rec loop ast =
         if ast.pos < (CCVector.length (ast.stream.tok))-1 then
         match parser ast with
-        | Error _ -> Printf.printf "pos: %d ; error\n" (ast.pos)
+        | Error e -> print_error e ast.current_location.line ast.current_location.col ast.filename
         | Ok (Expr (ExprNewline)) -> ParserUtil.next_token ast; loop (ast)
         | Ok p -> (Printf.printf "%s\n" (ast_kind_to_str (p));
+                   Printf.printf "%d\n" (CCVector.get ast.stream.loc ast.pos).line;
                    push_ast (new_stream_ast) p;
                    ParserUtil.next_token ast;
                    loop (ast)) in
