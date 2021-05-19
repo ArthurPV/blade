@@ -122,12 +122,12 @@ module ParseExpr = struct
                                 match token_to_type ast with
                                 | Ok t -> (let tp = t in 
                                            ParserUtil.next_token ast;
-                                           match token_to_binop ast.current_token with
-                                           | Ok BinopAssign -> (ParserUtil.next_token ast;
-                                                                match read_expr ast with
-                                                                | Ok expr -> (Ok (ExprVarDeclareTypeAndAssign (id, tp, expr)))
-                                                                | Error e -> Error e)
-                                           | _ -> (Ok (ExprVarDefineType (id, tp))))
+                                           if token_to_binop ast.current_token = (Ok BinopAssign) then
+                                               (ParserUtil.next_token ast;
+                                                match read_expr ast with
+                                                | Ok expr -> (Ok (ExprVarDeclareTypeAndAssign (id, tp, expr)))
+                                                | Error e -> Error e)
+                                           else (Ok (ExprVarDefineType (id, tp))))
                                 | Error e -> Error e)
 
                            else if token_to_binop ast.current_token = (Ok BinopAssign) then
