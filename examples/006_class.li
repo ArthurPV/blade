@@ -12,9 +12,9 @@ class Person =
 		priv var name = name
 		priv var age = age
 	end
-	fun get_name = name end
-	fun get_age = age end
-	fun print_person = io.println("name: {}, age: {}", name, age) end
+	fun get_name = self.name end
+	fun get_age = self.age end
+	fun print_person = io.println("name: {}, age: {}", self.name, self.age) end
 end
 
 var person = new Person("theresa", 25)
@@ -32,6 +32,6 @@ class Work <- Person =
 		priv var name = name
 		priv var salary = salary
 	end
-	fun get_name = name
-	fun get_salary = salary
+	fun get_name = self.name
+	fun get_salary = self.salary
 end
