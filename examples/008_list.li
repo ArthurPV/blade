@@ -2,8 +2,7 @@ const list = import Container.List
 
 doubleList :: list.T<u32> -> list.T<u32>
 fun doubleList l = 
-	var l = list.map(l, (x -> x*2))
-	l
+	list.map(l, (x -> x*2))
 end
 
 doubleList({1,2,3,4,5})

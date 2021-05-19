@@ -84,6 +84,8 @@ module ParseExpr = struct
              | Separator SeparatorNewline -> true
              | _ -> false
 
+    (* a = <expr> *)
+    (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
     let parse_identifier ast = 
         match ast.current_token with
         | Identifier s -> Ok (ExprIdentifier (s))

@@ -2,9 +2,9 @@ const io = @import("Std.Io")
 
 explicit class Person =
 	Person :: string -> u8 -> Person
-	pub get_name :: string -> string
-	pub get_age :: u8 -> u8
-	pub print_person :: unit -> unit
+	pub get_name :: self -> string
+	pub get_age :: self -> u8
+	pub print_person :: self -> unit
 end
 
 class Person = 
@@ -12,9 +12,9 @@ class Person =
 		priv var name = name
 		priv var age = age
 	end
-	fun get_name = self.name end
-	fun get_age = self.age end
-	fun print_person = io.println("name: {}, age: {}", self.name, self.age) end
+	fun get_name self = self.name end
+	fun get_age self = self.age end
+	fun print_person self = io.println("name: {}, age: {}", self.name, self.age) end
 end
 
 var person = new Person("theresa", 25)
@@ -23,8 +23,8 @@ person.print_person() ** name: theresa, age: 25
 ** inheritance
 explicit class Work = 
 	Work :: string -> u32 -> Work
-	pub get_work_name :: string -> string
-	pub get_salary :: u32 -> u32
+	pub get_name :: self -> string
+	pub get_salary :: self -> u32
 end
 
 class Work <- Person =
@@ -32,6 +32,6 @@ class Work <- Person =
 		priv var name = name
 		priv var salary = salary
 	end
-	fun get_name = self.name
-	fun get_salary = self.salary
+	fun get_name self = self.name
+	fun get_salary self = self.salary
 end
