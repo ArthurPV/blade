@@ -93,7 +93,7 @@ module ParseExpr = struct
     (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
     let parse_identifier ast = 
         match ast.current_token with
-        | Identifier s -> Ok (ExprIdentifier (s))
+        | Token.Identifier s -> Ok (ExprIdentifier (s))
         | _ -> Error (ErrorIdUnexpectedIdentifier)
 
     let read_expr ast = 
@@ -216,13 +216,16 @@ let parser ast =
                                      | Error e -> Error e)
     | Token.Separator SeparatorNewline -> Ok (Expr (ExprNewline))
     | Token.Comment CommentOneLine -> (ParserUtil.next_token ast;
-                                       ParseExpr.parse_end_line ast;
                                        Ok (Expr (ExprCommentOneLine)))
-    | Token.Comment CommentMultiLine -> (ParserUtil.next_token ast;
-                                         ParseExpr.parse_end_line ast;
+    | Token.Comment CommentMultiLine -> (if ast.current_location.s_line = ast.current_location.e_line then 
+                                            (ParserUtil.next_token ast;
+                                             ParseExpr.parse_end_line ast)
+                                         else ParserUtil.next_token ast;
                                          Ok (Expr (ExprCommentMultiLine)))
-    | Token.Comment CommentDoc s -> (ParserUtil.next_token ast;
-                                     ParseExpr.parse_end_line ast;
+    | Token.Comment CommentDoc s -> (if ast.current_location.s_line = ast.current_location.e_line then 
+                                        (ParserUtil.next_token ast;
+                                         ParseExpr.parse_end_line ast)
+                                     else ParserUtil.next_token ast;
                                      Ok (Expr (ExprCommentDoc s)))
     | _ -> Error (ErrorIdUnexpectedAst)
 
