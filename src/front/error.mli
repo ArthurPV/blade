@@ -1,5 +1,6 @@
 type error_id = 
     | ErrorIdUnexpectedToken of string
+    | ErrorIdExpectedToken of string
     | ErrorIdMissToken
     | ErrorIdInvalidCharLiteral
     | ErrorIdInvalidStringLiteral

@@ -163,7 +163,7 @@ module ParseExpr = struct
                                                      | Error e -> Error e)
 
                                                 else if ParserUtil.is_end_line ast = false then  
-                                                    Error (ErrorIdUnexpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
+                                                    Error (ErrorIdExpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
 
                                                 else (parse_end_line ast;
                                                     Ok (ExprVarDefineType (id, tp))))
@@ -178,7 +178,7 @@ module ParseExpr = struct
                                      | Error e -> Error e)
 
                                  else if ParserUtil.is_end_line ast = false then
-                                     Error (ErrorIdUnexpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
+                                     Error (ErrorIdExpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
 
                                  else (parse_end_line ast;
                                     Ok (ExprVarDefine (id))))
@@ -208,7 +208,7 @@ module ParseExpr = struct
                                                 | Error e -> Error e)
 
                                            else if ParserUtil.is_end_line ast = false then  
-                                                    Error (ErrorIdUnexpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
+                                                    Error (ErrorIdExpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
 
                                            else (parse_end_line ast;
                                                  Ok (ExprConstDefineType (id, tp))))
@@ -223,7 +223,7 @@ module ParseExpr = struct
                                 | Error e -> Error e)
 
                              else if ParserUtil.is_end_line ast = false then
-                                 Error (ErrorIdUnexpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
+                                 Error (ErrorIdExpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
 
                            else (parse_end_line ast;
                                  Ok (ExprConstDefine (id))))

@@ -1,5 +1,6 @@
 type error_id = 
     | ErrorIdUnexpectedToken of string
+    | ErrorIdExpectedToken of string
     | ErrorIdMissToken
     | ErrorIdInvalidCharLiteral
     | ErrorIdInvalidStringLiteral
@@ -22,6 +23,7 @@ type error_id =
 let error_id_to_str id =
     match id with
     | ErrorIdUnexpectedToken s -> Printf.sprintf "unexpected token: \'%s\'" s
+    | ErrorIdExpectedToken s -> Printf.sprintf "expected token: \"%s\"" s
     | ErrorIdMissToken -> "miss token"
     | ErrorIdInvalidCharLiteral -> "invalid char literal"
     | ErrorIdInvalidStringLiteral -> "invalid string literal"
