@@ -136,7 +136,7 @@ module ParseExpr = struct
                                                    parse_end_line ast;
                                                    (Ok (ExprVariableReassign (id, expr))))
                                      | Error e -> Error e)
-                                 else (Error (ErrorIdUnexpectedToken (Token.token_to_str ast.current_token))))
+                                 else (Error (ErrorIdExpectedToken (Token.token_to_str (Token.Operator OperatorEq)))))
         | _ -> Error (ErrorIdMissIdentifier)
 
     (* var <id> *)
@@ -266,6 +266,9 @@ let parser ast =
                                          ParseExpr.parse_end_line ast)
                                      else ParserUtil.next_token ast;
                                      Ok (Expr (ExprCommentDoc s)))
+    | Token.Identifier s -> (match ParseExpr.parse_expr_identifier ast with
+                             | Ok v -> Ok (Expr (v))
+                             | Error e -> Error e)
     | _ -> Error (ErrorIdUnexpectedAst)
 
 let run_parser ast =
