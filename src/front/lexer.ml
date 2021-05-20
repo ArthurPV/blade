@@ -365,7 +365,7 @@ let tokenizer lex =
                         | '.' -> (LexerUtil.next_char lex;
                                   LexerUtil.next_char lex;
                                   Ok (Operator OperatorEqDotDot))
-                        | _ -> Error (ErrorIdUnexpectedToken lex.read.c))
+                        | _ -> Error (ErrorIdUnexpectedToken (String.make 1 lex.read.c)))
               | '>' -> (LexerUtil.next_char lex;
                         Ok (Separator SeparatorFatArrow))
               | _ -> Ok (Operator OperatorEq))
@@ -432,7 +432,7 @@ let tokenizer lex =
                      | Ok t -> Ok t
                      | Error e -> Ok e)
 
-    | _ -> Error (ErrorIdUnexpectedToken lex.read.c) 
+    | _ -> Error (ErrorIdUnexpectedToken (String.make 1 lex.read.c))
 
 let run_tokenizer lex = 
     let rec loop lex =

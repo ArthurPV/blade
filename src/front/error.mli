@@ -1,5 +1,5 @@
 type error_id = 
-    | ErrorIdUnexpectedToken of char
+    | ErrorIdUnexpectedToken of string
     | ErrorIdMissToken
     | ErrorIdInvalidCharLiteral
     | ErrorIdInvalidStringLiteral
@@ -17,7 +17,7 @@ type error_id =
     | ErrorIdUnexpectedIdentifier
     | ErrorIdUnexpectedExpr
     | ErrorIdUnexpectedAst
-    | ErrorIdExpectedNewLine
+    | ErrorIdSyntaxError
 
 val error_id_to_str : error_id -> string
 

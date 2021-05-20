@@ -35,6 +35,14 @@ module ParserUtil = struct
         else
             Error (ErrorIdMissToken)
 
+    let is_end_line ast = 
+        match ast.current_token with
+        | Token.Comment CommentOneLine -> true
+        | Token.Comment CommentMultiLine -> true
+        | Token.Comment CommentDoc _ -> true
+        | Token.Separator SeparatorNewline -> true
+        | _ -> false
+
     let assert_eq_token ast tok = 
         if ast.current_token = tok then true
         else false
@@ -87,10 +95,8 @@ module ParseExpr = struct
             | Token.Comment CommentOneLine 
             | Token.Comment CommentMultiLine 
             -> ()
-            | _ -> print_error (ErrorIdExpectedNewLine) ast.current_location.line ast.current_location.col ast.filename
+            | _ -> print_error (ErrorIdSyntaxError) ast.current_location.line ast.current_location.col ast.filename
 
-    (* a = <expr> *)
-    (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
     let parse_identifier ast = 
         match ast.current_token with
         | Token.Identifier s -> Ok (ExprIdentifier (s))
@@ -114,6 +120,25 @@ module ParseExpr = struct
         | Token.Literal LiteralString (s) -> Ok (ExprLiteral (LiteralString (s)))
         | _ -> Error (ErrorIdUnexpectedExpr)
 
+
+    (* a = <expr> *)
+    (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
+    (* sum(<expr>, <expr>) *)
+    let parse_expr_identifier ast = 
+        match ast.current_token with
+        | Token.Identifier s -> (let id = ExprIdentifier s in 
+                                 ParserUtil.next_token ast;
+
+                                 if token_to_binop ast.current_token = (Ok BinopAssign) then
+                                    (ParserUtil.next_token ast;
+                                     match read_expr ast with
+                                     | Ok expr -> (ParserUtil.next_token ast;
+                                                   parse_end_line ast;
+                                                   (Ok (ExprVariableReassign (id, expr))))
+                                     | Error e -> Error e)
+                                 else (Error (ErrorIdUnexpectedToken (Token.token_to_str ast.current_token))))
+        | _ -> Error (ErrorIdMissIdentifier)
+
     (* var <id> *)
     (* var <id> :: <type> *)
     (* var <id> = <expr> *)
@@ -121,35 +146,42 @@ module ParseExpr = struct
     let parse_var ast = 
         ParserUtil.next_token ast;
         match ast.current_token with
-        | Identifier s -> (let id = ExprIdentifier s in
-                           ParserUtil.next_token ast;
+        | Token.Identifier s -> (let id = ExprIdentifier s in
+                                 ParserUtil.next_token ast;
 
-                           if ast.current_token = (Separator SeparatorColonColon) then
-                               (ParserUtil.next_token ast;
-                                match token_to_type ast with
-                                | Ok t -> (let tp = t in 
-                                           ParserUtil.next_token ast;
-                                           if token_to_binop ast.current_token = (Ok BinopAssign) then
-                                               (ParserUtil.next_token ast;
-                                                match read_expr ast with
-                                                | Ok expr -> (ParserUtil.next_token ast;
-                                                              parse_end_line ast;
-                                                              (Ok (ExprVarDeclareTypeAndAssign (id, tp, expr))))
-                                                | Error e -> Error e)
-                                           else (parse_end_line ast;
-                                                 Ok (ExprVarDefineType (id, tp))))
-                                | Error e -> Error e)
+                                 if ast.current_token = (Separator SeparatorColonColon) then
+                                    (ParserUtil.next_token ast;
+                                     match token_to_type ast with
+                                     | Ok t -> (let tp = t in 
+                                                ParserUtil.next_token ast;
+                                                if token_to_binop ast.current_token = (Ok BinopAssign) then
+                                                    (ParserUtil.next_token ast;
+                                                     match read_expr ast with
+                                                     | Ok expr -> (ParserUtil.next_token ast;
+                                                                   parse_end_line ast;
+                                                                   (Ok (ExprVarDeclareTypeAndAssign (id, tp, expr))))
+                                                     | Error e -> Error e)
 
-                           else if token_to_binop ast.current_token = (Ok BinopAssign) then
-                               (ParserUtil.next_token ast;
-                                match read_expr ast with
-                                | Ok expr -> (ParserUtil.next_token ast;
-                                              parse_end_line ast;
-                                              (Ok (ExprVarAssign (id, expr))))
-                                | Error e -> Error e)
+                                                else if ParserUtil.is_end_line ast = false then  
+                                                    Error (ErrorIdUnexpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
 
-                           else (parse_end_line ast;
-                                 Ok (ExprVarDefine (id))))
+                                                else (parse_end_line ast;
+                                                    Ok (ExprVarDefineType (id, tp))))
+                                     | Error e -> Error e)
+
+                                 else if token_to_binop ast.current_token = (Ok BinopAssign) then
+                                    (ParserUtil.next_token ast;
+                                     match read_expr ast with
+                                     | Ok expr -> (ParserUtil.next_token ast;
+                                                   parse_end_line ast;
+                                                   (Ok (ExprVarAssign (id, expr))))
+                                     | Error e -> Error e)
+
+                                 else if ParserUtil.is_end_line ast = false then
+                                     Error (ErrorIdUnexpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
+
+                                 else (parse_end_line ast;
+                                    Ok (ExprVarDefine (id))))
         | _ -> Error (ErrorIdMissIdentifier)
 
     (* const <id> *)
@@ -159,7 +191,7 @@ module ParseExpr = struct
     let parse_const ast = 
         ParserUtil.next_token ast;
         match ast.current_token with
-        | Identifier s -> (let id = ExprIdentifier s in
+        | Token.Identifier s -> (let id = ExprIdentifier s in
                            ParserUtil.next_token ast;
 
                            if ast.current_token = (Separator SeparatorColonColon) then
@@ -174,6 +206,10 @@ module ParseExpr = struct
                                                               parse_end_line ast;
                                                               (Ok (ExprConstDeclareTypeAndAssign (id, tp, expr))))
                                                 | Error e -> Error e)
+
+                                           else if ParserUtil.is_end_line ast = false then  
+                                                    Error (ErrorIdUnexpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
+
                                            else (parse_end_line ast;
                                                  Ok (ExprConstDefineType (id, tp))))
                                 | Error e -> Error e)
@@ -185,6 +221,9 @@ module ParseExpr = struct
                                               parse_end_line ast;
                                               (Ok (ExprConstAssign (id, expr))))
                                 | Error e -> Error e)
+
+                             else if ParserUtil.is_end_line ast = false then
+                                 Error (ErrorIdUnexpectedToken (Token.token_to_str (Token.Operator OperatorEq)))
 
                            else (parse_end_line ast;
                                  Ok (ExprConstDefine (id))))

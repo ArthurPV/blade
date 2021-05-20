@@ -79,6 +79,7 @@ type expr =
     | ExprConstDefineType of expr * lily_type
     | ExprConstAssign of expr * expr
     | ExprConstCall of expr
+    | ExprVariableReassign of expr * expr
     | ExprFunDefine of expr * (lily_type CCVector.vector) * value
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector)
     | ExprFunCall of expr * (expr CCVector.vector)

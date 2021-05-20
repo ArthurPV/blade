@@ -1,5 +1,5 @@
 type error_id = 
-    | ErrorIdUnexpectedToken of char
+    | ErrorIdUnexpectedToken of string
     | ErrorIdMissToken
     | ErrorIdInvalidCharLiteral
     | ErrorIdInvalidStringLiteral
@@ -17,11 +17,11 @@ type error_id =
     | ErrorIdUnexpectedIdentifier
     | ErrorIdUnexpectedExpr
     | ErrorIdUnexpectedAst
-    | ErrorIdExpectedNewLine
+    | ErrorIdSyntaxError
 
 let error_id_to_str id =
     match id with
-    | ErrorIdUnexpectedToken c -> Printf.sprintf "unexpected token: \'%c\'" c
+    | ErrorIdUnexpectedToken s -> Printf.sprintf "unexpected token: \'%s\'" s
     | ErrorIdMissToken -> "miss token"
     | ErrorIdInvalidCharLiteral -> "invalid char literal"
     | ErrorIdInvalidStringLiteral -> "invalid string literal"
@@ -39,7 +39,7 @@ let error_id_to_str id =
     | ErrorIdMissIdentifier -> "miss identifier"
     | ErrorIdUnexpectedExpr -> "unexpected expression"
     | ErrorIdUnexpectedAst -> "unexpected AST"
-    | ErrorIdExpectedNewLine -> "expected new line"
+    | ErrorIdSyntaxError -> "syntax error"
 
 let print_error err line col filename = 
     Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename line col;

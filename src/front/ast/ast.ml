@@ -79,6 +79,7 @@ type expr =
     | ExprConstDefineType of expr * lily_type (* const a :: <type> *)
     | ExprConstAssign of expr * expr (* const a = <expr> *)
     | ExprConstCall of expr (* a *)
+    | ExprVariableReassign of expr * expr (* a = <expr> *)
     | ExprFunDefine of expr * (lily_type CCVector.vector) * value (* sum :: <type> -> <type> -> <return value> *)
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector) (* fun sum <id> <id> =  *)
     | ExprFunCall of expr * (expr CCVector.vector) (* sum(3, 4) *)
@@ -158,6 +159,8 @@ let ast_kind_to_str kind =
     | Expr (ExprConstDeclareTypeAndAssign (_,_,_)) -> "Const Declare Type and Assign"
     | Expr (ExprConstDefineType (_,_)) -> "Const Define Type"
     | Expr (ExprConstAssign (_,_)) -> "Const Assign"
+    | Expr (ExprConstCall _) -> "Const Call"
+    | Expr (ExprVariableReassign (_,_)) -> "Reassign variable"
     | Expr (ExprFunDefine (_,_,_)) -> "Fun Define"
     | Expr (ExprFunDeclare (_,_,_)) -> "Fun Declare"
     | Expr (ExprFunCall (_,_)) -> "Fun Call"

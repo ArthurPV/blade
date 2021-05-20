@@ -7,6 +7,7 @@ module ParserUtil : sig
     val previous_token : ast -> unit
     val get_next_token : ast -> (token, error_id) result
     val get_previous_token : ast -> (token, error_id) result
+    val is_end_line : ast -> bool
     val assert_eq_token : ast -> token -> bool
 end
 
@@ -17,6 +18,7 @@ module ParseExpr : sig
     val parse_end_line : ast -> unit
     val parse_identifier : ast -> (expr, error_id) result
     val read_expr : ast -> (expr, error_id) result
+    val parse_expr_identifier : ast -> (expr, error_id) result
     val parse_var : ast -> (expr, error_id) result
     val parse_const : ast -> (expr, error_id) result
     (*val parse_expr : 'a ast -> 'a ast_kind*)
