@@ -29,9 +29,18 @@ make test
 ```
 ## Examples
 
+### Function
+
 ```
 sum :: i32 -> i32
 fun sum x y = 
 	x + y
 end
+```
+
+### Variables
+
+```
+var b = 10
+const a = 3
 ```
