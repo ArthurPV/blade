@@ -17,7 +17,7 @@ type error_id =
     | ErrorIdUnexpectedIdentifier
     | ErrorIdUnexpectedExpr
     | ErrorIdUnexpectedAst
-    | ErrorIdExpectedNewline
+    | ErrorIdExpectedNewLine
 
 let error_id_to_str id =
     match id with
@@ -39,7 +39,7 @@ let error_id_to_str id =
     | ErrorIdMissIdentifier -> "miss identifier"
     | ErrorIdUnexpectedExpr -> "unexpected expression"
     | ErrorIdUnexpectedAst -> "unexpected AST"
-    | ErrorIdExpectedNewline -> "expected newline"
+    | ErrorIdExpectedNewLine -> "expected new line"
 
 let print_error err line col filename = 
     Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename line col;

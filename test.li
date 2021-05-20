@@ -1,4 +1,4 @@
-var a 
+var a  ** this is a comment
 var b :: i32
 var c = 12
 var d :: i32 = 3

@@ -10,7 +10,7 @@ const d = 4 ** constant
 
 ** explicit variable
 ** var <name> :: <data types> = <value>
-var e :: F32 = 300
+var e :: f32 = 300
 
 ** const <name> :: <data types> = <value>
-const f :: F32 = 3.33
+const f :: f32 = 3.33

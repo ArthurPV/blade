@@ -78,11 +78,16 @@ module ParseExpr = struct
                                | Error e -> Error e)
           | _ -> Error (ErrorIdInvalidValue)
 
-    let parse_newline ast =
+    let parse_end_line ast =
         if ast.pos = (CCVector.length (ast.stream.tok))-1 then ()
-        else match ast.current_token with
-             | Separator SeparatorNewline -> ParserUtil.next_token ast
-             | _ -> print_error (ErrorIdExpectedNewline) ast.current_location.line ast.current_location.col ast.filename
+        else
+            match ast.current_token with
+            | Token.Separator SeparatorNewline -> ParserUtil.next_token ast;
+            | Token.Comment CommentDoc _ 
+            | Token.Comment CommentOneLine 
+            | Token.Comment CommentMultiLine 
+            -> ()
+            | _ -> print_error (ErrorIdExpectedNewLine) ast.current_location.line ast.current_location.col ast.filename
 
     (* a = <expr> *)
     (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
@@ -128,10 +133,10 @@ module ParseExpr = struct
                                                (ParserUtil.next_token ast;
                                                 match read_expr ast with
                                                 | Ok expr -> (ParserUtil.next_token ast;
-                                                              parse_newline ast;
+                                                              parse_end_line ast;
                                                               (Ok (ExprVarDeclareTypeAndAssign (id, tp, expr))))
                                                 | Error e -> Error e)
-                                           else (parse_newline ast;
+                                           else (parse_end_line ast;
                                                  Ok (ExprVarDefineType (id, tp))))
                                 | Error e -> Error e)
 
@@ -139,11 +144,11 @@ module ParseExpr = struct
                                (ParserUtil.next_token ast;
                                 match read_expr ast with
                                 | Ok expr -> (ParserUtil.next_token ast;
-                                              parse_newline ast;
+                                              parse_end_line ast;
                                               (Ok (ExprVarAssign (id, expr))))
                                 | Error e -> Error e)
 
-                           else (parse_newline ast;
+                           else (parse_end_line ast;
                                  Ok (ExprVarDefine (id))))
         | _ -> Error (ErrorIdMissIdentifier)
 
@@ -166,10 +171,10 @@ module ParseExpr = struct
                                                (ParserUtil.next_token ast;
                                                 match read_expr ast with
                                                 | Ok expr -> (ParserUtil.next_token ast;
-                                                              parse_newline ast;
+                                                              parse_end_line ast;
                                                               (Ok (ExprConstDeclareTypeAndAssign (id, tp, expr))))
                                                 | Error e -> Error e)
-                                           else (parse_newline ast;
+                                           else (parse_end_line ast;
                                                  Ok (ExprConstDefineType (id, tp))))
                                 | Error e -> Error e)
 
@@ -177,11 +182,11 @@ module ParseExpr = struct
                                (ParserUtil.next_token ast;
                                 match read_expr ast with
                                 | Ok expr -> (ParserUtil.next_token ast;
-                                              parse_newline ast;
+                                              parse_end_line ast;
                                               (Ok (ExprConstAssign (id, expr))))
                                 | Error e -> Error e)
 
-                           else (parse_newline ast;
+                           else (parse_end_line ast;
                                  Ok (ExprConstDefine (id))))
         | _ -> Error (ErrorIdMissIdentifier)
 end
@@ -210,6 +215,15 @@ let parser ast =
                                      | Ok v -> Ok (Expr (v))
                                      | Error e -> Error e)
     | Token.Separator SeparatorNewline -> Ok (Expr (ExprNewline))
+    | Token.Comment CommentOneLine -> (ParserUtil.next_token ast;
+                                       ParseExpr.parse_end_line ast;
+                                       Ok (Expr (ExprCommentOneLine)))
+    | Token.Comment CommentMultiLine -> (ParserUtil.next_token ast;
+                                         ParseExpr.parse_end_line ast;
+                                         Ok (Expr (ExprCommentMultiLine)))
+    | Token.Comment CommentDoc s -> (ParserUtil.next_token ast;
+                                     ParseExpr.parse_end_line ast;
+                                     Ok (Expr (ExprCommentDoc s)))
     | _ -> Error (ErrorIdUnexpectedAst)
 
 let run_parser ast =

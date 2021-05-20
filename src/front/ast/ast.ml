@@ -84,6 +84,9 @@ type expr =
     | ExprFunCall of expr * (expr CCVector.vector) (* sum(3, 4) *)
     | ExprIdentifier of string
     | ExprNewline
+    | ExprCommentOneLine
+    | ExprCommentMultiLine
+    | ExprCommentDoc of string
     | ExprLiteral of literal
 
 type stmt =
@@ -158,4 +161,8 @@ let ast_kind_to_str kind =
     | Expr (ExprFunDefine (_,_,_)) -> "Fun Define"
     | Expr (ExprFunDeclare (_,_,_)) -> "Fun Declare"
     | Expr (ExprFunCall (_,_)) -> "Fun Call"
+    | Expr (ExprNewline) -> "Newline"
+    | Expr (ExprCommentOneLine) -> "Comment One Line"
+    | Expr (ExprCommentMultiLine) -> "Comment Multi Line"
+    | Expr (ExprCommentDoc s) -> Printf.sprintf "Comment Doc -> %s" s
     | _ -> "Unknwon"

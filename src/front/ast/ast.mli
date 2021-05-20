@@ -84,6 +84,9 @@ type expr =
     | ExprFunCall of expr * (expr CCVector.vector)
     | ExprIdentifier of string
     | ExprNewline
+    | ExprCommentOneLine
+    | ExprCommentMultiLine
+    | ExprCommentDoc of string
     | ExprLiteral of literal
 
 type stmt =
