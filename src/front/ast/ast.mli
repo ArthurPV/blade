@@ -80,7 +80,7 @@ type expr =
     | ExprConstAssign of expr * expr
     | ExprConstCall of expr
     | ExprVariableReassign of expr * expr
-    | ExprFunDefine of expr * (lily_type CCVector.vector) * value
+    | ExprFunDefine of expr * (lily_type CCVector.vector) * lily_type
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector)
     | ExprFunCall of expr * (expr CCVector.vector)
     | ExprIdentifier of string

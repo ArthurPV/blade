@@ -24,24 +24,26 @@ module ParserUtil = struct
         ()
 
     let get_next_token ast = 
-        if ast.pos+1 >= (CCVector.length (ast.stream.tok))-1 then
-            Ok (CCVector.get ast.stream.tok (ast.pos+1))
-        else 
+        if ast.pos+1 > (CCVector.length (ast.stream.tok))-1 then
             Error (ErrorIdMissToken)
+        else 
+            Ok (CCVector.get ast.stream.tok (ast.pos+1))
 
     let get_previous_token ast = 
-        if ast.pos-1 >= 0 then
+        if ast.pos-1 < 0 then
             Ok (CCVector.get ast.stream.tok (ast.pos-1))
         else
             Error (ErrorIdMissToken)
 
     let is_end_line ast = 
-        match ast.current_token with
+        if ast.pos = (CCVector.length (ast.stream.tok))-1 then true
+        else
+        (match ast.current_token with
         | Token.Comment CommentOneLine -> true
         | Token.Comment CommentMultiLine -> true
         | Token.Comment CommentDoc _ -> true
         | Token.Separator SeparatorNewline -> true
-        | _ -> false
+        | _ -> false)
 
     let assert_eq_token ast tok = 
         if ast.current_token = tok then true
@@ -136,7 +138,30 @@ module ParseExpr = struct
                                                    parse_end_line ast;
                                                    (Ok (ExprVariableReassign (id, expr))))
                                      | Error e -> Error e)
-                                 else (Error (ErrorIdExpectedToken (Token.token_to_str (Token.Operator OperatorEq)))))
+
+                                 else if ast.current_token = Token.Separator SeparatorColonColon then
+                                    (ParserUtil.next_token ast;
+                                     let tp = CCVector.create () in
+                                     let rec loop ast = 
+                                        if ParserUtil.is_end_line ast = true then parse_end_line ast
+                                        else
+                                        (match token_to_type ast with
+                                        | Error e -> print_error e ast.current_location.line ast.current_location.col ast.filename
+                                        | Ok ty -> (ParserUtil.next_token ast;
+                                                    if ast.current_token <> (Token.Separator SeparatorArrow) then
+                                                        (Printf.printf "pos: %d\n" ast.pos;
+                                                         print_error (ErrorIdSyntaxError) ast.current_location.line ast.current_location.col ast.filename)
+                                                    else
+                                                        (CCVector.push tp ty;
+                                                         ParserUtil.next_token ast;
+                                                         ParserUtil.next_token ast;
+                                                         loop (ast)))) in
+                                     loop (ast);
+                                     match token_to_type ast with
+                                     | Ok ret -> (Ok (ExprFunDefine (id,tp,ret)))
+                                     | Error e -> Error e)
+
+                                 else (Error (ErrorIdSyntaxError)))
         | _ -> Error (ErrorIdMissIdentifier)
 
     (* var <id> *)

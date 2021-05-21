@@ -80,7 +80,7 @@ type expr =
     | ExprConstAssign of expr * expr (* const a = <expr> *)
     | ExprConstCall of expr (* a *)
     | ExprVariableReassign of expr * expr (* a = <expr> *)
-    | ExprFunDefine of expr * (lily_type CCVector.vector) * value (* sum :: <type> -> <type> -> <return value> *)
+    | ExprFunDefine of expr * (lily_type CCVector.vector) * lily_type (* sum :: <type> -> <type> -> <return value> *)
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector) (* fun sum <id> <id> =  *)
     | ExprFunCall of expr * (expr CCVector.vector) (* sum(3, 4) *)
     | ExprIdentifier of string
