@@ -1,8 +1,10 @@
-var a ** this is a comment
+** Mutable variables
+var a
 var b :: i32
 var c = 12
 var d :: i32 = 3
 
+** Imutable variables
 const a
 const b :: i32
 const c = 12

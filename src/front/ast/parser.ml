@@ -122,7 +122,6 @@ module ParseExpr = struct
         | Token.Literal LiteralString (s) -> Ok (ExprLiteral (LiteralString (s)))
         | _ -> Error (ErrorIdUnexpectedExpr)
 
-
     (* a = <expr> *)
     (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
     (* sum(<expr>, <expr>) *)
@@ -143,17 +142,15 @@ module ParseExpr = struct
                                     (ParserUtil.next_token ast;
                                      let tp = CCVector.create () in
                                      let rec loop ast = 
-                                        if ParserUtil.is_end_line ast = true then parse_end_line ast
-                                        else
+                                         if ParserUtil.is_end_line ast = false then
                                         (match token_to_type ast with
                                         | Error e -> print_error e ast.current_location.line ast.current_location.col ast.filename
                                         | Ok ty -> (ParserUtil.next_token ast;
-                                                    if ast.current_token <> (Token.Separator SeparatorArrow) then
+                                                    if ast.current_token <> (Token.Separator SeparatorArrow) && ParserUtil.is_end_line ast = false then
                                                         (Printf.printf "pos: %d\n" ast.pos;
                                                          print_error (ErrorIdSyntaxError) ast.current_location.line ast.current_location.col ast.filename)
                                                     else
                                                         (CCVector.push tp ty;
-                                                         ParserUtil.next_token ast;
                                                          ParserUtil.next_token ast;
                                                          loop (ast)))) in
                                      loop (ast);
