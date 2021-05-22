@@ -36,6 +36,11 @@ sum :: i32 -> i32
 fun sum x y = 
 	x + y
 end
+
+sub :: i32 -> i32
+fun sub x y = 
+	x - y
+end
 ```
 
 ### Variables
