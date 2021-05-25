@@ -29,10 +29,10 @@ type error = {
 
 val new_error : error
 
-val push_error : error -> error_id -> int -> int -> unit
+val push_error : error -> error_id -> line:int -> col:int -> unit
 
 val error_id_to_str : error_id -> string
 
-val print_error : error_id -> int -> int -> string -> unit
+val print_error : error_id -> line:int -> col:int -> string -> unit
 
 val print_errors : error -> string -> unit

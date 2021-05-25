@@ -5,7 +5,7 @@ type read = {
   mutable c: char;
 }
 
-val new_read : string -> string -> (read, string) result
+val new_read : filename:string -> content:string -> (read, string) result
 
 module GetFileContent : sig
     val msg_not_exists : string -> unit

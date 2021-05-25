@@ -5,7 +5,7 @@ type read = {
   mutable c: char;
 }
 
-let new_read filename content =
+let new_read ~filename ~content =
     if String.length content >= 1 then
         Ok {
             filename = filename;

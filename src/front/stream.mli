@@ -9,7 +9,7 @@ type location = {
     e_col: int;
 }
 
-val new_location : int -> int -> int -> int -> int -> int -> location
+val new_location : line:int -> col:int -> s_line:int -> s_col:int -> e_line:int -> e_col:int -> location
 
 type stream_token = {
     mutable tok: token CCVector.vector;

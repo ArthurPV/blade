@@ -97,7 +97,7 @@ module ParseExpr = struct
             | Token.Comment CommentOneLine 
             | Token.Comment CommentMultiLine 
             -> ()
-            | _ -> print_error (ErrorIdSyntaxError) ast.current_location.line ast.current_location.col ast.filename
+            | _ -> print_error ErrorIdSyntaxError ~line:ast.current_location.line ~col:ast.current_location.col ast.filename
 
     let parse_identifier ast = 
         match ast.current_token with
@@ -144,11 +144,11 @@ module ParseExpr = struct
                                      let rec loop ast = 
                                          if ParserUtil.is_end_line ast = false then
                                         (match token_to_type ast with
-                                        | Error e -> print_error e ast.current_location.line ast.current_location.col ast.filename
+                                        | Error e -> print_error e ~line:ast.current_location.line ~col:ast.current_location.col ast.filename
                                         | Ok ty -> (ParserUtil.next_token ast;
                                                     if ast.current_token <> (Token.Separator SeparatorArrow) && ParserUtil.is_end_line ast = false then
                                                         (Printf.printf "pos: %d\n" ast.pos;
-                                                         print_error (ErrorIdSyntaxError) ast.current_location.line ast.current_location.col ast.filename)
+                                                         print_error ErrorIdSyntaxError ~line:ast.current_location.line ~col:ast.current_location.col ast.filename)
                                                     else
                                                         (CCVector.push tp ty;
                                                          ParserUtil.next_token ast;
@@ -310,6 +310,9 @@ module ParseExpr = struct
     let parse_type ast = 
         Error (ErrorIdMissIdentifier)
 
+    let parse_call_field_type ast = 
+        Error (ErrorIdMissIdentifier)
+
     let parse_data ast = 
         Error (ErrorIdMissIdentifier)
 
@@ -325,6 +328,9 @@ module ParseStmt = struct
         Error (ErrorIdMissIdentifier)
 
     let parse_stmt_break ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_stmt_next ast = 
         Error (ErrorIdMissIdentifier)
 
     let parse_stmt_while ast = 
@@ -382,7 +388,7 @@ let run_parser ast =
     let rec loop ast =
         if ast.pos < (CCVector.length (ast.stream.tok))-1 then
         match parser ast with
-        | Error e -> print_error e ast.current_location.line ast.current_location.col ast.filename
+        | Error e -> print_error e ~line:ast.current_location.line ~col:ast.current_location.col ast.filename
         | Ok (Expr (ExprNewline)) -> ParserUtil.next_token ast; loop (ast)
         | Ok p -> (Printf.printf "%s\n" (ast_kind_to_str (p));
                    push_ast (new_stream_ast) p;

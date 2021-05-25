@@ -88,6 +88,8 @@ type expr =
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector)
     | ExprFunCall of expr * (expr CCVector.vector)
     | ExprAnonymousFun of (expr CCVector.vector) * (expr CCVector.vector) * (expr CCVector.vector)
+    | ExprArray of lily_type * (expr CCVector.vector)
+    | ExprTuple of lily_type * (expr CCVector.vector)
     | ExprIdentifier of string
     | ExprImport of lily_type
     | ExprShare of expr

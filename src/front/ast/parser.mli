@@ -40,6 +40,7 @@ module ParseExpr : sig
     val parse_class : ast -> (expr, error_id) result
     val parse_call_class : ast -> (expr, error_id) result
     val parse_type : ast -> (expr, error_id) result
+    val parse_call_field_type : ast -> (expr, error_id) result
     val parse_data : ast -> (expr, error_id) result
     val parse_macro : ast -> (expr, error_id) result
 end
@@ -48,6 +49,7 @@ module ParseStmt : sig
     val parse_stmt_if : ast -> (stmt, error_id) result
     val parse_stmt_switch : ast -> (stmt, error_id) result
     val parse_stmt_break : ast -> (stmt, error_id) result
+    val parse_stmt_next : ast -> (stmt, error_id) result
     val parse_stmt_while : ast -> (stmt, error_id) result
     val parse_stmt_for : ast -> (stmt, error_id) result
     val parse_stmt_loop : ast -> (stmt, error_id) result

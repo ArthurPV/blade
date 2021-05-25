@@ -442,13 +442,19 @@ let run_tokenizer lex =
     let rec loop lex =
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
-        | Error e -> (push_error error e lex.info.line lex.info.col;
+        | Error e -> (push_error error e ~line:lex.info.line ~col:lex.info.col;
                       LexerUtil.end_token lex;
                       LexerUtil.next_char lex;
                       loop (lex))
         | Ok tok -> (Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str tok);
                      LexerUtil.end_token lex;
-                     let loc = new_location lex.info.line lex.info.col lex.info.s_line lex.info.s_col lex.info.e_line lex.info.e_col in
+                     let loc = new_location ~line:lex.info.line 
+                                            ~col:lex.info.col 
+                                            ~s_line:lex.info.s_line 
+                                            ~s_col:lex.info.s_col 
+                                            ~e_line:lex.info.e_line 
+                                            ~e_col:lex.info.e_col 
+                                            in
                      push_token new_stream_token tok loc;
                      LexerUtil.next_char lex;
                      loop (lex)) in

@@ -34,7 +34,7 @@ let new_error = {
     count = 0;
 }
 
-let push_error error id line col = 
+let push_error error id ~line ~col = 
     CCVector.push error.id id;
     CCVector.push error.line line;
     CCVector.push error.col col;
@@ -63,9 +63,9 @@ let error_id_to_str id =
     | ErrorIdUnexpectedAst -> "unexpected AST"
     | ErrorIdSyntaxError -> "syntax error"
 
-let print_error err line col filename = 
+let print_error id ~line ~col filename = 
     Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename line col;
-    Printf.printf "\027[1m\027[31mError\027\027[0m\027[0m: %s\n" (error_id_to_str err);
+    Printf.printf "\027[1m\027[31mError\027\027[0m\027[0m: %s\n" (error_id_to_str id);
     exit 1
 
 let print_errors error filename = 

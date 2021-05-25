@@ -7,7 +7,7 @@ open LilyAst.Stream
 
 let run filename =
     match GetFileContent.get_file_content (GetFileContent.read_lines filename) with
-    | Ok s -> (let read = new_read filename s in 
+    | Ok s -> (let read = new_read ~filename:filename ~content:s in 
                match read with
                | Ok r -> (let lexer_info = new_lexer_info in
                           let lexer = new_lexer lexer_info r in 
