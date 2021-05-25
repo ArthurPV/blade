@@ -450,4 +450,5 @@ let run_tokenizer lex =
                      loop (lex)) in
     loop (lex);
     print_errors error lex.read.filename;
-    exit 1;
+    if error.count > 0 then exit 1
+    else ()
