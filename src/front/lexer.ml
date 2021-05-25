@@ -39,17 +39,20 @@ let new_lexer info read = {
 
 module LexerUtil = struct 
     let next_char lex = 
-        if lex.read.c = '\n' then
-            (lex.info.pos <- lex.info.pos + 1;
-             lex.info.col <- 1;
-             lex.info.line <- lex.info.line + 1;
-             lex.read.c <- lex.read.content.[lex.info.pos];
-             ())
+        if lex.info.pos < lex.read.length-1 then
+            (if lex.read.c = '\n' then
+                (lex.info.pos <- lex.info.pos + 1;
+                 lex.info.col <- 1;
+                 lex.info.line <- lex.info.line + 1;
+                 lex.read.c <- lex.read.content.[lex.info.pos];
+                 ())
+            else
+                (lex.info.pos <- lex.info.pos + 1;
+                 lex.info.col <- lex.info.col + 1;
+                 lex.read.c <- lex.read.content.[lex.info.pos];
+                 ()))
         else
-            (lex.info.pos <- lex.info.pos + 1;
-             lex.info.col <- lex.info.col + 1;
-             lex.read.c <- lex.read.content.[lex.info.pos];
-             ())
+            ()
 
     let previous_char lex =
         lex.info.pos <- lex.info.pos - 1;
@@ -440,6 +443,7 @@ let run_tokenizer lex =
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
         | Error e -> (push_error error e lex.info.line lex.info.col;
+                      LexerUtil.end_token lex;
                       LexerUtil.next_char lex;
                       loop (lex))
         | Ok tok -> (Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str tok);

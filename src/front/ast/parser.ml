@@ -282,6 +282,9 @@ module ParseExpr = struct
     let parse_pub ast = 
         Error (ErrorIdMissIdentifier)
 
+    let parse_class_init ast = 
+        Error (ErrorIdMissIdentifier)
+
     let parse_explicit_module ast = 
         Error (ErrorIdMissIdentifier)
 

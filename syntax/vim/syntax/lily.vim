@@ -17,7 +17,7 @@ syn keyword bladeVariableModifieurKeyword mutable
 syn keyword bladeModuleDefault List Array Map Math String Vector Object Std Io Ctn Matrix Http Fs
 
 syn keyword bladeConstant nil undef
-syn keyword bladeKeyword data fun end in of import class try catch throw finally type async await is module as share init macro return test
+syn keyword bladeKeyword data fun end in of import class try catch throw finally type async await is module as share init macro return test lambda
 
 syn keyword bladeBoolean true false
 

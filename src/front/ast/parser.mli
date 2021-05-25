@@ -31,6 +31,7 @@ module ParseExpr : sig
     val parse_array : ast -> (expr, error_id) result
     val parse_tuple : ast -> (expr, error_id) result
     val parse_pub : ast -> (expr, error_id) result
+    val parse_class_init : ast -> (expr, error_id) result
     val parse_explicit_module : ast -> (expr, error_id) result
     val parse_explicit_class : ast -> (expr, error_id) result
     val parse_explicit : ast -> (expr, error_id) result

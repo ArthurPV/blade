@@ -110,6 +110,7 @@ type keyword =
     | KeywordUnit
     | KeywordUsize
     | KeywordIsize
+    | KeywordLambda
 
 type int_format = 
     | Normal
