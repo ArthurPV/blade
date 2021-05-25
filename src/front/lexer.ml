@@ -77,17 +77,27 @@ module RecognizeChar = struct
     let is_digit lex = 
         (lex.read.c >= '0' && lex.read.c <= '9')
     let is_identifier lex = 
-        (lex.read.c >= 'a' && lex.read.c <= 'z') || (lex.read.c >= 'A' && lex.read.c <= 'Z') || lex.read.c = '_' || is_digit lex
+        (lex.read.c >= 'a' && lex.read.c <= 'z') || 
+        (lex.read.c >= 'A' && lex.read.c <= 'Z') || 
+         lex.read.c = '_' || is_digit lex
 
     let is_hex lex = 
-        (lex.read.c >= 'a' && lex.read.c <= 'f') || (lex.read.c >= 'A' && lex.read.c <= 'F') || (lex.read.c >= '0' && lex.read.c <= '9')
+        (lex.read.c >= 'a' && lex.read.c <= 'f') || 
+        (lex.read.c >= 'A' && lex.read.c <= 'F') || 
+        (lex.read.c >= '0' && lex.read.c <= '9')
 
     let is_bin lex = 
         (lex.read.c >= '0' && lex.read.c <= '1')
 
     let is_num lex = 
         if lex.info.pos < lex.read.length-1 then
-            (is_digit lex || (lex.read.c = '.' && LexerUtil.get_next_char lex != '.') || ((lex.read.c = 'e' || lex.read.c = 'E') && (LexerUtil.get_next_char lex >= '0' && LexerUtil.get_next_char lex <= '9') || LexerUtil.get_next_char lex = '-' || LexerUtil.get_next_char lex = '+'))
+            (is_digit lex || 
+            (lex.read.c = '.' && LexerUtil.get_next_char lex != '.') || 
+            ((lex.read.c = 'e' || lex.read.c = 'E') 
+            && (LexerUtil.get_next_char lex >= '0' 
+            && LexerUtil.get_next_char lex <= '9') 
+            || LexerUtil.get_next_char lex = '-' 
+            || LexerUtil.get_next_char lex = '+'))
         else false
 end
 
