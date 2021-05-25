@@ -4,7 +4,6 @@ let value_to_keyword value =
     match value with
     | "explicit" -> Ok (Keyword KeywordExplicit)
     | "pub" -> Ok (Keyword KeywordPub)
-    | "priv" -> Ok (Keyword KeywordPriv)
     | "ref" -> Ok (Keyword KeywordRef)
     | "self" -> Ok (Keyword KeywordSelf)
     | "virtual" -> Ok (Keyword KeywordVirtual)
@@ -46,6 +45,7 @@ let value_to_keyword value =
     | "share" -> Ok (Keyword KeywordShare)
     | "init" -> Ok (Keyword KeywordInit)
     | "macro" -> Ok (Keyword KeywordMacro)
+    | "test" -> Ok (Keyword KeywordTest)
     | "true" -> Ok (Keyword KeywordTrue)
     | "false" -> Ok (Keyword KeywordFalse)
     | "return" -> Ok (Keyword KeywordReturn)

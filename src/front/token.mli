@@ -49,7 +49,6 @@ type operator =
 type keyword = 
     | KeywordExplicit
     | KeywordPub
-    | KeywordPriv
     | KeywordRef
     | KeywordSelf
     | KeywordVirtual
@@ -91,6 +90,7 @@ type keyword =
     | KeywordShare
     | KeywordInit
     | KeywordMacro
+    | KeywordTest
     | KeywordTrue
     | KeywordFalse
     | KeywordReturn

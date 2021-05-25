@@ -7,7 +7,7 @@ if exists("b:current_syntax")
 endif
 let b:current_syntax = "blade"
 
-syn keyword bladeStorage explicit pub priv ref self virtual
+syn keyword bladeStorage explicit pub ref self virtual
 syn keyword bladeStatement break next
 syn keyword bladeConditional if elif else switch then and or not
 syn keyword bladeRepeat while for loop
@@ -17,7 +17,7 @@ syn keyword bladeVariableModifieurKeyword mutable
 syn keyword bladeModuleDefault List Array Map Math String Vector Object Std Io Ctn Matrix Http Fs
 
 syn keyword bladeConstant nil undef
-syn keyword bladeKeyword data fun end in of import class try catch throw finally type async await is module as share init macro return
+syn keyword bladeKeyword data fun end in of import class try catch throw finally type async await is module as share init macro return test
 
 syn keyword bladeBoolean true false
 

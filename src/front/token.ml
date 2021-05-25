@@ -49,7 +49,6 @@ type operator =
 type keyword = 
     | KeywordExplicit
     | KeywordPub
-    | KeywordPriv
     | KeywordRef
     | KeywordSelf
     | KeywordVirtual
@@ -91,6 +90,7 @@ type keyword =
     | KeywordShare
     | KeywordInit
     | KeywordMacro
+    | KeywordTest
     | KeywordTrue
     | KeywordFalse
     | KeywordReturn
@@ -188,7 +188,6 @@ let token_to_str tok =
     | Operator OperatorInterogation -> "?"
     | Keyword KeywordExplicit -> "explicit"
     | Keyword KeywordPub -> "pub"
-    | Keyword KeywordPriv -> "priv"
     | Keyword KeywordRef -> "ref"
     | Keyword KeywordSelf -> "self"
     | Keyword KeywordVirtual -> "virtual"
@@ -230,6 +229,7 @@ let token_to_str tok =
     | Keyword KeywordShare -> "share"
     | Keyword KeywordInit -> "init"
     | Keyword KeywordMacro -> "macro"
+    | Keyword KeywordTest -> "test"
     | Keyword KeywordTrue -> "true"
     | Keyword KeywordFalse -> "false"
     | Keyword KeywordReturn -> "return"
