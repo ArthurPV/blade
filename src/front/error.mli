@@ -35,4 +35,4 @@ val error_id_to_str : error_id -> string
 
 val print_error : error_id -> int -> int -> string -> unit
 
-val print_errors : error -> string -> int -> unit
+val print_errors : error -> string -> unit

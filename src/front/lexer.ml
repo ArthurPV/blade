@@ -435,14 +435,19 @@ let tokenizer lex =
     | _ -> Error (ErrorIdUnexpectedToken (String.make 1 lex.read.c))
 
 let run_tokenizer lex = 
+    let error = new_error in
     let rec loop lex =
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
-        | Error e -> print_error e lex.info.line lex.info.col lex.read.filename;
+        | Error e -> (push_error error e lex.info.line lex.info.col;
+                      LexerUtil.next_char lex;
+                      loop (lex))
         | Ok tok -> (Printf.printf "%d:%d -> %s\n" lex.info.line lex.info.col (token_to_str tok);
                      LexerUtil.end_token lex;
                      let loc = new_location lex.info.line lex.info.col lex.info.s_line lex.info.s_col lex.info.e_line lex.info.e_col in
                      push_token new_stream_token tok loc;
                      LexerUtil.next_char lex;
                      loop (lex)) in
-    loop (lex)
+    loop (lex);
+    print_errors error lex.read.filename;
+    exit 1;
