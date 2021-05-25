@@ -1,1 +1,1 @@
-(dirs command front gc llvm middle)
+(dirs check command front gc llvm middle)
