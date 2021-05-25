@@ -1,4 +1,4 @@
-const vec = Container.Vector
+const vec = "Container.Vector"
 
 get_vector :: vec.T<u32> -> vec.T<u32>
 fun get_vector a = a end

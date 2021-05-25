@@ -1,20 +1,20 @@
-const io = @import("Std.Io")
+const io = import "Std.Io"
 
 explicit class Person =
 	Person :: string -> u8 -> Person
-	pub get_name :: self -> string
-	pub get_age :: self -> u8
-	pub print_person :: self -> unit
+	get_name :: self -> string
+	get_age :: self -> u8
+	print_person :: self -> unit
 end
 
 class Person = 
 	init name age =
-		priv var name = name
-		priv var age = age
+		var name = name
+		var age = age
 	end
-	fun get_name self = self.name end
-	fun get_age self = self.age end
-	fun print_person self = io.println("name: {}, age: {}", self.name, self.age) end
+	pub fun get_name self = self.name end
+	pub fun get_age self = self.age end
+	pub fun print_person self = io.println("name: {}, age: {}", self.name, self.age) end
 end
 
 var person = new Person("theresa", 25)
@@ -23,15 +23,15 @@ person.print_person() ** name: theresa, age: 25
 ** inheritance
 explicit class Work = 
 	Work :: string -> u32 -> Work
-	pub get_name :: self -> string
-	pub get_salary :: self -> u32
+	get_name :: self -> string
+	get_salary :: self -> u32
 end
 
 class Work <- Person =
 	init name salary = 
-		priv var name = name
-		priv var salary = salary
+		var name = name
+		var salary = salary
 	end
-	fun get_name self = self.name
-	fun get_salary self = self.salary
+	pub fun get_name self = self.name
+	pub fun get_salary self = self.salary
 end

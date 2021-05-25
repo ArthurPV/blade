@@ -1,5 +1,5 @@
-const vec = import Container.Vector
-const list = import Container.List
+const vec = import "Container.Vector"
+const list = import "Container.List"
 
 ** polymorphic with function
 ** polymorphic flag #<id>

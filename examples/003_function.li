@@ -1,4 +1,4 @@
-const io = import Std.Io
+const io = import "Std.Io"
 
 ** rules
 ** argument is constant by default for less errors
@@ -12,8 +12,8 @@ div :: i32 -> i32 -> i32
 fun div x y = x/y end
 
 ** anonymous functions
-var add = (x y -> x+y)3
-var div = (x y -> x/y)3
+var add = (x y -> x+y end)3
+var div = (x y -> x/y end)3
 
 ** define types in function
 start_loop :: i32 -> unit

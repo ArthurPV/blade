@@ -1,4 +1,4 @@
-const str = import Std.String
+const str = import "Std.String"
 
 var s = "hello"
 var s_length = str.length(s)

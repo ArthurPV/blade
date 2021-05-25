@@ -1,4 +1,4 @@
-const result = import Std.Result
+const result = import "Std.Result"
 
 ** return result type in function
 isPositive :: i32 -> result.T<i32, bool>
