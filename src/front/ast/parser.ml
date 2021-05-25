@@ -250,9 +250,90 @@ module ParseExpr = struct
                            else (parse_end_line ast;
                                  Ok (ExprConstDefine (id))))
         | _ -> Error (ErrorIdMissIdentifier)
+
+    let parse_fun ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_async_fun ast = 
+        Error (ErrorIdMissIdentifier)
+
+    (* import <expr> *)
+    let parse_import ast = 
+        Ok (ExprNewline)
+
+    let parse_share ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_body ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_await ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_anonymous_fun ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_array ast =
+        Error (ErrorIdMissIdentifier)
+
+    let parse_tuple ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_pub ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_explicit_module ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_explicit_class ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_explicit ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_module ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_class_inherit ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_class ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_call_class ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_type ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_data ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_macro ast = 
+        Error (ErrorIdMissIdentifier)
 end
 
 module ParseStmt = struct
+    let parse_stmt_if ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_stmt_switch ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_stmt_break ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_stmt_while ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_stmt_for ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_stmt_loop ast = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_stmt_return ast = 
+        Error (ErrorIdMissIdentifier)
 end
 
 let parser ast =

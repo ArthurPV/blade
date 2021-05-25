@@ -36,6 +36,10 @@ type unary =
     | UnaryNegative
     | UnaryNot
 
+type visibility = 
+    | Private
+    | Public
+
 type literal =
     | LiteralBool of bool
     | LiteralInt of int
@@ -83,7 +87,11 @@ type expr =
     | ExprFunDefine of expr * (lily_type CCVector.vector) * lily_type
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector)
     | ExprFunCall of expr * (expr CCVector.vector)
+    | ExprAnonymousFun of (expr CCVector.vector) * (expr CCVector.vector) * (expr CCVector.vector)
     | ExprIdentifier of string
+    | ExprImport of lily_type
+    | ExprShare of expr
+    | ExprAwait of expr
     | ExprNewline
     | ExprCommentOneLine
     | ExprCommentMultiLine
@@ -97,6 +105,7 @@ type stmt =
     | StmtWhile
     | StmtFor
     | StmtLoop
+    | StmtReturn
 
 type ast_kind = 
     | Expr of expr

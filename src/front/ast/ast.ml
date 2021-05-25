@@ -36,6 +36,10 @@ type unary =
     | UnaryNegative
     | UnaryNot
 
+type visibility = 
+    | Private
+    | Public
+
 type literal =
     | LiteralBool of bool
     | LiteralInt of int
@@ -66,6 +70,90 @@ type lily_type =
     | LilyTypePolymorphic
     | LilyTypeUserDefinedType of string
 
+(*
+All expressions:
+
+-------------------------------------------------
+Comments:
+** comment one line
+(* comment multi line *)
+(***  comment doc ***)
+-------------------------------------------------
+
+-------------------------------------------------
+Variables:
+Var:
+var a 
+var a = 5
+var a :: i32 = 5
+var a :: i32
+
+Const:
+const a
+const a = 5
+const a :: i32 = 5
+const a :: i32
+-------------------------------------------------
+
+-------------------------------------------------
+Binop:
+Arithmetics:
+3 + 3
+3 - 3
+3 * 3
+3 / 3
+3 % 3
+3 ^ 3
+Assigns:
+a += 3
+a -= 3
+a *= 3
+a /= 3
+a %= 3
+a ^= 3
+Comparaisons:
+3 == 3
+3 <> 3
+3 < 2
+3 > 2
+3 <= 2
+3 >= 3
+Logicals:
+3 < 2 and 3 > 2
+3 < 2 or 3 > 2
+Merge and Replace:
+[3,2,3] ++ [2,3,3]
+[3,2,2] -- [1,2,3]
+-------------------------------------------------
+
+-------------------------------------------------
+Functions:
+add :: i32 -> i32 -> i32
+fun add x y = 3 + 3
+pub fun add x y = 3 + 3
+pub async fun add x y = 3 + 3
+(x y -> x + y end)3 4
+-------------------------------------------------
+
+-------------------------------------------------
+Modules:
+explicit module Calculator = 
+    add :: i32 -> i32 -> i32
+    sub :: i32 -> i32 -> i32
+end
+
+module Calculator = 
+    fun add x y = x + y end
+    fun sub x y = x - y end
+end
+-------------------------------------------------
+
+-------------------------------------------------
+Others:
+await add(3,2)
+-------------------------------------------------
+*)
+
 type expr = 
     | ExprBinop of expr * binop * expr
     | ExprUnary of expr * unary
@@ -83,7 +171,11 @@ type expr =
     | ExprFunDefine of expr * (lily_type CCVector.vector) * lily_type (* sum :: <type> -> <type> -> <return value> *)
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector) (* fun sum <id> <id> =  *)
     | ExprFunCall of expr * (expr CCVector.vector) (* sum(3, 4) *)
+    | ExprAnonymousFun of (expr CCVector.vector) * (expr CCVector.vector) * (expr CCVector.vector) (* (x y -> x + y end)3 2 *)
     | ExprIdentifier of string
+    | ExprImport of lily_type (* import <module> *)
+    | ExprShare of expr (* share <module name> *)
+    | ExprAwait of expr (* await <expr> *)
     | ExprNewline
     | ExprCommentOneLine
     | ExprCommentMultiLine
@@ -97,6 +189,7 @@ type stmt =
     | StmtWhile
     | StmtFor
     | StmtLoop
+    | StmtReturn
 
 type ast_kind = 
     | Expr of expr
