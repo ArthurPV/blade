@@ -276,6 +276,7 @@ module ParseExpr = struct
     let parse_array ast =
         Error (ErrorIdMissIdentifier)
 
+    (* (<expr>, <expr>, <expr>)  *)
     let parse_tuple ast = 
         Error (ErrorIdMissIdentifier)
 

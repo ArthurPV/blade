@@ -77,7 +77,7 @@ All expressions:
 Comments:
 ** comment one line
 (* comment multi line *)
-(***  comment doc ***)
+(**  comment doc **)
 -------------------------------------------------
 
 -------------------------------------------------
@@ -171,7 +171,7 @@ type expr =
     | ExprFunDefine of expr * (lily_type CCVector.vector) * lily_type (* sum :: <type> -> <type> -> <return value> *)
     | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector) (* fun sum <id> <id> =  *)
     | ExprFunCall of expr * (expr CCVector.vector) (* sum(3, 4) *)
-    | ExprAnonymousFun of (expr CCVector.vector) * (expr CCVector.vector) * (expr CCVector.vector) (* (x y -> x + y end)3 2 *)
+    | ExprAnonymousFun of (expr CCVector.vector) * (expr CCVector.vector) * (expr CCVector.vector) (* (lambda x y -> x + y end)3 2 *)
     | ExprIdentifier of string
     | ExprImport of lily_type (* import <module> *)
     | ExprShare of expr (* share <module name> *)
