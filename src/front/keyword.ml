@@ -2,68 +2,68 @@ open Token
 
 let value_to_keyword value = 
     match value with
-    | "explicit" -> Ok (Keyword KeywordExplicit)
-    | "pub" -> Ok (Keyword KeywordPub)
-    | "ref" -> Ok (Keyword KeywordRef)
-    | "self" -> Ok (Keyword KeywordSelf)
-    | "virtual" -> Ok (Keyword KeywordVirtual)
-    | "break" -> Ok (Keyword KeywordBreak)
-    | "next" -> Ok (Keyword KeywordNext)
-    | "if" -> Ok (Keyword KeywordIf)
-    | "elif" -> Ok (Keyword KeywordElif)
-    | "else" -> Ok (Keyword KeywordElse)
-    | "switch" -> Ok (Keyword KeywordSwitch)
-    | "then" -> Ok (Keyword KeywordThen)
-    | "and" -> Ok (Keyword KeywordAnd)
-    | "or" -> Ok (Keyword KeywordOr)
-    | "not" -> Ok (Keyword KeywordNot)
-    | "while" -> Ok (Keyword KeywordWhile)
-    | "for" -> Ok (Keyword KeywordFor)
-    | "loop" -> Ok (Keyword KeywordLoop)
-    | "const" -> Ok (Keyword KeywordConst)
-    | "var" -> Ok (Keyword KeywordVar)
-    | "new" -> Ok (Keyword KeywordNew)
-    | "nil" -> Ok (Keyword KeywordNil)
-    | "undef" -> Ok (Keyword KeywordUndef)
-    | "data" -> Ok (Keyword KeywordData)
-    | "fun" -> Ok (Keyword KeywordFun)
-    | "end" -> Ok (Keyword KeywordEnd)
-    | "in" -> Ok (Keyword KeywordIn)
-    | "of" -> Ok (Keyword KeywordOf)
-    | "import" -> Ok (Keyword KeywordImport)
-    | "class" -> Ok (Keyword KeywordClass)
-    | "try" -> Ok (Keyword KeywordTry)
-    | "catch" -> Ok (Keyword KeywordCatch)
-    | "throw" -> Ok (Keyword KeywordThrow)
-    | "finally" -> Ok (Keyword KeywordFinally)
-    | "type" -> Ok (Keyword KeywordType)
-    | "async" -> Ok (Keyword KeywordAsync)
-    | "await" -> Ok (Keyword KeywordAwait)
-    | "is" -> Ok (Keyword KeywordIs)
-    | "module" -> Ok (Keyword KeywordModule)
-    | "as" -> Ok (Keyword KeywordAs)
-    | "share" -> Ok (Keyword KeywordShare)
-    | "init" -> Ok (Keyword KeywordInit)
-    | "macro" -> Ok (Keyword KeywordMacro)
-    | "test" -> Ok (Keyword KeywordTest)
-    | "true" -> Ok (Keyword KeywordTrue)
-    | "false" -> Ok (Keyword KeywordFalse)
-    | "return" -> Ok (Keyword KeywordReturn)
-    | "char" -> Ok (Keyword KeywordChar)
-    | "i8" -> Ok (Keyword KeywordI8)
-    | "i16" -> Ok (Keyword KeywordI16)
-    | "i32" -> Ok (Keyword KeywordI32)
-    | "i64" -> Ok (Keyword KeywordI64)
-    | "i128" -> Ok (Keyword KeywordI128)
-    | "u8" -> Ok (Keyword KeywordU8)
-    | "u16" -> Ok (Keyword KeywordU16)
-    | "u32" -> Ok (Keyword KeywordU32)
-    | "u64" -> Ok (Keyword KeywordU64)
-    | "u128" -> Ok (Keyword KeywordU128)
-    | "string" -> Ok (Keyword KeywordString)
-    | "bool" -> Ok (Keyword KeywordBool)
-    | "unit" -> Ok (Keyword KeywordUnit)
-    | "usize" -> Ok (Keyword KeywordUsize)
-    | "isize" -> Ok (Keyword KeywordIsize)
-    | "lambda" -> Ok (Keyword KeywordLambda)
-    | _ -> Error (Identifier value)
+    | "explicit" -> Keyword KeywordExplicit
+    | "pub" -> Keyword KeywordPub
+    | "ref" -> Keyword KeywordRef
+    | "self" -> Keyword KeywordSelf
+    | "virtual" -> Keyword KeywordVirtual
+    | "break" -> Keyword KeywordBreak
+    | "next" -> Keyword KeywordNext
+    | "if" -> Keyword KeywordIf
+    | "elif" -> Keyword KeywordElif
+    | "else" -> Keyword KeywordElse
+    | "switch" -> Keyword KeywordSwitch
+    | "then" -> Keyword KeywordThen
+    | "and" -> Keyword KeywordAnd
+    | "or" -> Keyword KeywordOr
+    | "not" -> Keyword KeywordNot
+    | "while" -> Keyword KeywordWhile
+    | "for" -> Keyword KeywordFor
+    | "loop" -> Keyword KeywordLoop
+    | "const" -> Keyword KeywordConst
+    | "var" -> Keyword KeywordVar
+    | "new" -> Keyword KeywordNew
+    | "nil" -> Keyword KeywordNil
+    | "undef" -> Keyword KeywordUndef
+    | "data" -> Keyword KeywordData
+    | "fun" -> Keyword KeywordFun
+    | "end" -> Keyword KeywordEnd
+    | "in" -> Keyword KeywordIn
+    | "of" -> Keyword KeywordOf
+    | "import" -> Keyword KeywordImport
+    | "class" -> Keyword KeywordClass
+    | "try" -> Keyword KeywordTry
+    | "catch" -> Keyword KeywordCatch
+    | "throw" -> Keyword KeywordThrow
+    | "finally" -> Keyword KeywordFinally
+    | "type" -> Keyword KeywordType
+    | "async" -> Keyword KeywordAsync
+    | "await" -> Keyword KeywordAwait
+    | "is" -> Keyword KeywordIs
+    | "module" -> Keyword KeywordModule
+    | "as" -> Keyword KeywordAs
+    | "share" -> Keyword KeywordShare
+    | "init" -> Keyword KeywordInit
+    | "macro" -> Keyword KeywordMacro
+    | "test" -> Keyword KeywordTest
+    | "true" -> Keyword KeywordTrue
+    | "false" -> Keyword KeywordFalse
+    | "return" -> Keyword KeywordReturn
+    | "char" -> Keyword KeywordChar
+    | "i8" -> Keyword KeywordI8
+    | "i16" -> Keyword KeywordI16
+    | "i32" -> Keyword KeywordI32
+    | "i64" -> Keyword KeywordI64
+    | "i128" -> Keyword KeywordI128
+    | "u8" -> Keyword KeywordU8
+    | "u16" -> Keyword KeywordU16
+    | "u32" -> Keyword KeywordU32
+    | "u64" -> Keyword KeywordU64
+    | "u128" -> Keyword KeywordU128
+    | "string" -> Keyword KeywordString
+    | "bool" -> Keyword KeywordBool
+    | "unit" -> Keyword KeywordUnit
+    | "usize" -> Keyword KeywordUsize
+    | "isize" -> Keyword KeywordIsize
+    | "lambda" -> Keyword KeywordLambda
+    | _ -> Identifier value

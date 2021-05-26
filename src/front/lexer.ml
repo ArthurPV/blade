@@ -441,9 +441,7 @@ let tokenizer lex =
                      | Ok i -> Ok i
                      | Error _ -> Error ErrorIdInvalidNumLiteral)
 
-    | 'a' .. 'z' | 'A' .. 'Z' | '_' -> (match value_to_keyword (ScanChar.scan_identifier lex) with
-                     | Ok t -> Ok t
-                     | Error e -> Ok e)
+    | 'a' .. 'z' | 'A' .. 'Z' | '_' -> Ok (value_to_keyword (ScanChar.scan_identifier lex))
 
     | _ -> Error (ErrorIdUnexpectedToken (String.make 1 lex.read.c))
 
