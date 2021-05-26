@@ -11,5 +11,5 @@ module MainLilyCommand = struct
     let lily_run filename () = run filename
 
     let lily_version () = 
-        Printf.printf "blade v%s on %s/%s\n" lily_v (get_os ()) (get_arch ())
+        Printf.printf "lily v%s on %s/%s\n" lily_v (get_os ()) (get_arch ())
 end
