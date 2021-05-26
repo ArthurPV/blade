@@ -1,6 +1,5 @@
 (dirs ast)
 (library
   (libraries
-    ANSITerminal
-    containers)
+    ANSITerminal)
   (name lilyFront))

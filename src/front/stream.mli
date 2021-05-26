@@ -12,8 +12,8 @@ type location = {
 val new_location : line:int -> col:int -> s_line:int -> s_col:int -> e_line:int -> e_col:int -> location
 
 type stream_token = {
-    mutable tok: token CCVector.vector;
-    mutable loc: location CCVector.vector;
+    mutable tok: token array;
+    mutable loc: location array;
 }
 
 val new_stream_token : stream_token

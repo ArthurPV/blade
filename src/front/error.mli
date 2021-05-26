@@ -21,9 +21,9 @@ type error_id =
     | ErrorIdSyntaxError
 
 type error = {
-    mutable id: error_id CCVector.vector;
-    mutable line: int CCVector.vector;
-    mutable col: int CCVector.vector;
+    mutable id: error_id array;
+    mutable line: int array;
+    mutable col: int array;
     mutable count: int;
 }
 

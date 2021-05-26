@@ -1,7 +1,7 @@
 open Ast
 
 type stream_ast = {
-    mutable kind: ast_kind CCVector.vector
+    mutable kind: ast_kind array;
 }
 
 val new_stream_ast : stream_ast

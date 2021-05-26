@@ -1,5 +1,4 @@
 (library
   (libraries
-    lilyFront
-    containers)
+    lilyFront)
   (name lilyAst))

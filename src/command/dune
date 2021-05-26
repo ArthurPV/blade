@@ -3,6 +3,5 @@
   (libraries
     lilyFront
     lilyAst
-    lilyPlatform
-    containers)
+    lilyPlatform)
   (name lilyCommand))

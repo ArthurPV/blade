@@ -10,33 +10,33 @@ module Token = LilyFront.Token
 
 module ParserUtil = struct
     let next_token ast =
-        if ast.pos < (CCVector.length (ast.stream.tok))-1 then
+        if ast.pos < (Stdlib.Array.length (ast.stream.tok))-1 then
             (ast.pos <- ast.pos + 1;
-             ast.current_token <- CCVector.get ast.stream.tok ast.pos;
-             ast.current_location <- CCVector.get ast.stream.loc ast.pos;
+             ast.current_token <- Stdlib.Array.get ast.stream.tok ast.pos;
+             ast.current_location <- Stdlib.Array.get ast.stream.loc ast.pos;
              ())
         else ()
 
     let previous_token ast = 
         ast.pos <- ast.pos - 1;
-        ast.current_token <- CCVector.get ast.stream.tok ast.pos;
-        ast.current_location <- CCVector.get ast.stream.loc ast.pos;
+        ast.current_token <- Stdlib.Array.get ast.stream.tok ast.pos;
+        ast.current_location <- Stdlib.Array.get ast.stream.loc ast.pos;
         ()
 
     let get_next_token ast = 
-        if ast.pos+1 > (CCVector.length (ast.stream.tok))-1 then
+        if ast.pos+1 > (Stdlib.Array.length (ast.stream.tok))-1 then
             Error (ErrorIdMissToken)
         else 
-            Ok (CCVector.get ast.stream.tok (ast.pos+1))
+            Ok (Stdlib.Array.get ast.stream.tok (ast.pos+1))
 
     let get_previous_token ast = 
         if ast.pos-1 < 0 then
-            Ok (CCVector.get ast.stream.tok (ast.pos-1))
+            Ok (Stdlib.Array.get ast.stream.tok (ast.pos-1))
         else
             Error (ErrorIdMissToken)
 
     let is_end_line ast = 
-        if ast.pos = (CCVector.length (ast.stream.tok))-1 then true
+        if ast.pos = (Stdlib.Array.length (ast.stream.tok))-1 then true
         else
         (match ast.current_token with
         | Token.Comment CommentOneLine -> true
@@ -89,7 +89,7 @@ module ParseExpr = struct
           | _ -> Error (ErrorIdInvalidValue)
 
     let parse_end_line ast =
-        if ast.pos = (CCVector.length (ast.stream.tok))-1 then ()
+        if ast.pos = (Stdlib.Array.length (ast.stream.tok))-1 then ()
         else
             match ast.current_token with
             | Token.Separator SeparatorNewline -> ParserUtil.next_token ast;
@@ -140,7 +140,7 @@ module ParseExpr = struct
 
                                  else if ast.current_token = Token.Separator SeparatorColonColon then
                                     (ParserUtil.next_token ast;
-                                     let tp = CCVector.create () in
+                                     let tp = ref [||] in
                                      let rec loop ast = 
                                          if ParserUtil.is_end_line ast = false then
                                         (match token_to_type ast with
@@ -150,12 +150,12 @@ module ParseExpr = struct
                                                         (Printf.printf "pos: %d\n" ast.pos;
                                                          print_error ErrorIdSyntaxError ~line:ast.current_location.line ~col:ast.current_location.col ast.filename)
                                                     else
-                                                        (CCVector.push tp ty;
+                                                        (tp := Stdlib.Array.append !tp [|ty|];
                                                          ParserUtil.next_token ast;
                                                          loop (ast)))) in
                                      loop (ast);
                                      match token_to_type ast with
-                                     | Ok ret -> (Ok (ExprFunDefine (id,tp,ret)))
+                                     | Ok ret -> (Ok (ExprFunDefine (id,!tp,ret)))
                                      | Error e -> Error e)
 
                                  else (Error (ErrorIdSyntaxError)))
@@ -386,7 +386,7 @@ let parser ast =
 
 let run_parser ast =
     let rec loop ast =
-        if ast.pos < (CCVector.length (ast.stream.tok))-1 then
+        if ast.pos < (Stdlib.Array.length (ast.stream.tok))-1 then
         match parser ast with
         | Error e -> print_error e ~line:ast.current_location.line ~col:ast.current_location.col ast.filename
         | Ok (Expr (ExprNewline)) -> ParserUtil.next_token ast; loop (ast)

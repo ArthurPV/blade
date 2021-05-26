@@ -19,15 +19,15 @@ let new_location ~line ~col ~s_line ~s_col ~e_line ~e_col = {
 }
 
 type stream_token = {
-    mutable tok: token CCVector.vector;
-    mutable loc: location CCVector.vector;
+    mutable tok: token array;
+    mutable loc: location array;
 }
 
 let new_stream_token = {
-    tok = CCVector.create ();
-    loc = CCVector.create ();
+    tok = [||];
+    loc = [||];
 }
 
 let push_token st tok loc = 
-    CCVector.push st.tok tok;
-    CCVector.push st.loc loc;
+    st.tok <- Stdlib.Array.append st.tok [|tok|];
+    st.loc <- Stdlib.Array.append st.loc [|loc|];

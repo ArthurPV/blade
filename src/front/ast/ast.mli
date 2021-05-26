@@ -84,12 +84,12 @@ type expr =
     | ExprConstAssign of expr * expr
     | ExprConstCall of expr
     | ExprVariableReassign of expr * expr
-    | ExprFunDefine of expr * (lily_type CCVector.vector) * lily_type
-    | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector)
-    | ExprFunCall of expr * (expr CCVector.vector)
-    | ExprAnonymousFun of (expr CCVector.vector) * (expr CCVector.vector) * (expr CCVector.vector)
-    | ExprArray of lily_type * (expr CCVector.vector)
-    | ExprTuple of lily_type * (expr CCVector.vector)
+    | ExprFunDefine of expr * (lily_type array) * lily_type
+    | ExprFunDeclare of expr * (lily_type array) * (expr array)
+    | ExprFunCall of expr * (expr array)
+    | ExprAnonymousFun of (expr array) * (expr array) * (expr array)
+    | ExprArray of lily_type * (expr array)
+    | ExprTuple of lily_type * (expr array)
     | ExprIdentifier of string
     | ExprImport of lily_type
     | ExprShare of expr

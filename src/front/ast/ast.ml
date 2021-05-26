@@ -168,12 +168,12 @@ type expr =
     | ExprConstAssign of expr * expr (* const a = <expr> *)
     | ExprConstCall of expr (* a *)
     | ExprVariableReassign of expr * expr (* a = <expr> *)
-    | ExprFunDefine of expr * (lily_type CCVector.vector) * lily_type (* sum :: <type> -> <type> -> <return value> *)
-    | ExprFunDeclare of expr * (lily_type CCVector.vector) * (expr CCVector.vector) (* fun sum <id> <id> =  *)
-    | ExprFunCall of expr * (expr CCVector.vector) (* sum(3, 4) *)
-    | ExprAnonymousFun of (expr CCVector.vector) * (expr CCVector.vector) * (expr CCVector.vector) (* (lambda x y -> x + y end)3 2 *)
-    | ExprArray of lily_type * (expr CCVector.vector)
-    | ExprTuple of lily_type * (expr CCVector.vector)
+    | ExprFunDefine of expr * (lily_type array) * lily_type (* sum :: <type> -> <type> -> <return value> *)
+    | ExprFunDeclare of expr * (lily_type array) * (expr array) (* fun sum <id> <id> =  *)
+    | ExprFunCall of expr * (expr array) (* sum(3, 4) *)
+    | ExprAnonymousFun of (expr array) * (expr array) * (expr array) (* (lambda x y -> x + y end)3 2 *)
+    | ExprArray of lily_type * (expr array)
+    | ExprTuple of lily_type * (expr array)
     | ExprIdentifier of string
     | ExprImport of lily_type (* import <module> *)
     | ExprShare of expr (* share <module name> *)
@@ -208,8 +208,8 @@ type ast = {
 let new_ast st lex = {
     stream = st;
     filename = lex.read.filename;
-    current_token = CCVector.get st.tok 0;
-    current_location = CCVector.get st.loc 0;
+    current_token = Stdlib.Array.get st.tok 0;
+    current_location = Stdlib.Array.get st.loc 0;
     pos = 0;
 }
 

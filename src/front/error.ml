@@ -21,23 +21,23 @@ type error_id =
     | ErrorIdSyntaxError
 
 type error = {
-    mutable id: error_id CCVector.vector;
-    mutable line: int CCVector.vector;
-    mutable col: int CCVector.vector;
+    mutable id: error_id array;
+    mutable line: int array;
+    mutable col: int array;
     mutable count: int;
 }
 
 let new_error = {
-    id = CCVector.create ();
-    line = CCVector.create ();
-    col = CCVector.create ();
+    id = [||];
+    line = [||];
+    col = [||];
     count = 0;
 }
 
 let push_error error id ~line ~col = 
-    CCVector.push error.id id;
-    CCVector.push error.line line;
-    CCVector.push error.col col;
+    error.id <- Stdlib.Array.append error.id [|id|];
+    error.line <- Stdlib.Array.append error.line [|line|];
+    error.col <- Stdlib.Array.append error.col [|col|];
     error.count <- error.count + 1
 
 let error_id_to_str id =
@@ -69,9 +69,9 @@ let print_error id ~line ~col filename =
     exit 1
 
 let print_errors error filename = 
-    for i = 0 to (CCVector.length error.id)-1 do
-        Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename (CCVector.get error.line i) (CCVector.get error.col i);
-        Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: %s\n\n" (error_id_to_str (CCVector.get error.id i));
+    for i = 0 to (Stdlib.Array.length error.id)-1 do
+        Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename (Stdlib.Array.get error.line i) (Stdlib.Array.get error.col i);
+        Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: %s\n\n" (error_id_to_str (Stdlib.Array.get error.id i));
     done;
     if error.count > 0 then Printf.printf "\027[1m\027[31mError\027[0m\027[1m: Lily has emited %d errors\027[0m\n" (error.count)
     else ()
