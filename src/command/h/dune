@@ -1,0 +1,3 @@
+(library
+  (name lilyPlatform)
+  (foreign_stubs (language c) (names platform)))

@@ -1,6 +1,8 @@
+(dirs h)
 (library
   (libraries
     lilyFront
     lilyAst
+    lilyPlatform
     containers)
   (name lilyCommand))
