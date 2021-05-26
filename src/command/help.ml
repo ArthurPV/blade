@@ -1,4 +1,4 @@
-let lily_h = {|usage: kwhale [command] [options]
+let lily_h = {|usage: lily [command] [options]
 
 Commands:
 
