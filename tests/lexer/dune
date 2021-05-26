@@ -2,7 +2,6 @@
   (name lexer_test)
   (libraries
     oUnit
-    containers
     lilyFront))
 
 ; (rule

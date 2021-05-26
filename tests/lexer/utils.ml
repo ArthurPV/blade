@@ -2,16 +2,16 @@ open LilyFront.Lexer
 open LilyFront.Read
 
 let run_tokenizer lex = 
-    let t = CCVector.create () in
+    let t = ref [||] in
     let rec loop lex =
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
         | Error _ -> exit 1;
-        | Ok tok -> (CCVector.push t tok;
+        | Ok tok -> (t := Stdlib.Array.append !t [|tok|];
                      LexerUtil.next_char lex;
                      loop (lex)) in
     loop (lex);
-    t
+    !t
 
 let lexer_test filename =
     match GetFileContent.get_file_content (GetFileContent.read_lines filename) with
