@@ -71,8 +71,8 @@ let print_error id ~line ~col filename =
 let print_errors error filename = 
     for i = 0 to (CCVector.length error.id)-1 do
         Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename (CCVector.get error.line i) (CCVector.get error.col i);
-        Printf.printf "\027[1m\027[31mError\027\027[0m\027[0m: %s\n\n" (error_id_to_str (CCVector.get error.id i));
+        Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: %s\n\n" (error_id_to_str (CCVector.get error.id i));
     done;
-    if error.count > 0 then Printf.printf "\027[1m\027[31mLily has emited %d errors\027[0m\n" (error.count)
+    if error.count > 0 then Printf.printf "\027[1m\027[31mError\027[0m\027[1m: Lily has emited %d errors\027[0m\n" (error.count)
     else ()
 
