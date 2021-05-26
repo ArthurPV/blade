@@ -3,7 +3,6 @@
 
 #include <caml/mlvalues.h>
 #include <caml/alloc.h>
-#include <stdio.h>
 
 CAMLprim value get_os(value unit);
 CAMLprim value get_arch(value unit);
