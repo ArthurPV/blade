@@ -20,7 +20,7 @@ module ParseExpr : sig
     val read_expr : ast -> (expr, error_id) result
     val parse_assign : ast -> expr -> (expr, error_id) result
     val parse_fun_define : ast -> expr -> (expr,error_id) result
-    val parse_fun_call : ast -> id:expr -> (expr array) -> (expr, 'b) result
+    val parse_fun_call : ast -> expr -> (expr, error_id) result
     val parse_expr_identifier : ast -> (expr, error_id) result
     val parse_var : ast -> (expr, error_id) result
     val parse_const : ast -> (expr, error_id) result

@@ -8,6 +8,8 @@ open LilyFront.Error
 
 module Token = LilyFront.Token
 
+(* TODO: Finish read_expr and parse all unary and binop *)
+
 module ParserUtil = struct
     let next_token ast =
         if ast.pos < (Stdlib.Array.length (ast.stream.tok))-1 then
@@ -30,7 +32,7 @@ module ParserUtil = struct
             Ok (Stdlib.Array.get ast.stream.tok (ast.pos+1))
 
     let get_previous_token ast = 
-        if ast.pos-1 < 0 then
+        if ast.pos-1 > 0 then
             Ok (Stdlib.Array.get ast.stream.tok (ast.pos-1))
         else
             Error (ErrorIdMissToken)
@@ -160,16 +162,58 @@ module ParseExpr = struct
         | Error e -> Error e
 
     (* sum(<expr>, <expr>) *)
-    let parse_fun_call ast ~id arg = 
-        (Ok (ExprFunCall(id,arg)))
+    let parse_fun_call ast id = 
+        ParserUtil.next_token ast;
+        let args = ref [||] in
+        let rec loop ast =
+            if ast.current_token = (Token.Separator SeparatorRightParen) then
+                ParserUtil.next_token ast
+            else 
+                let rec loop2 ast = 
+                    if ast.current_token = (Token.Separator SeparatorNewline) then 
+                        (ParserUtil.next_token ast;
+                         loop2 (ast)) in
+                loop2 (ast);
+
+                (match read_expr ast with
+                 | Error e -> (print_error e 
+                                          ~line:ast.current_location.line
+                                          ~col:ast.current_location.col
+                                          ast.filename)
+                 | Ok expr -> (args := Stdlib.Array.append !args [|expr|];
+                               ParserUtil.next_token ast;
+                               if ast.current_token <> (Token.Separator SeparatorComma) &&
+                                  ast.current_token <> (Token.Separator SeparatorRightParen) then
+                                  (print_error (ErrorIdExpectedToken (Token.token_to_str (Token.Separator SeparatorRightParen)))
+                                               ~line:ast.current_location.line
+                                               ~col:ast.current_location.col
+                                               ast.filename)
+                               else if ast.current_token = (Token.Separator SeparatorRightParen) then 
+                                   (ParserUtil.next_token ast;
+                                    parse_end_line ast)
+                               else
+                                   (ParserUtil.next_token ast; 
+                                    loop (ast)))) in
+        loop (ast);
+    
+      if ast.current_token = (Token.Separator SeparatorRightParen) then
+          (match ParserUtil.get_previous_token ast with
+          | Ok (Token.Separator SeparatorComma) -> (print_error ErrorIdUnexpectedExpr
+                                                                ~line:ast.current_location.line
+                                                                ~col:ast.current_location.col
+                                                                ast.filename)
+          | _ -> parse_end_line ast);
+
+    (Ok (ExprFunCall(id,!args)))
 
 
-    let parse_expr_identifier ast = 
+let parse_expr_identifier ast = 
         match ast.current_token with
         | Token.Identifier s -> (let id = ExprIdentifier s in 
                                  ParserUtil.next_token ast;
                                  if token_to_binop ast.current_token = (Ok BinopAssign) then parse_assign ast id
                                  else if ast.current_token = Token.Separator SeparatorColonColon then parse_fun_define ast id
+                                 else if ast.current_token = Token.Separator SeparatorLeftParen then parse_fun_call ast id
                                  else (Error (ErrorIdSyntaxError)))
         | _ -> Error (ErrorIdMissIdentifier)
 
