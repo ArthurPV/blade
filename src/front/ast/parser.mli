@@ -18,6 +18,9 @@ module ParseExpr : sig
     val parse_end_line : ast -> unit
     val parse_identifier : ast -> (expr, error_id) result
     val read_expr : ast -> (expr, error_id) result
+    val parse_assign : ast -> expr -> (expr, error_id) result
+    val parse_fun_define : ast -> expr -> (expr,error_id) result
+    val parse_fun_call : ast -> id:expr -> (expr array) -> (expr, 'b) result
     val parse_expr_identifier : ast -> (expr, error_id) result
     val parse_var : ast -> (expr, error_id) result
     val parse_const : ast -> (expr, error_id) result
@@ -41,6 +44,7 @@ module ParseExpr : sig
     val parse_call_class : ast -> (expr, error_id) result
     val parse_type : ast -> (expr, error_id) result
     val parse_call_field_type : ast -> (expr, error_id) result
+    val parse_data_constructor : ast -> (expr, error_id) result
     val parse_data : ast -> (expr, error_id) result
     val parse_macro : ast -> (expr, error_id) result
 end

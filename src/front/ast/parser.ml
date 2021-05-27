@@ -123,41 +123,53 @@ module ParseExpr = struct
         | _ -> Error (ErrorIdUnexpectedExpr)
 
     (* a = <expr> *)
+    let parse_assign ast id = 
+        ParserUtil.next_token ast;
+        match read_expr ast with
+        | Ok expr -> (ParserUtil.next_token ast;
+                      parse_end_line ast;
+                      (Ok (ExprVariableReassign (id,expr))))
+        | Error e -> Error e
+
     (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
+    let parse_fun_define ast id = 
+        ParserUtil.next_token ast;
+        let args = ref [||] in
+        let rec loop ast = 
+            if ParserUtil.is_end_line ast = false then
+                (match token_to_type ast with
+                 | Error e -> print_error e 
+                                          ~line:ast.current_location.line 
+                                          ~col:ast.current_location.col 
+                                          ast.filename
+                 | Ok ty -> (ParserUtil.next_token ast;
+                                if ast.current_token <> (Token.Separator SeparatorArrow) && 
+                                   ParserUtil.is_end_line ast = false then
+                                    (Printf.printf "pos: %d\n" ast.pos;
+                                     print_error ErrorIdSyntaxError 
+                                                 ~line:ast.current_location.line 
+                                                 ~col:ast.current_location.col 
+                                                 ast.filename)
+                                else
+                                    (args := Stdlib.Array.append !args [|ty|];
+                                     ParserUtil.next_token ast;
+                                     loop (ast)))) in
+        loop (ast);
+        match token_to_type ast with
+        | Ok ret -> (Ok (ExprFunDefine (id,!args,ret)))
+        | Error e -> Error e
+
     (* sum(<expr>, <expr>) *)
+    let parse_fun_call ast ~id arg = 
+        (Ok (ExprFunCall(id,arg)))
+
+
     let parse_expr_identifier ast = 
         match ast.current_token with
         | Token.Identifier s -> (let id = ExprIdentifier s in 
                                  ParserUtil.next_token ast;
-
-                                 if token_to_binop ast.current_token = (Ok BinopAssign) then
-                                    (ParserUtil.next_token ast;
-                                     match read_expr ast with
-                                     | Ok expr -> (ParserUtil.next_token ast;
-                                                   parse_end_line ast;
-                                                   (Ok (ExprVariableReassign (id, expr))))
-                                     | Error e -> Error e)
-
-                                 else if ast.current_token = Token.Separator SeparatorColonColon then
-                                    (ParserUtil.next_token ast;
-                                     let tp = ref [||] in
-                                     let rec loop ast = 
-                                         if ParserUtil.is_end_line ast = false then
-                                        (match token_to_type ast with
-                                        | Error e -> print_error e ~line:ast.current_location.line ~col:ast.current_location.col ast.filename
-                                        | Ok ty -> (ParserUtil.next_token ast;
-                                                    if ast.current_token <> (Token.Separator SeparatorArrow) && ParserUtil.is_end_line ast = false then
-                                                        (Printf.printf "pos: %d\n" ast.pos;
-                                                         print_error ErrorIdSyntaxError ~line:ast.current_location.line ~col:ast.current_location.col ast.filename)
-                                                    else
-                                                        (tp := Stdlib.Array.append !tp [|ty|];
-                                                         ParserUtil.next_token ast;
-                                                         loop (ast)))) in
-                                     loop (ast);
-                                     match token_to_type ast with
-                                     | Ok ret -> (Ok (ExprFunDefine (id,!tp,ret)))
-                                     | Error e -> Error e)
-
+                                 if token_to_binop ast.current_token = (Ok BinopAssign) then parse_assign ast id
+                                 else if ast.current_token = Token.Separator SeparatorColonColon then parse_fun_define ast id
                                  else (Error (ErrorIdSyntaxError)))
         | _ -> Error (ErrorIdMissIdentifier)
 
@@ -292,6 +304,7 @@ module ParseExpr = struct
     let parse_explicit_class ast = 
         Error (ErrorIdMissIdentifier)
 
+    (* explicit <class> <module> *)
     let parse_explicit ast = 
         Error (ErrorIdMissIdentifier)
 
@@ -313,6 +326,15 @@ module ParseExpr = struct
     let parse_call_field_type ast = 
         Error (ErrorIdMissIdentifier)
 
+    let parse_data_constructor ast = 
+        Error (ErrorIdMissIdentifier)
+    
+    (* 
+       data Person = 
+           Name of string
+           Age of u8
+       end 
+    *)
     let parse_data ast = 
         Error (ErrorIdMissIdentifier)
 
