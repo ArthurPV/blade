@@ -30,6 +30,8 @@ module AdvanceCalculator =
 	fun mod x y = x%y end
 end
 
+explicit module MyNum = type T end
+
 ** type in module
 module MyNum = 
 	type T = 

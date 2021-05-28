@@ -9,6 +9,7 @@ module ParserUtil : sig
     val get_previous_token : ast -> (token, error_id) result
     val is_end_line : ast -> bool
     val assert_eq_token : ast -> token -> bool
+    val skip_newline : ast -> unit
 end
 
 module ParseExpr : sig
@@ -19,7 +20,7 @@ module ParseExpr : sig
     val parse_identifier : ast -> (expr, error_id) result
     val read_expr : ast -> (expr, error_id) result
     val parse_assign : ast -> expr -> (expr, error_id) result
-    val parse_fun_define : ast -> expr -> (expr,error_id) result
+    val parse_fun_define : ast -> expr -> (expr, error_id) result
     val parse_fun_call : ast -> expr -> (expr, error_id) result
     val parse_expr_identifier : ast -> (expr, error_id) result
     val parse_var : ast -> (expr, error_id) result

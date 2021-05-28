@@ -1,12 +1,17 @@
-open Ast
-open LilyFront.Error
+module Lf = LilyFront
 
 let valid_tuple_expr kind = 
     match kind with
-    | Expr (ExprBinop (l,b,r)) -> Ok (ExprBinop (l,b,r))
-    | Expr (ExprUnary (l,u)) -> Ok (ExprUnary (l,u))
-    | Expr (ExprFunCall (n,a)) -> Ok (ExprFunCall (n,a))
-    | Expr (ExprVarCall (n)) -> Ok (ExprVarCall (n))
-    | Expr (ExprConstCall (n)) -> Ok (ExprConstCall (n))
-    | Expr (ExprAnonymousFun (e,a,c)) -> Ok (ExprAnonymousFun (e,a,c))
-    | _ -> Error (ErrorIdUnexpectedExpr)
+    | Ast.Expr (ExprBinop {left;
+                           binop;
+                           right}) -> Ok (Ast.ExprBinop {left = left;
+                                                         binop = binop; 
+                                                         right = right})
+    | Ast.Expr (ExprUnary {left;
+                           unary}) -> Ok (Ast.ExprUnary {left = left;
+                                                         unary = unary})
+    | Ast.Expr (ExprFunCall {id;
+                             args}) -> Ok (Ast.ExprFunCall {id = id;
+                                                            args = args})
+    (*| Expr (ExprAnonymousFun (e,a,c)) -> Ok (ExprAnonymousFun (e,a,c))*)
+    | _ -> Error (Lf.Error.ErrorIdUnexpectedExpr)

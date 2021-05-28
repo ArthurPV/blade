@@ -1,4 +1,3 @@
-open Ast
-open LilyFront.Error
+module Lf = LilyFront
 
-val valid_tuple_expr : ast_kind -> (expr, error_id) result
+val valid_tuple_expr : Ast.ast_kind -> (Ast.expr, Lf.Error.error_id) result

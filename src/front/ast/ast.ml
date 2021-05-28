@@ -1,6 +1,4 @@
-open LilyFront.Lexer
-open LilyFront.Stream
-open LilyFront.Token
+module Lf = LilyFront
 
 type binop = 
     | BinopAdd
@@ -65,9 +63,12 @@ type lily_type =
     | LilyTypeU32
     | LilyTypeU64
     | LilyTypeU128
-    | LilyTypeArray
+    | LilyTypeArray of lily_type
+    | LilyTypeTuple of lily_type array
     | LilyTypeUnit
     | LilyTypePolymorphic
+    | LilyTypeNil
+    | LilyTypeUndef
     | LilyTypeUserDefinedType of string
 
 (*
@@ -155,29 +156,142 @@ await add(3,2)
 *)
 
 type expr = 
-    | ExprBinop of expr * binop * expr
-    | ExprUnary of expr * unary
+    | ExprBinop of {
+        left: expr;
+        binop: binop;
+        right: expr;
+    }
+    | ExprUnary of {
+        left: expr;
+        unary: unary;
+    }
     | ExprVarDefine of expr (* var a *)
-    | ExprVarDeclareTypeAndAssign of expr * lily_type * expr (* var a :: <type> = <expr> *)
-    | ExprVarDefineType of expr * lily_type (* var a :: <type> *)
-    | ExprVarAssign of expr * expr (* var a = <expr> *)
-    | ExprVarCall of expr (* a *)
+    | ExprVarDeclareTypeAndAssign of {
+        id: expr;
+        tp: lily_type;
+        expr: expr;
+    } (* var a :: <type> = <expr> *)
+    | ExprVarDefineType of {
+        id: expr;
+        tp: lily_type;
+    } (* var a :: <type> *)
+    | ExprVarAssign of {
+        id: expr;
+        expr: expr;
+    } (* var a = <expr> *)
     | ExprConstDefine of expr (* const a *)
-    | ExprConstDeclareTypeAndAssign of expr * lily_type * expr (* const a :: <type> = <expr> *)
-    | ExprConstDefineType of expr * lily_type (* const a :: <type> *)
-    | ExprConstAssign of expr * expr (* const a = <expr> *)
-    | ExprConstCall of expr (* a *)
-    | ExprVariableReassign of expr * expr (* a = <expr> *)
-    | ExprFunDefine of expr * (lily_type array) * lily_type (* sum :: <type> -> <type> -> <return value> *)
-    | ExprFunDeclare of expr * (lily_type array) * (expr array) (* fun sum <id> <id> =  *)
-    | ExprFunCall of expr * (expr array) (* sum(3, 4) *)
-    | ExprAnonymousFun of (expr array) * (expr array) * (expr array) (* (lambda x y -> x + y end)3 2 *)
-    | ExprArray of lily_type * (expr array)
-    | ExprTuple of lily_type * (expr array)
+    | ExprConstDeclareTypeAndAssign of {
+        id: expr;
+        tp: lily_type;
+        expr: expr;
+    } (* const a :: <type> = <expr> *)
+    | ExprConstDefineType of {
+        id: expr;
+        tp: lily_type;
+    } (* const a :: <type> *)
+    | ExprConstAssign of {
+        id: expr;
+        expr: expr;
+    } (* const a = <expr> *)
+    | ExprVariableReassign of {
+        id: expr;
+        expr: expr;
+    } (* a = <expr> *)
+    | ExprVariableCall of expr (* a *)
+    | ExprFunDefine of {
+        id: expr;
+        tp: lily_type array;
+        ret: lily_type;
+    } (* sum :: <type> -> <type> -> <return value> *)
+    | ExprFunDeclare of {
+        id: expr;
+        visibility: visibility;
+        args: lily_type;
+        body: expr array;
+    } (* fun sum <id> <id> = <body> *)
+    | ExprFunCall of {
+        id: expr;
+        args: expr array;
+    } (* sum(3, 4) *)
+    | ExprAnonymousFun of {
+        args: expr array;
+        body: expr array;
+        call: expr array;
+    } (* (lambda x y -> x + y end)3 2 *)
+    | ExprArray of {
+        tp: lily_type;
+        items: expr array;
+    } (* [2,1,2] *)
+    | ExprTuple of {
+        tp: lily_type;
+        items: expr array;
+    } (* (1,2) *)
     | ExprIdentifier of string
     | ExprImport of lily_type (* import <module> *)
-    | ExprShare of expr (* share <module name> *)
+    | ExprShare of expr array (* share <module name>,<module name>,... *)
     | ExprAwait of expr (* await <expr> *)
+    | ExprTypeDefine of expr (* type T *)
+    | ExprTypeDeclare of {
+        id: expr;
+        field: (expr * lily_type) array;
+    } (* type Person = name:string, age:int end*)
+    | ExprTypeAssignField of {
+        id: expr;
+        expr: expr;
+    } (* n = 10 *)
+    | ExprTypeCall of {
+        id: expr;
+        field: (expr * expr) array;
+    } (* <expr>{<field>,...} *)
+    | ExprDataDefine of {
+        id: expr;
+        args: (lily_type option) array; (* data T<#a> *)
+    } (* data T *)
+    | ExprDataDeclare of {
+        id: expr;
+        args: (lily_type option) array; (* data T<#a> *)
+        visibility: visibility;
+        field: expr array;
+        constructor: (lily_type option) array;
+    } (* data Person = Name of string, Age of u16 end *)
+    | ExprExplicitModule of {
+        id: expr;
+        body: expr array;
+    } (* explicit module <expr> = <body> *)
+    | ExprModule of {
+        id: expr;
+        visibility: visibility;
+        body: expr array;
+    } (* module <expr> = <body> *)
+    | ExprInitClass of {
+        args: expr array;
+        body: expr array;
+    } (* init name age = 
+             var name = name
+             var age = age
+         end 
+      *)
+    | ExprExplicitClass of {
+        id: expr;
+        body: expr array;
+    } (* explicit class <expr> = <body> *)
+    | ExprClass of {
+        id: expr;
+        body: expr array;
+    } (* class <expr> = <body> *)
+    | ExprCallClass of {
+        id: expr;
+        args: expr array;
+    } (* new <expr>(<arg>,<arg>) *)
+    | ExprMacroDeclare of {
+        id: expr;
+        args: expr array;
+        body: expr array;
+    } (* macro <expr> <arg>,... = <body> *)
+    | ExprMacroCall of {
+        id: expr;
+        args: expr array;
+    } (* @<expr>(<arg>,...) *)
     | ExprNewline
     | ExprCommentOneLine
     | ExprCommentMultiLine
@@ -185,29 +299,45 @@ type expr =
     | ExprLiteral of literal
 
 type stmt =
-    | StmtIf
-    | StmtSwitch
+    | StmtIf of {
+        cond: expr;
+        body: expr array;
+    }
+    | StmtSwitch of {
+        elem: expr;
+        body: expr array;
+    }
+    | StmtCase of {
+        cond: expr;
+        body: expr array;
+    }
     | StmtBreak
-    | StmtWhile
-    | StmtFor
-    | StmtLoop
-    | StmtReturn
+    | StmtWhile of {
+        cond: expr array;
+        body: expr array;
+    }
+    | StmtFor of {
+        cond: expr;
+        body: expr array;
+    }
+    | StmtLoop of expr array
+    | StmtReturn of expr
 
 type ast_kind = 
     | Expr of expr
     | Stmt of stmt
 
 type ast = { 
-    stream: stream_token;
+    stream: Lf.Stream.stream_token;
     filename: string;
-    mutable current_token: token;
-    mutable current_location: location;
+    mutable current_token: Lf.Token.token;
+    mutable current_location: Lf.Stream.location;
     mutable pos: int;
 }
 
 let new_ast st lex = {
     stream = st;
-    filename = lex.read.filename;
+    filename = lex.Lf.Lexer.read.filename;
     current_token = Stdlib.Array.get st.tok 0;
     current_location = Stdlib.Array.get st.loc 0;
     pos = 0;
@@ -215,50 +345,121 @@ let new_ast st lex = {
 
 let ast_kind_to_str kind =
     match kind with
-    | Expr (ExprBinop (_,BinopAdd,_)) -> "Addition"
-    | Expr (ExprBinop (_,BinopSub,_)) -> "Substract"
-    | Expr (ExprBinop (_,BinopMul,_)) -> "Multiplication"
-    | Expr (ExprBinop (_,BinopDiv,_)) -> "Division"
-    | Expr (ExprBinop (_,BinopMod,_)) -> "Modulo"
-    | Expr (ExprBinop (_,BinopPow,_)) -> "Pow"
-    | Expr (ExprBinop (_,BinopMerge,_)) -> "Merge"
-    | Expr (ExprBinop (_,BinopReplace,_)) -> "Replace"
-    | Expr (ExprBinop (_,BinopAddAssign,_)) -> "Addition Assign"
-    | Expr (ExprBinop (_,BinopSubAssign,_)) -> "Substract Assign"
-    | Expr (ExprBinop (_,BinopMulAssign,_)) -> "Multiplication Assign"
-    | Expr (ExprBinop (_,BinopDivAssign,_)) -> "Division Assign"
-    | Expr (ExprBinop (_,BinopModAssign,_)) -> "Modulo Assign"
-    | Expr (ExprBinop (_,BinopPowAssign,_)) -> "Pow Assign"
-    | Expr (ExprBinop (_,BinopAssign,_)) -> "Assign"
-    | Expr (ExprBinop (_,BinopEq,_)) -> "Equal"
-    | Expr (ExprBinop (_,BinopNotEq,_)) -> "NotEqual"
-    | Expr (ExprBinop (_,BinopIntervalEq,_)) -> "IntervalEqual"
-    | Expr (ExprBinop (_,BinopInterval,_)) -> "Interval"
-    | Expr (ExprBinop (_,BinopEqInterval,_)) -> "EqInterval"
-    | Expr (ExprBinop (_,BinopLess,_)) -> "Less"
-    | Expr (ExprBinop (_,BinopLessEq,_)) -> "LessEqual"
-    | Expr (ExprBinop (_,BinopGreater,_)) -> "Greater"
-    | Expr (ExprBinop (_,BinopGreaterEq,_)) -> "GreaterEqual"
-    | Expr (ExprBinop (_,BinopCondition,_)) -> "ConditionUnary"
-    | Expr (ExprBinop (_,BinopAnd,_)) -> "And"
-    | Expr (ExprBinop (_,BinopOr,_)) -> "Or"
-    | Expr (ExprUnary (_,UnaryPositive)) -> "Positive"
-    | Expr (ExprUnary (_,UnaryNegative)) -> "Negative"
-    | Expr (ExprUnary (_,UnaryNot)) -> "Not"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopAdd;
+                       right = _}) -> "Addition"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopSub;
+                       right = _}) -> "Substract"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopMul;
+                       right = _}) -> "Multiplication"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopDiv;
+                       right = _}) -> "Division"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopMod;
+                       right = _}) -> "Modulo"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopPow;
+                       right = _}) -> "Pow"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopMerge;
+                       right = _}) -> "Merge"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopReplace;
+                       right = _}) -> "Replace"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopAddAssign;
+                       right = _}) -> "Addition Assign"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopSubAssign;
+                       right = _}) -> "Substract Assign"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopMulAssign;
+                       right = _}) -> "Multiplication Assign"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopDivAssign;
+                       right = _}) -> "Division Assign"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopModAssign;
+                       right = _}) -> "Modulo Assign"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopPowAssign;
+                       right = _}) -> "Pow Assign"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopAssign;
+                       right = _}) -> "Assign"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopEq;
+                       right = _}) -> "Equal"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopNotEq;
+                       right = _}) -> "NotEqual"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopIntervalEq;
+                       right = _}) -> "IntervalEqual"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopInterval;
+                       right = _}) -> "Interval"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopEqInterval;
+                       right = _}) -> "EqInterval"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopLess;
+                       right = _}) -> "Less"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopLessEq;
+                       right = _}) -> "LessEqual"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopGreater;
+                       right = _}) -> "Greater"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopGreaterEq;
+                       right = _}) -> "GreaterEqual"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopCondition;
+                       right = _}) -> "BinopCondition"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopAnd;
+                       right = _}) -> "And"
+    | Expr (ExprBinop {left = _;
+                       binop = BinopOr;
+                       right = _}) -> "Or"
+    | Expr (ExprUnary {left = _;
+                       unary = UnaryPositive}) -> "Positive"
+    | Expr (ExprUnary {left = _;
+                       unary = UnaryNegative}) -> "Negative"
+    | Expr (ExprUnary {left = _;
+                       unary = UnaryNot}) -> "Not"
     | Expr (ExprVarDefine _) -> "VarDefine"
-    | Expr (ExprVarDeclareTypeAndAssign (_,_,_)) -> "VarDeclareTypeAndAssign"
-    | Expr (ExprVarDefineType (_,_)) -> "VarDefineType"
-    | Expr (ExprVarAssign (_,_)) -> "VarAssign"
-    | Expr (ExprVarCall _) -> "VarCall"
+    | Expr (ExprVarDeclareTypeAndAssign {id = _;
+                                         tp = _;
+                                         expr = _}) -> "VarDeclareTypeAndAssign"
+    | Expr (ExprVarDefineType {id = _;
+                               tp = _}) -> "VarDefineType"
+    | Expr (ExprVarAssign {id = _;
+                           expr = _}) -> "VarAssign"
+    | Expr (ExprVariableCall _) -> "VarCall"
     | Expr (ExprConstDefine _) -> "ConstDefine"
-    | Expr (ExprConstDeclareTypeAndAssign (_,_,_)) -> "ConstDeclareTypeAndAssign"
-    | Expr (ExprConstDefineType (_,_)) -> "ConstDefineType"
-    | Expr (ExprConstAssign (_,_)) -> "ConstAssign"
-    | Expr (ExprConstCall _) -> "ConstCall"
-    | Expr (ExprVariableReassign (_,_)) -> "ReassignVariable"
-    | Expr (ExprFunDefine (_,_,_)) -> "FunDefine"
-    | Expr (ExprFunDeclare (_,_,_)) -> "FunDeclare"
-    | Expr (ExprFunCall (_,_)) -> "FunCall"
+    | Expr (ExprConstDeclareTypeAndAssign {id = _;
+                                           tp = _;
+                                           expr = _}) -> "ConstDeclareTypeAndAssign"
+    | Expr (ExprConstDefineType {id = _;
+                                 tp = _}) -> "ConstDefineType"
+    | Expr (ExprConstAssign {id = _;
+                             expr = _}) -> "ConstAssign"
+    | Expr (ExprVariableReassign {id = _;
+                                  expr = _}) -> "ReassignVariable"
+    | Expr (ExprFunDefine {id = _;
+                           tp = _;
+                           ret = _}) -> "FunDefine"
+    | Expr (ExprFunDeclare {id = _;
+                            visibility = _;
+                            args = _;
+                            body = _}) -> "FunDeclare"
+    | Expr (ExprFunCall {id = _;
+                         args = _}) -> "FunCall"
     | Expr (ExprNewline) -> "Newline"
     | Expr (ExprCommentOneLine) -> "CommentOneLine"
     | Expr (ExprCommentMultiLine) -> "CommentMultiLine"

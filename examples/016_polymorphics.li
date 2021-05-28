@@ -4,8 +4,8 @@ const list = import "Container.List"
 ** polymorphic with function
 ** polymorphic flag #<id>
 
-my_poly_function<#a> :: #a -> #a
-fun my_poly_function<#a> x = x end
+my_poly_function :: #a -> #a
+fun my_poly_function x = x end
 
 my_poly_function(12) ** u32
 my_poly_function(2.2) ** f32
