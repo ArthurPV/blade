@@ -67,6 +67,7 @@ type lily_type =
     | LilyTypeTuple of lily_type array
     | LilyTypeUnit
     | LilyTypePolymorphic
+    | LilyTypeAnonymousFuncton
     | LilyTypeNil
     | LilyTypeUndef
     | LilyTypeUserDefinedType of string
@@ -160,10 +161,10 @@ type expr =
         left: expr;
         binop: binop;
         right: expr;
-    }
+    } 
     | ExprUnary of {
-        left: expr;
         unary: unary;
+        right: expr;
     }
     | ExprVarDefine of expr (* var a *)
     | ExprVarDeclareTypeAndAssign of {
@@ -193,10 +194,6 @@ type expr =
         id: expr;
         expr: expr;
     } (* const a = <expr> *)
-    | ExprVariableReassign of {
-        id: expr;
-        expr: expr;
-    } (* a = <expr> *)
     | ExprVariableCall of expr (* a *)
     | ExprFunDefine of {
         id: expr;
@@ -426,12 +423,12 @@ let ast_kind_to_str kind =
     | Expr (ExprBinop {left = _;
                        binop = BinopOr;
                        right = _}) -> "Or"
-    | Expr (ExprUnary {left = _;
-                       unary = UnaryPositive}) -> "Positive"
-    | Expr (ExprUnary {left = _;
-                       unary = UnaryNegative}) -> "Negative"
-    | Expr (ExprUnary {left = _;
-                       unary = UnaryNot}) -> "Not"
+    | Expr (ExprUnary {unary = UnaryPositive;
+                       right = _}) -> "Positive"
+    | Expr (ExprUnary {unary = UnaryNegative;
+                       right = _}) -> "Negative"
+    | Expr (ExprUnary {unary = UnaryNot;
+                       right = _}) -> "Not"
     | Expr (ExprVarDefine _) -> "VarDefine"
     | Expr (ExprVarDeclareTypeAndAssign {id = _;
                                          tp = _;
@@ -449,8 +446,6 @@ let ast_kind_to_str kind =
                                  tp = _}) -> "ConstDefineType"
     | Expr (ExprConstAssign {id = _;
                              expr = _}) -> "ConstAssign"
-    | Expr (ExprVariableReassign {id = _;
-                                  expr = _}) -> "ReassignVariable"
     | Expr (ExprFunDefine {id = _;
                            tp = _;
                            ret = _}) -> "FunDefine"

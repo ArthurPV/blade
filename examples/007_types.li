@@ -6,15 +6,8 @@ end
 
 new_person :: string -> i8 -> Person
 fun new_person name age = 
-	const p = Person {	
+	Person {	
 		name = name,
 		age = age
 	}
-	p
-end
-
-** define data
-data Work = 
-	Name of string string,
-	Salary of i32,
 end

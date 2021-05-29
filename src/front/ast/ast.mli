@@ -67,6 +67,7 @@ type lily_type =
     | LilyTypeTuple of lily_type array
     | LilyTypeUnit
     | LilyTypePolymorphic
+    | LilyTypeAnonymousFuncton
     | LilyTypeNil
     | LilyTypeUndef
     | LilyTypeUserDefinedType of string
@@ -78,41 +79,37 @@ type expr =
         right: expr;
     }
     | ExprUnary of {
-        left: expr;
         unary: unary;
+        right: expr;
     }
-    | ExprVarDefine of expr (* var a *)
+    | ExprVarDefine of expr (* var <id> *)
     | ExprVarDeclareTypeAndAssign of {
         id: expr;
         tp: lily_type;
         expr: expr;
-    } (* var a :: <type> = <expr> *)
+    } (* var <id> :: <tp> = <expr> *)
     | ExprVarDefineType of {
         id: expr;
         tp: lily_type;
-    } (* var a :: <type> *)
+    } (* var <id> :: <tp> *)
     | ExprVarAssign of {
         id: expr;
         expr: expr;
-    } (* var a = <expr> *)
-    | ExprConstDefine of expr (* const a *)
+    } (* var <id> = <expr> *)
+    | ExprConstDefine of expr (* const <id> *)
     | ExprConstDeclareTypeAndAssign of {
         id: expr;
         tp: lily_type;
         expr: expr;
-    } (* const a :: <type> = <expr> *)
+    } (* const <id> :: <tp> = <expr> *)
     | ExprConstDefineType of {
         id: expr;
         tp: lily_type;
-    } (* const a :: <type> *)
+    } (* const <id> :: <tp> *)
     | ExprConstAssign of {
         id: expr;
         expr: expr;
-    } (* const a = <expr> *)
-    | ExprVariableReassign of {
-        id: expr;
-        expr: expr;
-    } (* a = <expr> *)
+    } (* const <id> = <expr> *)
     | ExprVariableCall of expr (* a *)
     | ExprFunDefine of {
         id: expr;
@@ -218,7 +215,7 @@ type stmt =
     | StmtIf of {
         cond: expr;
         body: expr array;
-    }
+    } (* if <cond> then <body> end *)
     | StmtSwitch of {
         elem: expr;
         body: expr array;

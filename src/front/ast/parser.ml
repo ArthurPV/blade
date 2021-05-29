@@ -73,10 +73,10 @@ module ParseExpr = struct
     let parse_unary ast = 
         let right = parse_expr_value (ParserUtil.get_next_token ast) in 
         match right with
-        | Ok l -> (
+        | Ok r -> (
             match token_to_unary ast.current_token with
-            | Ok u -> (Ok (ExprUnary {left = l; 
-                                      unary = u}))
+            | Ok u -> (Ok (ExprUnary {unary = u;
+                                      right = r}))
             | Error e -> Error e)
         | _ -> Error (ErrorIdInvalidValue)
 
@@ -140,16 +140,6 @@ module ParseExpr = struct
         | Token.Literal LiteralChar (c) -> Ok (ExprLiteral (LiteralChar (c)))
         | Token.Literal LiteralString (s) -> Ok (ExprLiteral (LiteralString (s)))
         | _ -> Error (ErrorIdUnexpectedExpr)
-
-    (* a = <expr> *)
-    let parse_assign ast id = 
-        ParserUtil.next_token ast;
-        match read_expr ast with
-        | Ok expr -> (ParserUtil.next_token ast;
-                      parse_end_line ast;
-                      (Ok (ExprVariableReassign {id = id; 
-                                                 expr = expr})))
-        | Error e -> Error e
 
     (* TODO: error *)
     (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
@@ -238,11 +228,22 @@ let parse_expr_identifier ast =
         | Token.Identifier s -> (
             let id = ExprIdentifier s in 
             ParserUtil.next_token ast;
-            if token_to_binop ast.current_token = (Ok BinopAssign) then parse_assign ast id
-            else if ast.current_token = Token.Separator SeparatorColonColon then parse_fun_define ast id
+            if ast.current_token = Token.Separator SeparatorColonColon then parse_fun_define ast id
             else if ast.current_token = Token.Separator SeparatorLeftParen then parse_fun_call ast id
             else (Error (ErrorIdSyntaxError)))
         | _ -> Error (ErrorIdMissIdentifier)
+
+    let parse_variable_declare_type_and_assign ast ~mut =
+        Error (ErrorIdMissIdentifier)
+
+    let parse_variable_define_type ast ~mut = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_variable_assign ast ~mut = 
+        Error (ErrorIdMissIdentifier)
+
+    let parse_variable_define ast ~mut = 
+        Error (ErrorIdMissIdentifier)
 
     (* var <id> *)
     (* var <id> :: <type> *)

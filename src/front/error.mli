@@ -19,6 +19,7 @@ type error_id =
     | ErrorIdUnexpectedExpr
     | ErrorIdUnexpectedAst
     | ErrorIdSyntaxError
+    | ErrorIdUnexpectedScope
 
 type error = {
     mutable id: error_id array;

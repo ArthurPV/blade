@@ -19,6 +19,7 @@ type error_id =
     | ErrorIdUnexpectedExpr
     | ErrorIdUnexpectedAst
     | ErrorIdSyntaxError
+    | ErrorIdUnexpectedScope
 
 type error = {
     mutable id: error_id array;
@@ -62,6 +63,7 @@ let error_id_to_str id =
     | ErrorIdUnexpectedExpr -> "unexpected expression"
     | ErrorIdUnexpectedAst -> "unexpected AST"
     | ErrorIdSyntaxError -> "syntax error"
+    | ErrorIdUnexpectedScope -> "unexpected scope"
 
 let print_error id ~line ~col filename = 
     Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename line col;
@@ -75,4 +77,3 @@ let print_errors error filename =
     done;
     if error.count > 0 then Printf.printf "\027[1m\027[31mError\027[0m\027[1m: Lily has emited %d errors\027[0m\n" (error.count)
     else ()
-

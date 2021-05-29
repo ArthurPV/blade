@@ -7,9 +7,9 @@ let valid_tuple_expr kind =
                            right}) -> Ok (Ast.ExprBinop {left = left;
                                                          binop = binop; 
                                                          right = right})
-    | Ast.Expr (ExprUnary {left;
-                           unary}) -> Ok (Ast.ExprUnary {left = left;
-                                                         unary = unary})
+    | Ast.Expr (ExprUnary {unary;
+                           right}) -> Ok (Ast.ExprUnary {unary = unary;
+                                                         right = right})
     | Ast.Expr (ExprFunCall {id;
                              args}) -> Ok (Ast.ExprFunCall {id = id;
                                                             args = args})
