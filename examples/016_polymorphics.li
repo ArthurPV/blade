@@ -1,5 +1,6 @@
 const vec = import "Container.Vector"
 const list = import "Container.List"
+const io = import "Std.Io"
 
 ** polymorphic with function
 ** polymorphic flag #<id>
@@ -16,4 +17,12 @@ my_poly_function((vec.T<u32>){1,2,3,4,5}) ** Container.Vector.T<u32>
 ** polymorphic user defined type
 type value<#a> = 
 	v: a
+end
+
+fun main = 
+	io.println("{}", my_poly_function(12))
+	io.println("{}", my_poly_function(2.3))
+	io.println("{}", my_poly_function([2,3,3])[0])
+	io.println("{}", my_poly_function((list.T<u32>){1,2,3,4,5})[0])
+	io.println("{}", my_poly_function((vec.T<u32>){1,2,3,4,5})[0])
 end

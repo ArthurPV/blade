@@ -1,9 +1,11 @@
 const str = import "Std.String"
+const io = import "Std.Io"
 
-var s = "hello"
-var s_length = str.length(s)
-
-println("{}", s_length)
+const s = "hello"
 
 get_c :: string -> u16 -> char
 fun get_c s p = s[p] end
+
+fun main = 	
+	io.println("{}", str.length(s))
+end

@@ -1,8 +1,12 @@
+const io = import "Std.Io"
+
 ** define simple macro
 macro add x = x*x end
-
-** call macro
-@add(3) ** 9
-
 macro PI = 3.14159265359 end
-@PI() ** 3.14159265359
+
+fun main =
+	** call macro
+	** @<id>(<arg>,...)
+	io.println("add: {}", @add(3))
+	io.println("pi: {}", @PI())
+end

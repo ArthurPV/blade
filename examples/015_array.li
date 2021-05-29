@@ -5,7 +5,11 @@ array is default container
 ex: [u32] is array 
 *)
 
+const io = import "Std.Io"
+
 get_array :: [u32] -> [u32]
 fun get_array a = a end
 
-get_array([1,2,3,4,5])
+fun main = 
+	io.println("{}", get_array([2,3,4,5])[0])
+end

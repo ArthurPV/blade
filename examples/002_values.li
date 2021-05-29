@@ -1,31 +1,33 @@
-** int
-var a = 2
-var b = 5
+fun main = 
+	** int
+	var a = 2
+	var b = 5
 
-** float
-var c = 3.33
-var d = 2.222
+	** float
+	var c = 3.33
+	var d = 2.222
 
-** string
-var e = "hello"
-var f = e + "world"
+	** string
+	var e = "hello"
+	var f = e + "world"
 
-** char
-var g = 's'
-var h = 'a'
+	** char
+	var g = 's'
+	var h = 'a'
 
-** bool
-var i = true
-var j = false
+	** bool
+	var i = true
+	var j = false
 
-** array
-var k = [1, 2, 3, 4, 5]
+	** array
+	var k = [1, 2, 3, 4, 5]
 
-** array multidimensional
-var l = [[1, 2], [1, 2], [1, 2]]
+	** array multidimensional
+	var l = [[1, 2], [1, 2], [1, 2]]
 
-** array-tuple
-var m = [(1, 2), (1, 2)]
+	** array-tuple
+	var m = [(1, 2), (1, 2)]
 
-** tuple
-var n = (1, 2)
+	** tuple
+	var n = (1, 2)
+end

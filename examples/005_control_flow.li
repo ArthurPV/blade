@@ -1,12 +1,11 @@
+const io = import "Std.Io"
+
 ** if
 sub :: i32 -> i32 -> i32
 fun sub x y =
 	if x == 0 and y == 0 then 0 end
 	x-y
 end
-
-sub(3, 5) ** -2
-sub(0, 3) ** 0
 
 ** if..elif
 isZero :: i32 -> i32 -> i32
@@ -15,10 +14,6 @@ fun isZero x y =
 	elif x+y > 0 then false end
 	true
 end
-
-add(3, 5) ** false
-add(0, 2) ** false
-add(0, 0) ** true
 
 isNotZero :: i32 -> bool
 fun isNotZero x =
@@ -36,6 +31,9 @@ fun greaterEqToZero x =
 	end
 end
 
-greaterEqToZero(4) ** true
-greaterEqToZero(0) ** true
-greaterEqToZero(-2) ** false
+fun main = 
+	io.println("sub: {}", sub(2,3))
+	io.println("is zero: {}", isZero(2,3))
+	io.println("is not zero: {}", isNotZero(2))
+	io.println("greater eq to zero: {}", greaterEqToZero(2))
+end

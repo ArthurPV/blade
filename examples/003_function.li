@@ -12,8 +12,8 @@ div :: i32 -> i32 -> i32
 fun div x y = x/y end
 
 ** anonymous functions
-var add = lambda x y -> x+y end 3 2
-var div = lambda x y -> x/y end 3 2
+const add_lamb = lambda x y -> x+y end 3 2
+const div_lamb = lambda x y -> x/y end 3 2
 
 ** define types in function
 start_loop :: i32 -> unit
@@ -25,7 +25,6 @@ fun start_loop max =
 	end
 end
 
-start_loop(0, 10)
 
 ** array = []
 merge_array :: [i32] -> [i32] -> [i32]
@@ -33,7 +32,14 @@ fun merge_array a b =
 	a ++ b
 end
 
-merge_array([1..5], [6..10]) ** [1,2,3,4,5,6,7,8,9,10]
-
 pow :: i32 -> i32
 fun pow x = x*x end
+
+fun main = 
+	io.println("add: {}", add(2,3))
+	io.println("div: {}", div(2,3))
+	io.println("add lambda: {}", add_lamb);
+	io.println("div lambda: {}", div_lamb);
+	io.println("merge array: {}", merge_array([2,2,2], [2,3,4]));
+	io.println("pow: {}", pow(2))
+end

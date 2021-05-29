@@ -1,6 +1,9 @@
 const vec = import "Container.Vector"
+const io = import "Std.Io"
 
 get_vector :: vec.T<u32> -> vec.T<u32>
 fun get_vector a = a end
 
-get_vector({2, 4, 6, 8, 10})
+fun main =
+	io.println("{}", get_vector({2,3,4,5})[0])	
+end

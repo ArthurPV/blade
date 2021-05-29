@@ -1,8 +1,11 @@
 const list = import "Container.List"
+const io = import "Std.Io"
 
 doubleList :: list.T<u32> -> list.T<u32>
 fun doubleList l = 
 	list.map(l, (x -> x*2))
 end
 
-doubleList({1,2,3,4,5})
+fun main =
+	io.println("{}", doubleList({1,2,3,4,5})[0])
+end

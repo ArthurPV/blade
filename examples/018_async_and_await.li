@@ -1,3 +1,6 @@
 ** create simple function with async
 simple :: i32 -> i32 -> i32
 async fun simple x y = x + y end
+
+fun main =
+end

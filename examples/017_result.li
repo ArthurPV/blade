@@ -1,8 +1,20 @@
+const std = import "Std"
 const result = import "Std.Result"
+const io = import "Std.Io"
 
 ** return result type in function
-isPositive :: i32 -> result.T<i32, bool>
+isPositive :: i32 -> result.T<i32, unit>
 fun isPositive x =
 	if x == 0 then result.Ok(x)
-	else result.Error(false)
+	else result.Error(()) 
+	end
+end
+
+fun main =
+	var ispositive = 
+	switch isPositive(2) 
+		result.Ok(x) => x,
+		result.Error(undef) => std.exit(1)
+	end
+	io.println("{}", ispositive)
 end
