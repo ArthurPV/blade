@@ -54,8 +54,11 @@ let get_line_error error filename pos =
         match try_read () with
         | Some s -> (
             if !count = Stdlib.Array.get error.s_line pos && !count <= Stdlib.Array.get error.e_line pos then
-                loop (s :: acc)
-            else loop (acc))
+                (count := !count+1;
+                loop (s :: acc))
+            else 
+                (count := !count+1;
+                 loop (acc)))
         | None -> close_in ic; List.rev acc in
     loop []
 
