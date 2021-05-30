@@ -205,7 +205,6 @@ type expr =
         id: expr;
         args: expr array;
     } (* @<expr>(<arg>,...) *)
-    | ExprNewline
     | ExprCommentOneLine
     | ExprCommentMultiLine
     | ExprCommentDoc of string

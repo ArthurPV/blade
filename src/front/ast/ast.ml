@@ -289,7 +289,6 @@ type expr =
         id: expr;
         args: expr array;
     } (* @<expr>(<arg>,...) *)
-    | ExprNewline
     | ExprCommentOneLine
     | ExprCommentMultiLine
     | ExprCommentDoc of string
@@ -497,7 +496,6 @@ let ast_kind_to_str kind =
                               body = _}) -> "MacroDeclare"
     | Expr (ExprMacroCall {id = _;
                            args = _}) -> "MacroCall"
-    | Expr (ExprNewline) -> "Newline"
     | Expr (ExprCommentOneLine) -> "CommentOneLine"
     | Expr (ExprCommentMultiLine) -> "CommentMultiLine"
     | Expr (ExprCommentDoc s) -> Printf.sprintf "CommentDoc -> %s" s

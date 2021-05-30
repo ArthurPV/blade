@@ -475,6 +475,7 @@ module ParseStmt = struct
 end
 
 let parser ast =
+    ParserUtil.skip_newline ast;
     match ast.current_token with
     | Token.Operator OperatorPlus
     | Token.Operator OperatorMinus
@@ -515,7 +516,6 @@ let parser ast =
         match ParseExpr.parse_const ast with
         | Ok v -> Ok (Expr (v))
         | Error e -> Error e)
-    | Token.Separator SeparatorNewline -> Ok (Expr (ExprNewline))
     | Token.Comment CommentOneLine -> (
         ParserUtil.next_token ast;
         Ok (Expr (ExprCommentOneLine)))
@@ -590,7 +590,6 @@ let run_parser ast =
         if ast.pos < (Stdlib.Array.length (ast.stream.tok))-1 then
         match parser ast with
         | Error e -> print_error e ~line:ast.current_location.line ~col:ast.current_location.col ast.filename
-        | Ok (Expr (ExprNewline)) -> ParserUtil.next_token ast; loop (ast)
         | Ok p -> (
             Printf.printf "%s\n" (ast_kind_to_str (p));
             push_ast (new_stream_ast) p;
