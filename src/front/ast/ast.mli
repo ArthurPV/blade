@@ -140,7 +140,7 @@ type expr =
         items: expr array;
     } (* (1,2) *)
     | ExprIdentifier of string
-    | ExprImport of lily_type (* import <module> *)
+    | ExprImport of literal (* import <module> *)
     | ExprShare of expr array (* share <module name>,<module name>,... *)
     | ExprAwait of expr (* await <expr> *)
     | ExprTypeDefine of expr (* type T *)

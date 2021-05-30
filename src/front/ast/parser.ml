@@ -183,6 +183,11 @@ module ParseExpr = struct
                                        ret = ret})
         | Error e -> Error e
 
+    
+    (* fun <id> <arg>,<arg>... = <body> *)
+    let parse_fun_declare ast = 
+        Error (ErrorIdMissToken)
+
     (* sum(<expr>, <expr>) *)
     let parse_fun_call ast id = 
         ParserUtil.next_token ast;
@@ -357,15 +362,17 @@ let parse_expr_identifier ast =
                                  Ok (ExprConstDefine (id))))
         | _ -> Error (ErrorIdMissIdentifier)
 
-    let parse_fun ast = 
-        Error (ErrorIdMissIdentifier)
-
     let parse_async_fun ast = 
         Error (ErrorIdMissIdentifier)
 
     (* import <expr> *)
     let parse_import ast = 
-        Ok (ExprNewline)
+        ParserUtil.next_token ast;
+        match ast.current_token with
+        | Token.Literal LiteralString(s) -> (
+            ParserUtil.next_token ast;
+            Ok (ExprImport (LiteralString (s))))
+        | _ -> Error (ErrorIdUnexpectedImportValue)
 
     let parse_share ast = 
         Error (ErrorIdMissIdentifier)
@@ -387,7 +394,12 @@ let parse_expr_identifier ast =
         Error (ErrorIdMissIdentifier)
 
     let parse_pub ast = 
-        Error (ErrorIdMissIdentifier)
+        match ParserUtil.get_next_token ast with
+        | Ok (Token.Keyword KeywordFun) -> (
+            ParserUtil.next_token ast;
+            parse_fun_declare ast)
+        | Ok _ -> Error (ErrorIdMissToken)
+        | Error e -> Error e
 
     let parse_class_init ast = 
         Error (ErrorIdMissIdentifier)
@@ -524,7 +536,7 @@ let parser ast =
         | Ok v -> Ok (Expr (v))
         | Error e -> Error e)
     | Token.Keyword KeywordFun -> (
-        match ParseExpr.parse_fun ast with
+        match ParseExpr.parse_fun_declare ast with
         | Ok v -> Ok (Expr (v))
         | Error e -> Error e)
     | Token.Keyword KeywordImport -> (
@@ -546,6 +558,30 @@ let parser ast =
     | Token.Keyword KeywordClass -> (
         match ParseExpr.parse_class ast with
         | Ok v -> Ok (Expr (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordPub -> (
+        match ParseExpr.parse_pub ast with
+        | Ok v -> Ok (Expr (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordIf -> (
+        match ParseStmt.parse_stmt_if ast with
+        | Ok v -> Ok (Stmt (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordSwitch -> (
+        match ParseStmt.parse_stmt_switch ast with
+        | Ok v -> Ok (Stmt (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordWhile -> (
+        match ParseStmt.parse_stmt_while ast with
+        | Ok v -> Ok (Stmt (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordFor -> (
+        match ParseStmt.parse_stmt_for ast with
+        | Ok v -> Ok (Stmt (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordLoop -> (
+        match ParseStmt.parse_stmt_loop ast with
+        | Ok v -> Ok (Stmt (v))
         | Error e -> Error e)
     | _ -> Error (ErrorIdUnexpectedAst)
 

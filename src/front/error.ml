@@ -20,6 +20,7 @@ type error_id =
     | ErrorIdUnexpectedAst
     | ErrorIdSyntaxError
     | ErrorIdUnexpectedScope
+    | ErrorIdUnexpectedImportValue
 
 type error = {
     mutable id: error_id array;
@@ -95,6 +96,7 @@ let error_id_to_str id =
     | ErrorIdUnexpectedAst -> "unexpected AST"
     | ErrorIdSyntaxError -> "syntax error"
     | ErrorIdUnexpectedScope -> "unexpected scope"
+    | ErrorIdUnexpectedImportValue -> "unexpected import value"
 
 let print_error id ~line ~col filename = 
     Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename line col;

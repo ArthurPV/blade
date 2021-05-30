@@ -224,7 +224,7 @@ type expr =
         items: expr array;
     } (* (1,2) *)
     | ExprIdentifier of string
-    | ExprImport of lily_type (* import <module> *)
+    | ExprImport of literal (* import <module> *)
     | ExprShare of expr array (* share <module name>,<module name>,... *)
     | ExprAwait of expr (* await <expr> *)
     | ExprTypeDefine of expr (* type T *)
@@ -437,7 +437,6 @@ let ast_kind_to_str kind =
                                tp = _}) -> "VarDefineType"
     | Expr (ExprVarAssign {id = _;
                            expr = _}) -> "VarAssign"
-    | Expr (ExprVariableCall _) -> "VarCall"
     | Expr (ExprConstDefine _) -> "ConstDefine"
     | Expr (ExprConstDeclareTypeAndAssign {id = _;
                                            tp = _;
@@ -446,6 +445,7 @@ let ast_kind_to_str kind =
                                  tp = _}) -> "ConstDefineType"
     | Expr (ExprConstAssign {id = _;
                              expr = _}) -> "ConstAssign"
+    | Expr (ExprVariableCall _) -> "VarCall"
     | Expr (ExprFunDefine {id = _;
                            tp = _;
                            ret = _}) -> "FunDefine"
@@ -455,6 +455,48 @@ let ast_kind_to_str kind =
                             body = _}) -> "FunDeclare"
     | Expr (ExprFunCall {id = _;
                          args = _}) -> "FunCall"
+    | Expr (ExprAnonymousFun {args = _;
+                              body = _;
+                              call = _}) -> "AnonymousFun"
+    | Expr (ExprArray {tp = _;
+                       items = _}) -> "Array"
+    | Expr (ExprTuple {tp = _;
+                       items = _}) -> "Tuple"
+    | Expr (ExprImport (_)) -> "Import"
+    | Expr (ExprShare (_)) -> "Share"
+    | Expr (ExprAwait (_)) -> "Await"
+    | Expr (ExprTypeDefine (_)) -> "TypeDefine"
+    | Expr (ExprTypeDeclare {id = _;
+                             field = _}) -> "TypeDeclare"
+    | Expr (ExprTypeAssignField {id = _;
+                                 expr = _}) -> "Field"
+    | Expr (ExprTypeCall {id = _;
+                          field = _}) -> "TypeCall"
+    | Expr (ExprDataDefine {id = _;
+                            args = _}) -> "DataDefine"
+    | Expr (ExprDataDeclare {id = _;
+                             args = _;
+                             visibility = _;
+                             field = _;
+                             constructor = _}) -> "DataDeclare"
+    | Expr (ExprExplicitModule {id = _;
+                                body = _}) -> "ExplicitModule"
+    | Expr (ExprModule {id = _;
+                        visibility = _;
+                        body = _}) -> "Module"
+    | Expr (ExprInitClass {args = _;
+                           body = _}) -> "InitClass"
+    | Expr (ExprExplicitClass {id = _;
+                               body = _}) -> "ExplicitClass"
+    | Expr (ExprClass {id = _;
+                       body = _}) -> "Class"
+    | Expr (ExprCallClass {id = _;
+                           args = _}) -> "CallClass"
+    | Expr (ExprMacroDeclare {id = _;
+                              args = _;
+                              body = _}) -> "MacroDeclare"
+    | Expr (ExprMacroCall {id = _;
+                           args = _}) -> "MacroCall"
     | Expr (ExprNewline) -> "Newline"
     | Expr (ExprCommentOneLine) -> "CommentOneLine"
     | Expr (ExprCommentMultiLine) -> "CommentMultiLine"

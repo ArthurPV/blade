@@ -22,6 +22,7 @@ module ParseExpr : sig
     val parse_identifier : ast -> (expr, error_id) result
     val read_expr : ast -> (expr, error_id) result
     val parse_fun_define : ast -> expr -> (expr, error_id) result
+    val parse_fun_declare : ast -> (expr, error_id) result
     val parse_fun_call : ast -> expr -> (expr, error_id) result
     val parse_expr_identifier : ast -> (expr, error_id) result
     val parse_variable_declare_type_and_assign : ast -> mut:bool -> (expr, error_id) result
@@ -30,7 +31,6 @@ module ParseExpr : sig
     val parse_variable_define : ast -> mut:bool -> (expr, error_id) result
     val parse_var : ast -> (expr, error_id) result
     val parse_const : ast -> (expr, error_id) result
-    val parse_fun : ast -> (expr, error_id) result
     val parse_async_fun : ast -> (expr, error_id) result
     val parse_import : ast -> (expr, error_id) result
     val parse_share : ast -> (expr, error_id) result

@@ -1,3 +1,5 @@
+import "Mymodule"
+
 ** Mutable variables
 var a
 var b :: i32
