@@ -16,6 +16,8 @@ module ParseExpr : sig
     val parse_expr_value : (token, error_id) result -> (expr, error_id) result
     val parse_unary : ast -> (expr, error_id) result
     val parse_binop_operator : ast -> (expr, error_id) result
+    val parse_binop_assign : ast -> (expr, error_id) result
+    val parse_binop_logical : ast -> (expr, error_id) result
     val parse_end_line : ast -> unit
     val parse_identifier : ast -> (expr, error_id) result
     val read_expr : ast -> (expr, error_id) result

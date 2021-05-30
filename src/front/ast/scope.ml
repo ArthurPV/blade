@@ -33,6 +33,9 @@ let ast_to_scope s_kind =
                        body}) -> Ok (ScopeKindClass s_kind)
     | _ -> Error (ErrorIdUnexpectedScope)
 
+
+(* use in check scope *)
+(* after parser *)
 module FindInScope = struct
     let find_in_function s_kind = 
         ()
@@ -47,5 +50,8 @@ module FindInScope = struct
         ()
 
     let find_in_global s_kind = 
+        ()
+
+    let find_in_local s_kind = 
         ()
 end

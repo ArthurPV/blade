@@ -104,6 +104,14 @@ module ParseExpr = struct
               | Error e -> Error e)
           | _ -> Error (ErrorIdInvalidValue)
 
+    (* = += -= *= /= %= ^= *)
+    let parse_binop_assign ast = 
+        Error (ErrorIdMissIdentifier)
+
+    (* and or *)
+    let parse_binop_logical ast = 
+        Error (ErrorIdMissIdentifier)
+
     let parse_end_line ast =
         if ast.pos = (Stdlib.Array.length (ast.stream.tok))-1 then ()
         else
@@ -466,6 +474,23 @@ let parser ast =
         match ParseExpr.parse_binop_operator ast with
         | Ok b -> Ok (Expr (b))
         | Error e -> Error e)
+    | Token.Operator OperatorEq
+    | Token.Operator OperatorPlusEq
+    | Token.Operator OperatorMinusEq
+    | Token.Operator OperatorStarEq
+    | Token.Operator OperatorSlashEq
+    | Token.Operator OperatorPercentageEq
+    | Token.Operator OperatorHatEq
+    -> (
+        match ParseExpr.parse_binop_assign ast with
+        | Ok b -> Ok (Expr (b))
+        | Error e -> Error e)
+    | Token.Keyword KeywordAnd 
+    | Token.Keyword KeywordOr
+    -> (
+        match ParseExpr.parse_binop_logical ast with
+        | Ok b -> Ok (Expr (b))
+        | Error e -> Error e)
     | Token.Keyword KeywordNot -> (
         match ParseExpr.parse_unary ast with
         | Ok u -> Ok (Expr (u))
@@ -496,6 +521,30 @@ let parser ast =
         Ok (Expr (ExprCommentDoc s)))
     | Token.Identifier s -> (
         match ParseExpr.parse_expr_identifier ast with
+        | Ok v -> Ok (Expr (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordFun -> (
+        match ParseExpr.parse_fun ast with
+        | Ok v -> Ok (Expr (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordImport -> (
+        match ParseExpr.parse_import ast with
+        | Ok v -> Ok (Expr (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordShare -> (
+        match ParseExpr.parse_share ast with
+        | Ok v -> Ok (Expr (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordAwait -> (
+        match ParseExpr.parse_await ast with
+        | Ok v -> Ok (Expr (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordLambda -> (
+        match ParseExpr.parse_anonymous_fun ast with
+        | Ok v -> Ok (Expr (v))
+        | Error e -> Error e)
+    | Token.Keyword KeywordClass -> (
+        match ParseExpr.parse_class ast with
         | Ok v -> Ok (Expr (v))
         | Error e -> Error e)
     | _ -> Error (ErrorIdUnexpectedAst)

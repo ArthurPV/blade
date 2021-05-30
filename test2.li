@@ -1,5 +1,4 @@
 var a = 20
-a = 2
 
 ** this is a comment
 var b = 10

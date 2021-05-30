@@ -21,4 +21,5 @@ module FindInScope : sig
     val find_in_module : scope_kind -> unit
     val find_in_class : scope_kind -> unit
     val find_in_global : scope_kind -> unit
+    val find_in_local : scope_kind -> unit
 end

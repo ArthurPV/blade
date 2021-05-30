@@ -1,0 +1,6 @@
+(test
+  (name parser_test)
+  (libraries
+    oUnit
+    lilyFront
+    lilyAst))
