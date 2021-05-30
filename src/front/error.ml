@@ -25,20 +25,48 @@ type error = {
     mutable id: error_id array;
     mutable line: int array;
     mutable col: int array;
+    mutable s_line: int array;
+    mutable s_col: int array;
+    mutable e_line: int array;
+    mutable e_col: int array;
     mutable count: int;
+    mutable line_error: string;
 }
 
-let new_error = {
+let new_error line_error = {
     id = [||];
     line = [||];
     col = [||];
+    s_line = [||];
+    s_col = [||];
+    e_line = [||];
+    e_col = [||];
     count = 0;
+    line_error = line_error;
 }
 
-let push_error error id ~line ~col = 
+let get_line_error error filename pos = 
+    let ic = open_in filename in
+    let try_read () =
+        try Some (input_line ic) with End_of_file -> None in
+    let count = ref 0 in
+    let rec loop acc =
+        match try_read () with
+        | Some s -> (
+            if !count = Stdlib.Array.get error.s_line pos && !count <= Stdlib.Array.get error.e_line pos then
+                loop (s :: acc)
+            else loop (acc))
+        | None -> close_in ic; List.rev acc in
+    loop []
+
+let push_error error id ~line ~col ~s_line ~s_col ~e_line ~e_col = 
     error.id <- Stdlib.Array.append error.id [|id|];
     error.line <- Stdlib.Array.append error.line [|line|];
     error.col <- Stdlib.Array.append error.col [|col|];
+    error.s_line <- Stdlib.Array.append error.s_line [|s_line|];
+    error.s_col <- Stdlib.Array.append error.s_col [|s_col|]; 
+    error.e_line <- Stdlib.Array.append error.e_line [|e_line|];
+    error.e_col <- Stdlib.Array.append error.e_col [|e_col|];
     error.count <- error.count + 1
 
 let error_id_to_str id =

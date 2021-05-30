@@ -498,12 +498,20 @@ let tokenizer lex =
     | _ -> Error (ErrorIdUnexpectedToken (String.make 1 lex.read.c))
 
 let run_tokenizer lex = 
-    let error = new_error in
+    let error = new_error "" in
     let rec loop lex =
     if lex.info.pos < lex.read.length-1 then
         match tokenizer lex with
         | Error e -> (
-            push_error error e ~line:lex.info.line ~col:lex.info.col;
+            push_error
+            error
+            e 
+            ~line:lex.info.line 
+            ~col:lex.info.col
+            ~s_line:lex.info.s_line
+            ~s_col:lex.info.s_col
+            ~e_line:lex.info.e_line
+            ~e_col:lex.info.e_col;
             LexerUtil.end_token lex;
             LexerUtil.next_char lex;
             loop (lex))
