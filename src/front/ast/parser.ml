@@ -56,6 +56,7 @@ module ParserUtil = struct
             (next_token ast;
              skip_newline (ast))
         else ()
+
 end
 
 module ParseExpr = struct
@@ -380,8 +381,12 @@ let parse_expr_identifier ast =
     let parse_body ast = 
         Error (ErrorIdMissIdentifier)
 
+    (* await <expr> *)
     let parse_await ast = 
-        Error (ErrorIdMissIdentifier)
+        ParserUtil.next_token ast;
+        match read_expr ast with
+        | Ok e -> Ok (ExprAwait (e))
+        | Error e -> Error e
 
     let parse_anonymous_fun ast = 
         Error (ErrorIdMissIdentifier)
