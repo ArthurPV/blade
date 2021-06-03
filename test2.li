@@ -1,6 +1,4 @@
-var a = 20
-
-** this is a comment
-var b = 10
-
-var c = 30
+var a
+var b = 3
+var c :: i32 = 3
+var d :: i32

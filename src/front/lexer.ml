@@ -528,7 +528,7 @@ let run_tokenizer lex =
             ~e_col:lex.info.e_col in
 
             push_token new_stream_token tok loc;
-            LexerUtil.next_char lex;
+	    LexerUtil.next_char lex;
             loop (lex)) in
 
     loop (lex);

@@ -247,18 +247,6 @@ let parse_expr_identifier ast =
             else (Error (ErrorIdSyntaxError)))
         | _ -> Error (ErrorIdMissIdentifier)
 
-    let parse_variable_declare_type_and_assign ast ~mut =
-        Error (ErrorIdMissIdentifier)
-
-    let parse_variable_define_type ast ~mut = 
-        Error (ErrorIdMissIdentifier)
-
-    let parse_variable_assign ast ~mut = 
-        Error (ErrorIdMissIdentifier)
-
-    let parse_variable_define ast ~mut = 
-        Error (ErrorIdMissIdentifier)
-
     (* var <id> *)
     (* var <id> :: <type> *)
     (* var <id> = <expr> *)

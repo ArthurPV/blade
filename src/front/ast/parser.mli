@@ -25,10 +25,6 @@ module ParseExpr : sig
     val parse_fun_declare : ast -> (expr, error_id) result
     val parse_fun_call : ast -> expr -> (expr, error_id) result
     val parse_expr_identifier : ast -> (expr, error_id) result
-    val parse_variable_declare_type_and_assign : ast -> mut:bool -> (expr, error_id) result
-    val parse_variable_define_type : ast -> mut:bool -> (expr, error_id) result
-    val parse_variable_assign : ast -> mut:bool -> (expr, error_id) result
-    val parse_variable_define : ast -> mut:bool -> (expr, error_id) result
     val parse_var : ast -> (expr, error_id) result
     val parse_const : ast -> (expr, error_id) result
     val parse_async_fun : ast -> (expr, error_id) result
