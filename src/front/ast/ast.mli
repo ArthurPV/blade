@@ -132,7 +132,6 @@ type expr =
         call: expr array;
     } (* (lambda x y -> x + y end)3 2 *)
     | ExprArray of {
-        tp: lily_type;
         items: expr array;
     } (* [2,1,2] *)
     | ExprTuple of {

@@ -379,8 +379,27 @@ let parse_expr_identifier ast =
     let parse_anonymous_fun ast = 
         Error (ErrorIdMissIdentifier)
 
+    (* [<expr>, <expr>, <expr>]  *)
     let parse_array ast =
-        Error (ErrorIdMissIdentifier)
+        ParserUtil.next_token ast; 
+        let expr_arr = ref [||] in
+        let rec loop ast = 
+            match read_expr ast with
+            | Ok expr -> (
+                expr_arr := Stdlib.Array.append !expr_arr [|expr|];
+                ParserUtil.next_token ast;
+                match ast.current_token with
+                | Token.Separator SeparatorComma -> (
+                    ParserUtil.next_token ast;
+                    loop (ast))
+                | Token.Separator SeparatorRightHook -> (
+                    ParserUtil.next_token ast;
+                    parse_end_line ast;
+                    ())
+                | _ -> print_error ErrorIdUnexpectedExpr ~line:ast.current_location.line ~col:ast.current_location.col ast.filename)
+            | Error e -> print_error e ~line:ast.current_location.line ~col:ast.current_location.col ast.filename in
+        loop (ast);
+        Ok (ExprArray {items = !expr_arr})
 
     (* (<expr>, <expr>, <expr>)  *)
     let parse_tuple ast = 
@@ -548,6 +567,10 @@ let parser ast =
         | Error e -> Error e)
     | Token.Separator SeparatorLeftParen -> (
         match ParseExpr.parse_tuple ast with
+        | Ok v -> Ok (Expr (v))
+        | Error e -> Error e)
+    | Token.Separator SeparatorLeftHook -> (
+        match ParseExpr.parse_array ast with
         | Ok v -> Ok (Expr (v))
         | Error e -> Error e)
     | Token.Keyword KeywordFun -> (

@@ -216,7 +216,6 @@ type expr =
         call: expr array;
     } (* (lambda x y -> x + y end)3 2 *)
     | ExprArray of {
-        tp: lily_type;
         items: expr array;
     } (* [2,1,2] *)
     | ExprTuple of {
@@ -456,8 +455,7 @@ let ast_kind_to_str kind =
     | Expr (ExprAnonymousFun {args = _;
                               body = _;
                               call = _}) -> "AnonymousFun"
-    | Expr (ExprArray {tp = _;
-                       items = _}) -> "Array"
+    | Expr (ExprArray {items = _}) -> "Array"
     | Expr (ExprTuple {items = _}) -> "Tuple"
     | Expr (ExprImport (_)) -> "Import"
     | Expr (ExprShare (_)) -> "Share"
