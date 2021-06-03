@@ -2,3 +2,8 @@ var a
 var b = 3
 var c :: i32 = 3
 var d :: i32
+
+add(2,2)
+sub(2,22,true,false)
+
+(1,2,3,4,5)

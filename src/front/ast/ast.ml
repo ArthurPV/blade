@@ -220,7 +220,6 @@ type expr =
         items: expr array;
     } (* [2,1,2] *)
     | ExprTuple of {
-        tp: lily_type;
         items: expr array;
     } (* (1,2) *)
     | ExprIdentifier of string
@@ -459,8 +458,7 @@ let ast_kind_to_str kind =
                               call = _}) -> "AnonymousFun"
     | Expr (ExprArray {tp = _;
                        items = _}) -> "Array"
-    | Expr (ExprTuple {tp = _;
-                       items = _}) -> "Tuple"
+    | Expr (ExprTuple {items = _}) -> "Tuple"
     | Expr (ExprImport (_)) -> "Import"
     | Expr (ExprShare (_)) -> "Share"
     | Expr (ExprAwait (_)) -> "Await"

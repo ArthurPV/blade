@@ -136,7 +136,6 @@ type expr =
         items: expr array;
     } (* [2,1,2] *)
     | ExprTuple of {
-        tp: lily_type;
         items: expr array;
     } (* (1,2) *)
     | ExprIdentifier of string
