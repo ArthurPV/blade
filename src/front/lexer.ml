@@ -215,7 +215,7 @@ module ScanChar = struct
 
         match String.concat "" !value with
         | "0x" -> Error ErrorIdInvalidStringLiteral
-        | _ -> Ok (int_of_string (String.concat "" !value))
+        | _ -> Ok (String.concat "" !value)
 
     let scan_oct lex = 
         let value = ref [] in
@@ -234,7 +234,7 @@ module ScanChar = struct
 
         match String.concat "" !value with
         | "0o" -> Error ErrorIdInvalidOctalLiteral
-        | _ -> Ok (int_of_string (String.concat "" !value))
+        | _ -> Ok (String.concat "" !value)
 
     let scan_bin lex = 
         let value = ref [] in
@@ -253,7 +253,7 @@ module ScanChar = struct
 
         match String.concat "" !value with
         | "0b" -> Error ErrorIdInvalidBinaryLiteral
-        | _ -> Ok (int_of_string (String.concat "" !value))
+        | _ -> Ok (String.concat "" !value)
 
     let scan_num lex = 
         let is_float = ref false in
@@ -282,9 +282,9 @@ module ScanChar = struct
         | _ -> value_str
         in
 
-        if !is_float = true then Ok (Literal (LiteralFloat ((float_of_string final_value), Normal)))
-        else if !is_sct = true then Ok (Literal (LiteralFloat ((float_of_string final_value), Scientific)))
-        else Ok (Literal (LiteralInt ((int_of_string final_value), Normal)))
+        if !is_float = true then Ok (Literal (LiteralFloat (final_value, Normal)))
+        else if !is_sct = true then Ok (Literal (LiteralFloat (final_value, Scientific)))
+        else Ok (Literal (LiteralInt (final_value, Normal)))
 end
 
 let tokenizer lex = 
@@ -486,7 +486,7 @@ let tokenizer lex =
             match ScanChar.scan_num lex with
             | Ok i -> Ok i
             | Error _ -> Error ErrorIdInvalidNumLiteral) 
-        | _ -> Ok (Literal (LiteralInt (0, Normal))))
+        | _ -> Ok (Literal (LiteralInt ("0", Normal))))
 
     | '0' .. '9' -> (
         match ScanChar.scan_num lex with 

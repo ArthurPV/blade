@@ -123,8 +123,8 @@ type float_format =
     | Scientific
 
 type literal = 
-    | LiteralInt of int * int_format
-    | LiteralFloat of float * float_format
+    | LiteralInt of string * int_format
+    | LiteralFloat of string * float_format
     | LiteralChar of char
     | LiteralString of string
 
@@ -252,8 +252,8 @@ let token_to_str tok =
     | Keyword KeywordIsize -> "isize"
     | Keyword KeywordLambda -> "lambda"
     | Identifier s -> Printf.sprintf "Identifier -> %s" s
-    | Literal LiteralInt (l,_) -> Printf.sprintf "Integer -> %d" l
-    | Literal LiteralFloat (l,_) -> Printf.sprintf "Float -> %f" l
+    | Literal LiteralInt (l,_) -> Printf.sprintf "Integer -> %s" l
+    | Literal LiteralFloat (l,_) -> Printf.sprintf "Float -> %s" l
     | Literal LiteralChar l -> Printf.sprintf "Char -> %c" l
     | Literal LiteralString l -> Printf.sprintf "String -> %s" l
     | Comment CommentOneLine -> "**"

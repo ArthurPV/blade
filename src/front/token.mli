@@ -123,8 +123,8 @@ type float_format =
     | Scientific
 
 type literal = 
-    | LiteralInt of int * int_format
-    | LiteralFloat of float * float_format
+    | LiteralInt of string * int_format
+    | LiteralFloat of string * float_format
     | LiteralChar of char
     | LiteralString of string
 

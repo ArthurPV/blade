@@ -431,6 +431,7 @@ let parse_expr_identifier ast =
         | Ok _ -> Error (ErrorIdMissToken)
         | Error e -> Error e
 
+    (* init <arg>,<arg>,... = <body> end *)
     let parse_class_init ast = 
         Error (ErrorIdMissIdentifier)
 

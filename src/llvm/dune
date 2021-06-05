@@ -1,5 +1,6 @@
 (library
   (libraries
     llvm
-    llvm.linker)
+    llvm.linker
+    stdint)
   (name lilyLlvm))

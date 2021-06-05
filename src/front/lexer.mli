@@ -46,9 +46,9 @@ module ScanChar : sig
     val scan_identifier : lexer -> string
     val scan_char : lexer -> (char, error_id) result
     val scan_string : lexer -> (string, error_id) result
-    val scan_hex : lexer -> (int, error_id) result
-    val scan_oct : lexer -> (int, error_id) result
-    val scan_bin : lexer -> (int, error_id) result
+    val scan_hex : lexer -> (string, error_id) result
+    val scan_oct : lexer -> (string, error_id) result
+    val scan_bin : lexer -> (string, error_id) result
     val scan_num : lexer -> (token, error_id) result
 end
 

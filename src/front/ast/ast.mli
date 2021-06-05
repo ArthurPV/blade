@@ -40,8 +40,8 @@ type visibility =
 
 type literal =
     | LiteralBool of bool
-    | LiteralInt of int
-    | LiteralFloat of float
+    | LiteralInt of string
+    | LiteralFloat of string
     | LiteralString of string
     | LiteralChar of char
 

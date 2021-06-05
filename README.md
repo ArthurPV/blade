@@ -8,6 +8,7 @@
 - ANSITerminal
 - dune
 - oUnit
+- stdint
 
 ## How to install dependencies?
 ```bash

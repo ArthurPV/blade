@@ -6,7 +6,7 @@ endif
 
 all:
 	@echo -e "\e[1;32m**\e[0m Check dependencies"
-	$(SILENT)ocamlfind ocamlopt -package llvm -package ANSITerminal -package oUnit
+	$(SILENT)ocamlfind ocamlopt -package llvm -package ANSITerminal -package oUnit -package stdint
 	@echo -e "\e[1;32m**\e[0m Build project"
 	$(SILENT)dune build
 	@echo -e "\e[1;32m**\e[0m Build successfuly"
