@@ -11,7 +11,6 @@ type command_kind =
     | CommandKindTo
     | CommandKindVersion
 
-(* use Sys.argv in *)
 let arg_to_command_kind ?(arg=Sys.argv.(1)) () = 
     match arg with
     | "build" -> CommandKindBuild
