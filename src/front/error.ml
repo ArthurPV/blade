@@ -23,27 +23,25 @@ type error_id =
     | ErrorIdUnexpectedImportValue
 
 type error = {
-    mutable id: error_id array;
-    mutable line: int array;
-    mutable col: int array;
-    mutable s_line: int array;
-    mutable s_col: int array;
-    mutable e_line: int array;
-    mutable e_col: int array;
+    mutable id: error_id CCVector.vector;
+    mutable line: int CCVector.vector;
+    mutable col: int CCVector.vector;
+    mutable s_line: int CCVector.vector;
+    mutable s_col: int CCVector.vector;
+    mutable e_line: int CCVector.vector;
+    mutable e_col: int CCVector.vector;
     mutable count: int;
-    mutable line_error: string;
 }
 
 let new_error line_error = {
-    id = [||];
-    line = [||];
-    col = [||];
-    s_line = [||];
-    s_col = [||];
-    e_line = [||];
-    e_col = [||];
+    id = CCVector.create ();
+    line = CCVector.create ();
+    col = CCVector.create ();
+    s_line = CCVector.create ();
+    s_col = CCVector.create ();
+    e_line = CCVector.create ();
+    e_col = CCVector.create ();
     count = 0;
-    line_error = line_error;
 }
 
 let get_line_error error filename pos = 
@@ -54,7 +52,7 @@ let get_line_error error filename pos =
     let rec loop acc =
         match try_read () with
         | Some s -> (
-            if !count = Stdlib.Array.get error.s_line pos || !count <= Stdlib.Array.get error.e_line pos then
+            if !count = CCVector.get error.s_line pos || !count <= CCVector.get error.e_line pos then
                 (count := !count+1;
                 loop (s :: acc))
             else 
@@ -64,13 +62,13 @@ let get_line_error error filename pos =
     loop []
 
 let push_error error id ~line ~col ~s_line ~s_col ~e_line ~e_col = 
-    error.id <- Stdlib.Array.append error.id [|id|];
-    error.line <- Stdlib.Array.append error.line [|line|];
-    error.col <- Stdlib.Array.append error.col [|col|];
-    error.s_line <- Stdlib.Array.append error.s_line [|s_line|];
-    error.s_col <- Stdlib.Array.append error.s_col [|s_col|]; 
-    error.e_line <- Stdlib.Array.append error.e_line [|e_line|];
-    error.e_col <- Stdlib.Array.append error.e_col [|e_col|];
+    CCVector.push error.id id;
+    CCVector.push error.line line;
+    CCVector.push error.col col;
+    CCVector.push error.s_line s_line;
+    CCVector.push error.s_col s_col; 
+    CCVector.push error.e_line e_line;
+    CCVector.push error.e_col e_col;
     error.count <- error.count + 1
 
 let error_id_to_str id =
@@ -104,9 +102,9 @@ let print_error id ~line ~col filename =
     exit 1
 
 let print_errors error filename = 
-    for i = 0 to (Stdlib.Array.length error.id)-1 do
-        Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename (Stdlib.Array.get error.line i) (Stdlib.Array.get error.col i);
-        Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: %s\027[0m\n\n" (error_id_to_str (Stdlib.Array.get error.id i));
+    for i = 0 to (CCVector.length error.id)-1 do
+        Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename (CCVector.get error.line i) (CCVector.get error.col i);
+        Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: %s\027[0m\n\n" (error_id_to_str (CCVector.get error.id i));
         Printf.printf "\027[1m%s\027[0m\n\n" (String.concat "" (get_line_error error filename i));
     done;
     if error.count > 0 then Printf.printf "\027[1m\027[31mError\027[0m\027[1m: Lily has emited %d errors\027[0m\n" (error.count)

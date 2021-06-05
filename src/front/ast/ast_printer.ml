@@ -2,7 +2,7 @@ open Ast
 (*open Parser*)
 
 let print_ast ast =
-    Printf.printf "%d" (Stdlib.Array.length (ast.stream.tok))
+    Printf.printf "%d" (CCVector.length (ast.stream.tok))
     (*let rec loop ast = 
         if ast.pos < (CCVector.length (ast.stream.tok))-1 then
         match parser ast with

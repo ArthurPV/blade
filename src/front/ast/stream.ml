@@ -1,12 +1,12 @@
 open Ast
 
 type stream_ast = {
-    mutable kind: ast_kind array
+    mutable kind: ast_kind CCVector.vector
 }
 
 let new_stream_ast = {
-    kind = [||];
+    kind = CCVector.create ();
 }
 
 let push_ast sa kind = 
-    sa.kind <- Stdlib.Array.append sa.kind [|kind|]
+    CCVector.push sa.kind kind

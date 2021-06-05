@@ -23,15 +23,14 @@ type error_id =
     | ErrorIdUnexpectedImportValue
 
 type error = {
-    mutable id: error_id array;
-    mutable line: int array;
-    mutable col: int array;
-    mutable s_line: int array;
-    mutable s_col: int array;
-    mutable e_line: int array;
-    mutable e_col: int array;
+    mutable id: error_id CCVector.vector;
+    mutable line: int CCVector.vector;
+    mutable col: int CCVector.vector;
+    mutable s_line: int CCVector.vector;
+    mutable s_col: int CCVector.vector;
+    mutable e_line: int CCVector.vector;
+    mutable e_col: int CCVector.vector;
     mutable count: int;
-    mutable line_error: string;
 }
 
 val new_error : string -> error

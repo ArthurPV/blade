@@ -47,7 +47,7 @@ type literal =
 
 type value = 
     | Literal of literal
-    | Array
+    | Array 
 
 type lily_type = 
     | LilyTypeBool
@@ -64,7 +64,7 @@ type lily_type =
     | LilyTypeU64
     | LilyTypeU128
     | LilyTypeArray of lily_type
-    | LilyTypeTuple of lily_type array
+    | LilyTypeTuple of lily_type CCVector.vector
     | LilyTypeUnit
     | LilyTypePolymorphic
     | LilyTypeAnonymousFuncton
@@ -197,38 +197,38 @@ type expr =
     | ExprVariableCall of expr (* a *)
     | ExprFunDefine of {
         id: expr;
-        tp: lily_type array;
+        tp: lily_type CCVector.vector;
         ret: lily_type;
     } (* sum :: <type> -> <type> -> <return value> *)
     | ExprFunDeclare of {
         id: expr;
         visibility: visibility;
         args: lily_type;
-        body: expr array;
+        body: expr CCVector.vector;
     } (* fun sum <id> <id> = <body> *)
     | ExprFunCall of {
         id: expr;
-        args: expr array;
+        args: expr CCVector.vector;
     } (* sum(3, 4) *)
     | ExprAnonymousFun of {
-        args: expr array;
-        body: expr array;
-        call: expr array;
+        args: expr CCVector.vector;
+        body: expr CCVector.vector;
+        call: expr CCVector.vector;
     } (* (lambda x y -> x + y end)3 2 *)
     | ExprArray of {
-        items: expr array;
+        items: expr CCVector.vector;
     } (* [2,1,2] *)
     | ExprTuple of {
-        items: expr array;
+        items: expr CCVector.vector;
     } (* (1,2) *)
     | ExprIdentifier of string
     | ExprImport of literal (* import <module> *)
-    | ExprShare of expr array (* share <module name>,<module name>,... *)
+    | ExprShare of expr CCVector.vector (* share <module name>,<module name>,... *)
     | ExprAwait of expr (* await <expr> *)
     | ExprTypeDefine of expr (* type T *)
     | ExprTypeDeclare of {
         id: expr;
-        field: (expr * lily_type) array;
+        field: (expr * lily_type) CCVector.vector;
     } (* type Person = name:string, age:int end*)
     | ExprTypeAssignField of {
         id: expr;
@@ -236,31 +236,31 @@ type expr =
     } (* n = 10 *)
     | ExprTypeCall of {
         id: expr;
-        field: (expr * expr) array;
+        field: (expr * expr) CCVector.vector;
     } (* <expr>{<field>,...} *)
     | ExprDataDefine of {
         id: expr;
-        args: (lily_type option) array; (* data T<#a> *)
+        args: (lily_type option) CCVector.vector; (* data T<#a> *)
     } (* data T *)
     | ExprDataDeclare of {
         id: expr;
-        args: (lily_type option) array; (* data T<#a> *)
+        args: (lily_type option) CCVector.vector; (* data T<#a> *)
         visibility: visibility;
-        field: expr array;
-        constructor: (lily_type option) array;
+        field: expr CCVector.vector;
+        constructor: (lily_type option) CCVector.vector;
     } (* data Person = Name of string, Age of u16 end *)
     | ExprExplicitModule of {
         id: expr;
-        body: expr array;
+        body: expr CCVector.vector;
     } (* explicit module <expr> = <body> *)
     | ExprModule of {
         id: expr;
         visibility: visibility;
-        body: expr array;
+        body: expr CCVector.vector;
     } (* module <expr> = <body> *)
     | ExprInitClass of {
-        args: expr array;
-        body: expr array;
+        args: expr CCVector.vector;
+        body: expr CCVector.vector;
     } (* init name age = 
              var name = name
              var age = age
@@ -268,24 +268,24 @@ type expr =
       *)
     | ExprExplicitClass of {
         id: expr;
-        body: expr array;
+        body: expr CCVector.vector;
     } (* explicit class <expr> = <body> *)
     | ExprClass of {
         id: expr;
-        body: expr array;
+        body: expr CCVector.vector;
     } (* class <expr> = <body> *)
     | ExprCallClass of {
         id: expr;
-        args: expr array;
+        args: expr CCVector.vector;
     } (* new <expr>(<arg>,<arg>) *)
     | ExprMacroDeclare of {
         id: expr;
-        args: expr array;
-        body: expr array;
+        args: expr CCVector.vector;
+        body: expr CCVector.vector;
     } (* macro <expr> <arg>,... = <body> *)
     | ExprMacroCall of {
         id: expr;
-        args: expr array;
+        args: expr CCVector.vector;
     } (* @<expr>(<arg>,...) *)
     | ExprCommentOneLine
     | ExprCommentMultiLine
@@ -295,26 +295,26 @@ type expr =
 type stmt =
     | StmtIf of {
         cond: expr;
-        body: expr array;
+        body: expr CCVector.vector;
     }
     | StmtSwitch of {
         elem: expr;
-        body: expr array;
+        body: expr CCVector.vector;
     }
     | StmtCase of {
         cond: expr;
-        body: expr array;
+        body: expr CCVector.vector;
     }
     | StmtBreak
     | StmtWhile of {
-        cond: expr array;
-        body: expr array;
+        cond: expr CCVector.vector;
+        body: expr CCVector.vector;
     }
     | StmtFor of {
         cond: expr;
-        body: expr array;
+        body: expr CCVector.vector;
     }
-    | StmtLoop of expr array
+    | StmtLoop of expr CCVector.vector
     | StmtReturn of expr
 
 type ast_kind = 
@@ -332,8 +332,8 @@ type ast = {
 let new_ast st lex = {
     stream = st;
     filename = lex.Lf.Lexer.read.filename;
-    current_token = Stdlib.Array.get st.tok 0;
-    current_location = Stdlib.Array.get st.loc 0;
+    current_token = CCVector.get st.tok 0;
+    current_location = CCVector.get st.loc 0;
     pos = 0;
 }
 

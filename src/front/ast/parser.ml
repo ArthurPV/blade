@@ -12,33 +12,33 @@ module Token = LilyFront.Token
 
 module ParserUtil = struct
     let next_token ast =
-        if ast.pos < (Stdlib.Array.length (ast.stream.tok))-1 then
+        if ast.pos < (CCVector.length (ast.stream.tok))-1 then
             (ast.pos <- ast.pos + 1;
-             ast.current_token <- Stdlib.Array.get ast.stream.tok ast.pos;
-             ast.current_location <- Stdlib.Array.get ast.stream.loc ast.pos;
+             ast.current_token <- CCVector.get ast.stream.tok ast.pos;
+             ast.current_location <- CCVector.get ast.stream.loc ast.pos;
              ())
         else ()
 
     let previous_token ast = 
         ast.pos <- ast.pos - 1;
-        ast.current_token <- Stdlib.Array.get ast.stream.tok ast.pos;
-        ast.current_location <- Stdlib.Array.get ast.stream.loc ast.pos;
+        ast.current_token <- CCVector.get ast.stream.tok ast.pos;
+        ast.current_location <- CCVector.get ast.stream.loc ast.pos;
         ()
 
     let get_next_token ast = 
-        if ast.pos+1 > (Stdlib.Array.length (ast.stream.tok))-1 then
+        if ast.pos+1 > (CCVector.length (ast.stream.tok))-1 then
             Error (ErrorIdMissToken)
         else 
-            Ok (Stdlib.Array.get ast.stream.tok (ast.pos+1))
+            Ok (CCVector.get ast.stream.tok (ast.pos+1))
 
     let get_previous_token ast = 
         if ast.pos-1 > 0 then
-            Ok (Stdlib.Array.get ast.stream.tok (ast.pos-1))
+            Ok (CCVector.get ast.stream.tok (ast.pos-1))
         else
             Error (ErrorIdMissToken)
 
     let is_end_line ast = 
-        if ast.pos = (Stdlib.Array.length (ast.stream.tok))-1 then true
+        if ast.pos = (CCVector.length (ast.stream.tok))-1 then true
         else
         (match ast.current_token with
         | Token.Comment CommentOneLine -> true
@@ -114,7 +114,7 @@ module ParseExpr = struct
         Error (ErrorIdMissIdentifier)
 
     let parse_end_line ast =
-        if ast.pos = (Stdlib.Array.length (ast.stream.tok))-1 then ()
+        if ast.pos = (CCVector.length (ast.stream.tok))-1 then ()
         else
             match ast.current_token with
             | Token.Separator SeparatorNewline -> ParserUtil.next_token ast;
@@ -154,7 +154,7 @@ module ParseExpr = struct
     (* sum :: <type> -> <type> -> <return type> (like in Haskell) *)
     let parse_fun_define ast id = 
         ParserUtil.next_token ast;
-        let args = ref [||] in
+        let args = CCVector.create () in
         let rec loop ast = 
             if ParserUtil.is_end_line ast = false then
                 (match token_to_type ast with
@@ -173,14 +173,14 @@ module ParseExpr = struct
                           ~col:ast.current_location.col 
                           ast.filename)
                      else
-                         (args := Stdlib.Array.append !args [|ty|];
+                         (CCVector.push args ty;
                           ParserUtil.next_token ast;
                           ParserUtil.skip_newline ast;
                           loop (ast)))) in
         loop (ast);
         match token_to_type ast with
         | Ok ret -> Ok (ExprFunDefine {id = id; 
-                                       tp = !args;
+                                       tp = args;
                                        ret = ret})
         | Error e -> Error e
 
@@ -192,7 +192,7 @@ module ParseExpr = struct
     (* sum(<expr>, <expr>) *)
     let parse_fun_call ast id = 
         ParserUtil.next_token ast;
-        let args = ref [||] in
+        let args = CCVector.create () in
         let rec loop ast =
             if ast.current_token = (Token.Separator SeparatorRightParen) then
                 ParserUtil.next_token ast
@@ -206,7 +206,7 @@ module ParseExpr = struct
                      ~col:ast.current_location.col 
                      ast.filename)
                  | Ok expr -> (
-                     args := Stdlib.Array.append !args [|expr|];
+                     CCVector.push args expr;
                      ParserUtil.next_token ast;
                      ParserUtil.skip_newline ast;
                      if ast.current_token <> (Token.Separator SeparatorComma) &&
@@ -234,7 +234,7 @@ module ParseExpr = struct
           | _ -> parse_end_line ast);
 
     (Ok (ExprFunCall {id = id; 
-                      args = !args}))
+                      args = args}))
 
 
 let parse_expr_identifier ast = 
@@ -382,11 +382,11 @@ let parse_expr_identifier ast =
     (* [<expr>, <expr>, <expr>]  *)
     let parse_array ast =
         ParserUtil.next_token ast; 
-        let expr_arr = ref [||] in
+        let expr_arr = CCVector.create () in
         let rec loop ast = 
             match read_expr ast with
             | Ok expr -> (
-                expr_arr := Stdlib.Array.append !expr_arr [|expr|];
+                CCVector.push expr_arr expr;
                 ParserUtil.next_token ast;
                 match ast.current_token with
                 | Token.Separator SeparatorComma -> (
@@ -399,16 +399,16 @@ let parse_expr_identifier ast =
                 | _ -> print_error ErrorIdUnexpectedExpr ~line:ast.current_location.line ~col:ast.current_location.col ast.filename)
             | Error e -> print_error e ~line:ast.current_location.line ~col:ast.current_location.col ast.filename in
         loop (ast);
-        Ok (ExprArray {items = !expr_arr})
+        Ok (ExprArray {items = expr_arr})
 
     (* (<expr>, <expr>, <expr>)  *)
     let parse_tuple ast = 
         ParserUtil.next_token ast; 
-        let expr_arr = ref [||] in
+        let expr_arr = CCVector.create () in
         let rec loop ast = 
             match read_expr ast with
             | Ok expr -> (
-                expr_arr := Stdlib.Array.append !expr_arr [|expr|];
+                CCVector.push expr_arr expr;
                 ParserUtil.next_token ast;
                 match ast.current_token with
                 | Token.Separator SeparatorComma -> (
@@ -421,7 +421,7 @@ let parse_expr_identifier ast =
                 | _ -> print_error ErrorIdUnexpectedExpr ~line:ast.current_location.line ~col:ast.current_location.col ast.filename)
             | Error e -> print_error e ~line:ast.current_location.line ~col:ast.current_location.col ast.filename in
         loop (ast);
-        Ok (ExprTuple {items = !expr_arr})
+        Ok (ExprTuple {items = expr_arr})
 
     let parse_pub ast = 
         match ParserUtil.get_next_token ast with
@@ -626,7 +626,7 @@ let parser ast =
 
 let run_parser ast =
     let rec loop ast =
-        if ast.pos < (Stdlib.Array.length (ast.stream.tok))-1 then
+        if ast.pos < (CCVector.length (ast.stream.tok))-1 then
         match parser ast with
         | Error e -> print_error e ~line:ast.current_location.line ~col:ast.current_location.col ast.filename
         | Ok p -> (
