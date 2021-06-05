@@ -1,3 +1,4 @@
+# to hide the commands
 ifndef verbose
   SILENT = @
 endif
