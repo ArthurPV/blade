@@ -9,10 +9,11 @@
 - dune
 - oUnit
 - stdint
+- containers
 
 ## How to install dependencies?
 ```bash
-opam install llvm ANSITerminal dune oUnit stdint
+opam install llvm ANSITerminal dune oUnit stdint containers
 ```
 
 ## How to build?
