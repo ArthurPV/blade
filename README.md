@@ -12,7 +12,7 @@
 
 ## How to install dependencies?
 ```bash
-opam install llvm ANSITerminal dune oUnit
+opam install llvm ANSITerminal dune oUnit stdint
 ```
 
 ## How to build?
