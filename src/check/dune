@@ -1,2 +1,4 @@
 (library
+  (libraries
+    lilyAst)
   (name lilyCheck))

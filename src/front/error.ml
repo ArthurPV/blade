@@ -54,7 +54,7 @@ let get_line_error error filename pos =
     let rec loop acc =
         match try_read () with
         | Some s -> (
-            if !count = Stdlib.Array.get error.s_line pos && !count <= Stdlib.Array.get error.e_line pos then
+            if !count = Stdlib.Array.get error.s_line pos || !count <= Stdlib.Array.get error.e_line pos then
                 (count := !count+1;
                 loop (s :: acc))
             else 
@@ -106,7 +106,8 @@ let print_error id ~line ~col filename =
 let print_errors error filename = 
     for i = 0 to (Stdlib.Array.length error.id)-1 do
         Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename (Stdlib.Array.get error.line i) (Stdlib.Array.get error.col i);
-        Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: %s\n\n" (error_id_to_str (Stdlib.Array.get error.id i));
+        Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: %s\027[0m\n\n" (error_id_to_str (Stdlib.Array.get error.id i));
+        Printf.printf "\027[1m%s\027[0m\n\n" (String.concat "" (get_line_error error filename i));
     done;
     if error.count > 0 then Printf.printf "\027[1m\027[31mError\027[0m\027[1m: Lily has emited %d errors\027[0m\n" (error.count)
     else ()
