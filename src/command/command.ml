@@ -5,7 +5,7 @@ open Version
 external get_os : unit -> string = "get_os"
 external get_arch : unit -> string = "get_arch"
 
-module MainLilyCommand = struct
+module LilyCommand = struct
     let lily_help () = Printf.printf "%s" lily_h
 
     let lily_run filename () = run filename
