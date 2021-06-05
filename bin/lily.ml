@@ -12,7 +12,7 @@ type command_kind =
     | CommandKindVersion
 
 (* use Sys.argv in *)
-let arg_to_command_kind ?(arg=Sys.argv.(1)) = 
+let arg_to_command_kind ?(arg=Sys.argv.(1)) () = 
     match arg with
     | "build" -> CommandKindBuild
     | "compile" -> CommandKindCompile
@@ -27,7 +27,7 @@ let arg_to_command_kind ?(arg=Sys.argv.(1)) =
 let _ = 
     match Array.length Sys.argv with
     | 1 -> Printf.printf "help"
-    | _ -> match arg_to_command_kind ~arg:Sys.argv.(1) with
+    | _ -> match arg_to_command_kind () with
            | CommandKindBuild -> Printf.printf "build"
            | CommandKindCompile -> Printf.printf "compile"
            | CommandKindError -> Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(1)
