@@ -128,54 +128,72 @@ let _ =
     | 1 -> LilyCommand.lily_help ()
     | _ -> match arg_to_command_kind () with
            | CommandKindBuild op -> (
-               for i = 0 to (CCVector.length op)-1 do 
-                   match CCVector.get op i with
-                   | BuildOptionError -> (
-                       Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
-                       exit 1)
-                   | BuildOptionHelp -> Printf.printf "help"
-               done;)
+               match Array.length Sys.argv with
+               | 2 -> Printf.printf "help"
+               | _ -> (
+                   for i = 0 to (CCVector.length op)-1 do 
+                       match CCVector.get op i with
+                       | BuildOptionError -> (
+                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           exit 1)
+                       | BuildOptionHelp -> Printf.printf "help"
+                   done;))
            | CommandKindCompile op -> (
-               for i = 0 to (CCVector.length op)-1 do 
-                   match CCVector.get op i with
-                   | CompileOptionError -> (
-                       Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
-                       exit 1)
-                   | CompileOptionHelp -> Printf.printf "help"
-               done;)
+               match Array.length Sys.argv with
+               | 2 -> Printf.printf "help"
+               | _ -> ( 
+                   for i = 0 to (CCVector.length op)-1 do 
+                       match CCVector.get op i with
+                       | CompileOptionError -> (
+                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           exit 1)
+                       | CompileOptionHelp -> Printf.printf "help"
+                   done;))
            | CommandKindError -> Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(1)
            | CommandKindHelp -> LilyCommand.lily_help ()
            | CommandKindInit op -> (
-               for i = 0 to (CCVector.length op)-1 do 
-                   match CCVector.get op i with
-                   | InitOptionError -> (
-                       Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
-                       exit 1)
-                   | InitOptionHelp -> Printf.printf "help"
-               done;)
+               match Array.length Sys.argv with
+               | 2 -> Printf.printf "help"
+               | _ -> (
+                   for i = 0 to (CCVector.length op)-1 do 
+                       match CCVector.get op i with
+                       | InitOptionError -> (
+                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           exit 1)
+                       | InitOptionHelp -> Printf.printf "help"
+                   done;))
            | CommandKindNew op -> (
-               for i = 0 to (CCVector.length op)-1 do 
-                   match CCVector.get op i with
-                   | NewOptionError -> (
-                       Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
-                       exit 1)
-                   | NewOptionHelp -> Printf.printf "help"
-               done;)
+               match Array.length Sys.argv with
+               | 2 -> Printf.printf "help"
+               | _ -> (
+                   for i = 0 to (CCVector.length op)-1 do 
+                       match CCVector.get op i with
+                       | NewOptionError -> (
+                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           exit 1)
+                       | NewOptionHelp -> Printf.printf "help"
+                   done;))
            | CommandKindRun op -> (
-               for i = 0 to (CCVector.length op)-1 do 
-                   match CCVector.get op i with
-                   | RunOptionFile f -> LilyCommand.lily_run f ()
-                   | RunOptionFileError -> (
-                       Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: file doesn\'t specified\027\n";
-                       exit 1)
-                   | RunOptionHelp -> Printf.printf "help"
-               done;) 
+               match Array.length Sys.argv with
+               | 2 -> Printf.printf "help"
+               | _ -> (
+                   for i = 0 to (CCVector.length op)-1 do 
+                       match CCVector.get op i with
+                       | RunOptionFile f -> LilyCommand.lily_run f ()
+                       | RunOptionFileError -> (
+                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: file doesn\'t specified\027\n";
+                           exit 1)
+                       | RunOptionHelp -> Printf.printf "help"
+                   done;))
            | CommandKindTo op -> (
-               for i = 0 to (CCVector.length op)-1 do 
-                   match CCVector.get op i with
-                   | ToOptionError -> (
-                       Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
-                       exit 1)
-                   | ToOptionHelp -> Printf.printf "help"
-               done;)
+               match Array.length Sys.argv with
+               | 2 -> Printf.printf "help"
+               | _ -> (
+                   for i = 0 to (CCVector.length op)-1 do
+                       match CCVector.get op i with
+                       | ToOptionError -> (
+                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           exit 1)
+                       | ToOptionHelp -> Printf.printf "help"
+                   done;))
            | CommandKindVersion -> LilyCommand.lily_version ()
