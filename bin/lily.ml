@@ -17,6 +17,7 @@ type new_option =
     | NewOptionHelp
 
 type run_option = 
+    | RunOptionError
     | RunOptionHelp
     | RunOptionFile of string
     | RunOptionFileError
@@ -41,7 +42,7 @@ let arg_to_command_kind ?(arg=Sys.argv.(1)) () =
     | "build" -> (
         let op = CCVector.create () in
         let rec loop count = 
-            if Array.length Sys.argv > 1 && count < Array.length Sys.argv then
+            if Array.length Sys.argv > 1 && count < Array.length Sys.argv && Sys.argv.(count).[0] = '-' then
                 match Sys.argv.(count) with
                 | "-h" | "--help" -> (
                     loop (count+1);
@@ -54,7 +55,7 @@ let arg_to_command_kind ?(arg=Sys.argv.(1)) () =
     | "compile" -> (
         let op = CCVector.create () in
         let rec loop count = 
-            if Array.length Sys.argv > 1 && count < Array.length Sys.argv then
+            if Array.length Sys.argv > 1 && count < Array.length Sys.argv && Sys.argv.(count).[0] = '-' then
                 match Sys.argv.(count) with
                 | "-h" | "--help" -> (
                     loop (count+1);
@@ -68,7 +69,7 @@ let arg_to_command_kind ?(arg=Sys.argv.(1)) () =
     | "init" -> (
         let op = CCVector.create () in
         let rec loop count = 
-            if Array.length Sys.argv > 1 && count < Array.length Sys.argv then
+            if Array.length Sys.argv > 1 && count < Array.length Sys.argv && Sys.argv.(count).[0] = '-' then
                 match Sys.argv.(count) with
                 | "-h" | "--help" -> (
                     loop (count+1);
@@ -81,7 +82,7 @@ let arg_to_command_kind ?(arg=Sys.argv.(1)) () =
     | "new" -> (
         let op = CCVector.create () in
         let rec loop count = 
-            if Array.length Sys.argv > 1 && count < Array.length Sys.argv then
+            if Array.length Sys.argv > 1 && count < Array.length Sys.argv && Sys.argv.(count).[0] = '-' then
                 match Sys.argv.(count) with
                 | "-h" | "--help" -> (
                     loop (count+1);
@@ -94,23 +95,25 @@ let arg_to_command_kind ?(arg=Sys.argv.(1)) () =
     | "run" -> (
         let op = CCVector.create () in
         let rec loop count = 
-            if Array.length Sys.argv > 1 && count < Array.length Sys.argv then
+            if Array.length Sys.argv > 1 && count < Array.length Sys.argv && Sys.argv.(count).[0] = '-' then
                 match Sys.argv.(count) with
                 | "-h" | "--help" -> (
                     loop (count+1);
                     CCVector.push op RunOptionHelp)
                 | _ -> (
                     loop (count+1);
-                    if count < Array.length Sys.argv then CCVector.push op (RunOptionFile Sys.argv.(count))
-                    else (
-                        CCVector.push op RunOptionHelp;
-                        ())) in
+                    CCVector.push op RunOptionError)
+            else (
+                if count < Array.length Sys.argv then CCVector.push op (RunOptionFile Sys.argv.(count))
+                else (
+                    CCVector.push op RunOptionFileError;
+                    ())) in
         loop (2);
         CommandKindRun op)
     | "to" -> (
         let op = CCVector.create () in
         let rec loop count = 
-            if Array.length Sys.argv > 1 && count < Array.length Sys.argv then
+            if Array.length Sys.argv > 1 && count < Array.length Sys.argv && Sys.argv.(count).[0] = '-' then
                 match Sys.argv.(count) with
                 | "-h" | "--help" -> (
                     loop (count+1);
@@ -179,6 +182,9 @@ let _ =
                | _ -> (
                    for i = 0 to (CCVector.length op)-1 do 
                        match CCVector.get op i with
+                       | RunOptionError -> (
+                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           exit 1)
                        | RunOptionFile f -> LilyCommand.lily_run f ()
                        | RunOptionFileError -> (
                            Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: file doesn\'t specified\027\n";
