@@ -1,5 +1,6 @@
 (executable 
   (libraries
     ANSITerminal
-    lilyCommand)
+    lilyCommand
+    containers)
   (name lily))
