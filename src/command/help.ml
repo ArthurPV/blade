@@ -9,7 +9,7 @@ Commands:
     new             New project
     run             Run file (bytecode)
     test            Test file
-    to              Transpile Blade to ...
+    to              Transpile Lily to ...
     version         Print version
 
 Options:
