@@ -103,8 +103,7 @@ let arg_to_command_kind ?(arg=Sys.argv.(1)) () =
             if Array.length Sys.argv > 1 && count < Array.length Sys.argv && Sys.argv.(count).[0] = '-' then
                 match Sys.argv.(count) with
                 | "-h" | "--help" -> (
-                    loop (count+1);
-                    CCVector.push op RunOptionHelp)
+                    CCVector.push op RunOptionHelp;)
                 | _ -> (
                     loop (count+1);
                     CCVector.push op RunOptionError)
