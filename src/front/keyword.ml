@@ -1,5 +1,9 @@
 open Token
 
+(*
+convert string (id) to token type
+or else identifier
+*)
 let value_to_keyword value = 
     match value with
     | "explicit" -> Keyword KeywordExplicit

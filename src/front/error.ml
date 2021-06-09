@@ -1,3 +1,7 @@
+(*
+add information to error msg
+ex: ErrorIdExpectedToken "!"
+*)
 type error_id = 
     | ErrorIdUnexpectedToken of string
     | ErrorIdExpectedToken of string
@@ -22,6 +26,9 @@ type error_id =
     | ErrorIdUnexpectedScope
     | ErrorIdUnexpectedImportValue
 
+(*
+the vectors are for accumulation of errors in lexer for the moment
+*)
 type error = {
     mutable id: error_id CCVector.vector;
     mutable line: int CCVector.vector;
@@ -33,6 +40,9 @@ type error = {
     mutable count: int;
 }
 
+(*
+default value for error type
+*)
 let new_error line_error = {
     id = CCVector.create ();
     line = CCVector.create ();
@@ -44,6 +54,9 @@ let new_error line_error = {
     count = 0;
 }
 
+(*
+get string line of error
+*)
 let get_line_error error filename pos = 
     let ic = open_in filename in
     let try_read () =
@@ -61,6 +74,9 @@ let get_line_error error filename pos =
         | None -> close_in ic; List.rev acc in
     loop []
 
+(*
+push differents informations for accumulation of errors
+*)
 let push_error error id ~line ~col ~s_line ~s_col ~e_line ~e_col = 
     CCVector.push error.id id;
     CCVector.push error.line line;
@@ -71,6 +87,9 @@ let push_error error id ~line ~col ~s_line ~s_col ~e_line ~e_col =
     CCVector.push error.e_col e_col;
     error.count <- error.count + 1
 
+(*
+convert error_id to error message
+*)
 let error_id_to_str id =
     match id with
     | ErrorIdUnexpectedToken s -> Printf.sprintf "unexpected token: \'%s\'" s
@@ -96,11 +115,17 @@ let error_id_to_str id =
     | ErrorIdUnexpectedScope -> "unexpected scope"
     | ErrorIdUnexpectedImportValue -> "unexpected import value"
 
+(*
+print error and exit 1
+*)
 let print_error id ~line ~col filename = 
     Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename line col;
     Printf.printf "\027[1m\027[31mError\027\027[0m\027[0m: %s\n" (error_id_to_str id);
     exit 1
 
+(*
+accumulation of errors
+*)
 let print_errors error filename = 
     for i = 0 to (CCVector.length error.id)-1 do
         Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename (CCVector.get error.line i) (CCVector.get error.col i);
