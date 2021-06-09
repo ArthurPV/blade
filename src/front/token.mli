@@ -74,7 +74,6 @@ type keyword =
     | KeywordFun
     | KeywordEnd
     | KeywordIn
-    | KeywordOf
     | KeywordImport
     | KeywordClass
     | KeywordTry

@@ -33,7 +33,6 @@ let value_to_keyword value =
     | "fun" -> Keyword KeywordFun
     | "end" -> Keyword KeywordEnd
     | "in" -> Keyword KeywordIn
-    | "of" -> Keyword KeywordOf
     | "import" -> Keyword KeywordImport
     | "class" -> Keyword KeywordClass
     | "try" -> Keyword KeywordTry

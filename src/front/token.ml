@@ -74,7 +74,6 @@ type keyword =
     | KeywordFun
     | KeywordEnd
     | KeywordIn
-    | KeywordOf
     | KeywordImport
     | KeywordClass
     | KeywordTry
@@ -214,7 +213,6 @@ let token_to_str tok =
     | Keyword KeywordFun -> "fun"
     | Keyword KeywordEnd -> "end"
     | Keyword KeywordIn -> "in"
-    | Keyword KeywordOf -> "of"
     | Keyword KeywordImport -> "import"
     | Keyword KeywordClass -> "class"
     | Keyword KeywordTry -> "try"

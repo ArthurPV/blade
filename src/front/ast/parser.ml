@@ -468,8 +468,8 @@ let parse_expr_identifier ast =
     
     (* 
        data Person = 
-           Name of string
-           Age of u8
+           Name: string,
+           Age: u8,
        end 
     *)
     let parse_data ast = 
