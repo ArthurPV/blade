@@ -21,7 +21,7 @@ explicit module advance_calculator =
 end
 
 module advance_calculator = 
-	share Calculator
+	share calculator
 	pub fun pow x = x*x end
 	pub fun mod x y = x%y end
 end
