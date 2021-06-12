@@ -1,4 +1,4 @@
-const io = import "Std.Io"
+const io = import "std.io"
 
 ** rules
 ** argument is constant by default for less errors

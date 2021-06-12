@@ -1,5 +1,5 @@
-const list = import "Container.List"
-const io = import "Std.Io"
+const list = import "container.list"
+const io = import "std.io"
 
 doubleList :: list.T<u32> -> list.T<u32>
 fun doubleList l = 

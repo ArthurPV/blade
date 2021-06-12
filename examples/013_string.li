@@ -1,5 +1,5 @@
-const str = import "Std.String"
-const io = import "Std.Io"
+const str = import "std.string"
+const io = import "std.io"
 
 const s = "hello"
 

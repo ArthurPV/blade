@@ -1,4 +1,4 @@
-const io = import "Std.Io"
+const io = import "std.io"
 
 ** define simple macro
 macro add x = x*x end

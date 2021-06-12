@@ -1,4 +1,4 @@
-const io = import "Std.Io"
+const io = import "std.io"
 
 explicit class Person =
 	Person :: string -> u8 -> Person

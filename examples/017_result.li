@@ -1,6 +1,6 @@
-const std = import "Std"
-const result = import "Std.Result"
-const io = import "Std.Io"
+const std = import "std"
+const result = import "std.result"
+const io = import "std.io"
 
 ** return result type in function
 isPositive :: i32 -> result.T<i32, unit>

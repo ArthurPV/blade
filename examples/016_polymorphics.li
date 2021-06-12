@@ -1,6 +1,6 @@
-const vec = import "Container.Vector"
-const list = import "Container.List"
-const io = import "Std.Io"
+const vec = import "container.vector"
+const list = import "container.list"
+const io = import "std.io"
 
 ** polymorphic with function
 ** polymorphic flag #<id>

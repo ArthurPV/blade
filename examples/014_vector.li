@@ -1,5 +1,5 @@
-const vec = import "Container.Vector"
-const io = import "Std.Io"
+const vec = import "container.vector"
+const io = import "std.io"
 
 get_vector :: vec.T<u32> -> vec.T<u32>
 fun get_vector a = a end

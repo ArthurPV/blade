@@ -1,13 +1,13 @@
 const io = import "Std.Io"
 
-explicit module Calculator = 
+explicit module calculator = 
 	add :: f32 -> f32 -> f32
 	sub :: f32 -> f32 -> f32
 	mul :: f32 -> f32 -> f32
 	div :: f32 -> f32 -> f32
 end
 
-module Calculator =
+module calculator =
 	pub fun add x y = x+y end
 	pub fun sub x y = x-y end
 	pub fun mul x y = x*y end
@@ -15,34 +15,34 @@ module Calculator =
 end
 
 ** share module in other module
-explicit module AdvanceCalculator =
+explicit module advance_calculator =
 	pow :: f32 -> f32	
 	mod :: f32 -> f32 -> f32
 end
 
-module AdvanceCalculator = 
+module advance_calculator = 
 	share Calculator
 	pub fun pow x = x*x end
 	pub fun mod x y = x%y end
 end
 
-explicit module MyNum = type T end
+explicit module my_num = type T end
 
 ** type in module
-module MyNum = 
+module my_num = 
 	type T = 
 		value: i32
 	end
 end
 
 fun main = 
-	const calculator = Calculator
+	const calculator = calculator
 	io.println("add: {}", calculator.add(2,3));
 	io.println("sub: {}", calculator.sub(2,3));
 	io.println("mul: {}", calculator.mul(2,3));
 	io.println("div: {}", calculator.div(2,3));
 
-	const advance_calculator = AdvanceCalculator
+	const advance_calculator = advance_calculator
 	io.println("add: {}", advance_calculator.add(2,3));
 	io.println("sub: {}", advance_calculator.sub(2,3));
 	io.println("mul: {}", advance_calculator.mul(2,3));
