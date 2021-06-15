@@ -1,4 +1,4 @@
-const io = import "Std.Io"
+const io = import "std.io"
 
 explicit module calculator = 
 	add :: f32 -> f32 -> f32
@@ -37,16 +37,16 @@ end
 
 fun main = 
 	const calculator = calculator
-	io.println("add: {}", calculator.add(2,3));
-	io.println("sub: {}", calculator.sub(2,3));
-	io.println("mul: {}", calculator.mul(2,3));
-	io.println("div: {}", calculator.div(2,3));
+	io.println("add: {}", calculator.add(2,3))
+	io.println("sub: {}", calculator.sub(2,3))
+	io.println("mul: {}", calculator.mul(2,3))
+	io.println("div: {}", calculator.div(2,3))
 
 	const advance_calculator = advance_calculator
-	io.println("add: {}", advance_calculator.add(2,3));
-	io.println("sub: {}", advance_calculator.sub(2,3));
-	io.println("mul: {}", advance_calculator.mul(2,3));
-	io.println("div: {}", advance_calculator.div(2,3));
-	io.println("pow: {}", advance_calculator.pow(2));
-	io.println("mod: {}", calculator.mod(2,3));
+	io.println("add: {}", advance_calculator.add(2,3))
+	io.println("sub: {}", advance_calculator.sub(2,3))
+	io.println("mul: {}", advance_calculator.mul(2,3))
+	io.println("div: {}", advance_calculator.div(2,3))
+	io.println("pow: {}", advance_calculator.pow(2))
+	io.println("mod: {}", calculator.mod(2,3))
 end

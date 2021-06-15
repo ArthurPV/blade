@@ -40,6 +40,6 @@ fun main =
 	io.println("div: {}", div(2,3))
 	io.println("add lambda: {}", add_lamb);
 	io.println("div lambda: {}", div_lamb);
-	io.println("merge array: {}", merge_array([2,2,2], [2,3,4]));
+	io.println("merge array: {}", merge_array([2,2,2], [2,3,4]))
 	io.println("pow: {}", pow(2))
 end
