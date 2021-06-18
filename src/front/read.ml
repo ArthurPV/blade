@@ -18,15 +18,15 @@ let new_read ~filename ~content =
 
 module GetFileContent = struct
     let msg_not_exists filename =
-        Printf.printf "\027[1m\027[31mError\027[0m\027[1m: the file doesn\'t exists: \'%s\'\027[0m\n" filename;
+        Printf.printf "\027[1m\027[31m[lily:error]\027[0m\027[1m: the file doesn\'t exists: \'%s\'\027[0m\n" filename;
         exit 1
 
     let msg_is_dir filename =
-        Printf.printf "\027[1m\027[31mError\027[0m\027[1m: the file is a directory: \'%s\'\027[0m\n" filename;
+        Printf.printf "\027[1m\027[31m[lily:error]\027[0m\027[1m: the file is a directory: \'%s\'\027[0m\n" filename;
         exit 1
 
     let msg_bad_extensions filename = 
-        Printf.printf "\027[1m\027[31mError\027[0m\027[1m: bad extensions of file: \'%s\'\027[0m\n" filename;
+        Printf.printf "\027[1m\027[31m[lily:error]\027[0m\027[1m: bad extensions of file: \'%s\'\027[0m\n" filename;
         exit 1
 
     let read_lines filename =

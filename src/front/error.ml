@@ -120,7 +120,7 @@ print error and exit 1
 *)
 let print_error id ~line ~col filename = 
     Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename line col;
-    Printf.printf "\027[1m\027[31mError\027\027[0m\027[0m: %s\n" (error_id_to_str id);
+    Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[0m: %s\n" (error_id_to_str id);
     exit 1
 
 (*
@@ -129,7 +129,7 @@ accumulation of errors
 let print_errors error filename = 
     for i = 0 to (CCVector.length error.id)-1 do
         Printf.printf "\027[1mFile \"%s\", location %d:%d\027[0m\n" filename (CCVector.get error.line i) (CCVector.get error.col i);
-        Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: %s\027[0m\n\n" (error_id_to_str (CCVector.get error.id i));
+        Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[1m: %s\027[0m\n\n" (error_id_to_str (CCVector.get error.id i));
         Printf.printf "\027[1m%s\027[0m\n\n" (String.concat "" (get_line_error error filename i));
     done;
     if error.count > 0 then Printf.printf "\027[1m\027[31mError\027[0m\027[1m: Lily has emited %d errors\027[0m\n" (error.count)
