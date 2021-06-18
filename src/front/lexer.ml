@@ -69,8 +69,10 @@ module LexerUtil = struct
         lex.info.e_line <- lex.info.line;
         lex.info.e_col <- lex.info.col;
         ()
-
-    let get_next_char lex = lex.read.content.[lex.info.pos+1]
+ 
+    let peek_char lex n = 
+        if lex.info.pos < lex.read.length then Some lex.read.content.[lex.info.pos+n]
+        else None
 end
 
 module RecognizeChar = struct
@@ -92,12 +94,12 @@ module RecognizeChar = struct
     let is_num lex = 
         if lex.info.pos < lex.read.length-1 then
             (is_digit lex || 
-            (lex.read.c = '.' && LexerUtil.get_next_char lex != '.') || 
+            (lex.read.c = '.' && LexerUtil.peek_char lex 1 != Some '.') || 
             ((lex.read.c = 'e' || lex.read.c = 'E') 
-            && (LexerUtil.get_next_char lex >= '0' 
-            && LexerUtil.get_next_char lex <= '9') 
-            || LexerUtil.get_next_char lex = '-' 
-            || LexerUtil.get_next_char lex = '+'))
+            && (LexerUtil.peek_char lex 1 >= Some '0' 
+            && LexerUtil.peek_char lex 1 <= Some '9') 
+            || LexerUtil.peek_char lex 1 = Some '-' 
+            || LexerUtil.peek_char lex 1 = Some '+'))
         else false
 end
 
@@ -105,20 +107,20 @@ end
 let get_escape lex = 
     match lex.read.c with
     | '\\' -> (
-        match LexerUtil.get_next_char lex with
-        | 'n' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some 'n' -> (
             LexerUtil.next_char lex;
             Ok "\\n")
-        | 't' -> (
+        | Some 't' -> (
             LexerUtil.next_char lex;
             Ok "\\t")
-        | 'v' -> (
+        | Some 'v' -> (
             LexerUtil.next_char lex;
             Ok "\\v")
-        | 'r' -> (
+        | Some 'r' -> (
             LexerUtil.next_char lex;
             Ok "\\r")
-        | '\000' -> (
+        | Some '\000' -> (
             LexerUtil.next_char lex;
             Ok "\\0")
         | _ -> Error ErrorIdInvalidEscape)
@@ -134,12 +136,12 @@ module ScanChar = struct
 
     let scan_comment_multi_line lex = 
         let rec loop lex = 
-            if (lex.read.c != '*' || LexerUtil.get_next_char lex != ')') then 
+            if (lex.read.c != '*' || LexerUtil.peek_char lex 1 != Some ')') then 
                 (LexerUtil.next_char lex;
                  loop (lex)) in
         loop (lex);
 
-        if LexerUtil.get_next_char lex != ')' then Error (ErrorIdInvalidStringLiteral)
+        if LexerUtil.peek_char lex 1 != Some ')' then Error (ErrorIdInvalidStringLiteral)
         else (LexerUtil.next_char lex;
               Ok ())
 
@@ -149,13 +151,13 @@ module ScanChar = struct
         LexerUtil.next_char lex;
         LexerUtil.next_char lex;
         let rec loop lex = 
-            if lex.read.c != '*' || LexerUtil.get_next_char lex != '*' || lex.read.content.[lex.info.pos+2] != ')' then 
+            if lex.read.c != '*' || LexerUtil.peek_char lex 1 != Some '*' || LexerUtil.peek_char lex 2 != Some ')' then 
                 (value := !value @ [String.make 1 lex.read.c];
                  LexerUtil.next_char lex;
                  loop (lex)) in 
         loop (lex);
 
-         if lex.read.content.[lex.info.pos+2] != ')' then Error ErrorIdInvalidStringLiteral
+         if LexerUtil.peek_char lex 2 != Some ')' then Error ErrorIdInvalidStringLiteral
          else (LexerUtil.next_char lex;
                LexerUtil.next_char lex;
                Ok (String.concat "" !value))
@@ -265,7 +267,7 @@ module ScanChar = struct
                 (if lex.read.c = '.' then is_float := true;
                  if lex.read.c = 'e' || lex.read.c = 'E' then
                    (is_sct := true;
-                        if LexerUtil.get_next_char lex = '-' || LexerUtil.get_next_char lex = '+' then 
+                        if LexerUtil.peek_char lex 1 = Some '-' || LexerUtil.peek_char lex 1 = Some '+' then 
                           (value := !value @ [String.make 1 lex.read.c];
                            LexerUtil.next_char lex;
                            value := !value @ [String.make 1 lex.read.c];
@@ -304,8 +306,8 @@ let tokenizer lex =
     | ',' -> Ok (Separator SeparatorComma)
 
     | ':' -> (
-        match LexerUtil.get_next_char lex with
-        | ':' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some ':' -> (
             LexerUtil.next_char lex;
             Ok (Separator SeparatorColonColon))
         | _ -> Ok (Separator SeparatorColon))
@@ -316,9 +318,9 @@ let tokenizer lex =
 
     | '@' -> Ok (Separator SeparatorAt)
 
-    | '(' -> (match LexerUtil.get_next_char lex with
-              | '*' -> (match lex.read.content.[lex.info.pos+2] with
-                        | '*' -> (
+    | '(' -> (match LexerUtil.peek_char lex 1 with
+              | Some '*' -> (match LexerUtil.peek_char lex 2 with
+                        | Some '*' -> (
                             match ScanChar.scan_comment_doc lex with
                             | Ok s -> Ok (Comment (CommentDoc s))
                             | Error e -> Error e)
@@ -340,121 +342,121 @@ let tokenizer lex =
 
     (* ++ += +*)
     | '+' -> (
-        match LexerUtil.get_next_char lex with
-        | '+' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '+' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorPlusPlus))
-        | '=' -> (
+        | Some '=' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorPlusEq))
         | _ -> Ok (Operator OperatorPlus))
 
     (* -- -= -> - *)
     | '-' -> (
-        match LexerUtil.get_next_char lex with
-        | '-' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '-' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorMinusMinus))
-        | '=' -> (
+        | Some '=' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorMinusEq))
-        | '>' -> (
+        | Some '>' -> (
             LexerUtil.next_char lex;
             Ok (Separator SeparatorArrow))
         | _ -> Ok (Operator OperatorMinus))
 
     (* ** *= * *)
     | '*' -> (
-        match LexerUtil.get_next_char lex with
-        | '*' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '*' -> (
             ScanChar.scan_comment_one_line lex;
             Ok (Comment CommentOneLine))
-        | '=' -> (
+        | Some '=' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorStarEq))
         | _ -> Ok (Operator OperatorStar))
 
     (* / /= *)
     | '/' -> (
-        match LexerUtil.get_next_char lex with
-        | '=' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '=' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorSlashEq))
         | _ -> Ok (Operator OperatorSlash))
 
     (* %= % *)
     | '%' -> (
-        match LexerUtil.get_next_char lex with
-        | '=' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '=' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorPercentageEq))
         | _ -> Ok (Operator OperatorPercentage))
 
     (* ^= ^ *)
     | '^' -> (
-        match LexerUtil.get_next_char lex with
-        | '=' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '=' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorHatEq))
         | _ -> Ok (Operator OperatorHat))
 
     (* == =.. => = *)
     | '=' -> (
-        match LexerUtil.get_next_char lex with
-        | '=' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '=' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorEqEq))
-        | '.' -> (
-            match lex.read.content.[lex.info.pos+2] with
-            | '.' -> (
+        | Some '.' -> (
+            match LexerUtil.peek_char lex 2 with
+            | Some '.' -> (
                 LexerUtil.next_char lex;
                 LexerUtil.next_char lex;
                 Ok (Operator OperatorEqDotDot))
             | _ -> Error (ErrorIdUnexpectedToken (String.make 1 lex.read.c)))
-        | '>' -> (
+        | Some '>' -> (
             LexerUtil.next_char lex;
             Ok (Separator SeparatorFatArrow))
         | _ -> Ok (Operator OperatorEq))
 
     (* <= <- <> <*)
     | '<' -> (
-        match LexerUtil.get_next_char lex with
-        | '=' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '=' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorLeftShiftEq))
-        | '-' -> (
+        | Some '-' -> (
             LexerUtil.next_char lex;
             Ok (Separator SeparatorInverseArrow))
-        | '>' -> (
+        | Some '>' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorLeftShiftRightShift))
         | _ -> Ok (Operator OperatorLeftShift))
 
     (* >= > *)
     | '>' -> (
-        match LexerUtil.get_next_char lex with
-        | '=' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '=' -> (
             LexerUtil.next_char lex;
             Ok (Operator OperatorRightShiftEq))
         | _ -> Ok (Operator OperatorRightShift))
 
     (* ..= .. . *)
     | '.' -> (
-        match LexerUtil.get_next_char lex with
-        | '.' -> (
-            match lex.read.content.[lex.info.pos+2] with
-            | '=' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some '.' -> (
+            match LexerUtil.peek_char lex 2 with
+            | Some '=' -> (
                 LexerUtil.next_char lex;
                 LexerUtil.next_char lex;
                 Ok (Operator OperatorDotDotEq))
-            | '.' -> (
+            | Some '.' -> (
                 LexerUtil.next_char lex;
                 LexerUtil.next_char lex;
                 Ok (Separator SeparatorDotDotDot))
             | _ -> (
                 LexerUtil.next_char lex;
                 Ok (Operator OperatorDotDot)))
-            | _ -> Ok (Separator SeparatorDot))
+        | _ -> Ok (Separator SeparatorDot))
 
     | '?' -> Ok (Operator OperatorInterogation)
 
@@ -469,20 +471,20 @@ let tokenizer lex =
         | Error e -> Error e)
 
     | '0' -> (
-        match LexerUtil.get_next_char lex with
-        | 'x' -> (
+        match LexerUtil.peek_char lex 1 with
+        | Some 'x' -> (
             match ScanChar.scan_hex lex with
             | Ok i -> Ok (Literal (LiteralInt (i, Hexadecimal)))
             | Error e -> Error e)
-        | 'o' -> (
+        | Some 'o' -> (
             match ScanChar.scan_oct lex with
             | Ok i -> Ok (Literal (LiteralInt (i, Octal)))
             | Error e -> Error e)
-        | 'b' -> (
+        | Some 'b' -> (
             match ScanChar.scan_bin lex with
             | Ok i -> Ok (Literal (LiteralInt (i, Binary)))
             | Error e -> Error e)
-        | '.' | '0' .. '9' | 'e' | 'E' -> (
+        | Some '.' | Some '0' .. '9' | Some 'e' | Some 'E' -> (
             match ScanChar.scan_num lex with
             | Ok i -> Ok i
             | Error _ -> Error ErrorIdInvalidNumLiteral) 

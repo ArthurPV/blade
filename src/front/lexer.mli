@@ -26,7 +26,7 @@ module LexerUtil : sig
     val previous_char : lexer -> unit
     val start_token : lexer -> unit
     val end_token : lexer -> unit
-    val get_next_char : lexer -> char
+    val peek_char : lexer -> int -> char option
 end
 
 module RecognizeChar : sig 
