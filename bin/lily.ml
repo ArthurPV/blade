@@ -166,11 +166,11 @@ let _ =
                    for i = 0 to (CCVector.length op)-1 do 
                        match CCVector.get op i with
                        | CompileOptionError -> (
-                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
                            exit 1)
                        | CompileOptionHelp -> LilyCompileCommand.compile_help_op ()
                    done;))
-           | CommandKindError -> Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(1)
+           | CommandKindError -> Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(1)
            | CommandKindHelp -> LilyCommand.lily_help ()
            | CommandKindInit op -> (
                match Array.length Sys.argv with
@@ -179,7 +179,7 @@ let _ =
                    for i = 0 to (CCVector.length op)-1 do 
                        match CCVector.get op i with
                        | InitOptionError -> (
-                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
                            exit 1)
                        | InitOptionHelp -> LilyInitCommand.init_help_op ()
                    done;))
@@ -190,7 +190,7 @@ let _ =
                    for i = 0 to (CCVector.length op)-1 do 
                        match CCVector.get op i with
                        | NewOptionError -> (
-                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
                            exit 1)
                        | NewOptionHelp -> LilyNewCommand.new_help_op ()
                    done;))
@@ -201,11 +201,11 @@ let _ =
                    for i = 0 to (CCVector.length op)-1 do 
                        match CCVector.get op i with
                        | RunOptionError -> (
-                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
                            exit 1)
                        | RunOptionFile f -> LilyCommand.lily_run f ()
                        | RunOptionFileError -> (
-                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: file doesn\'t specified\027\n";
+                           Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[1m: file doesn\'t specified\027\n";
                            exit 1)
                        | RunOptionHelp -> LilyRunCommand.run_help_op ()
                    done;))
@@ -216,7 +216,7 @@ let _ =
                    for i = 0 to (CCVector.length op)-1 do
                        match CCVector.get op i with
                        | TestOptionError -> (
-                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
                            exit 1)
                        | TestOptionHelp -> LilyTestCommand.test_help_op ()
                    done;))
@@ -227,7 +227,7 @@ let _ =
                    for i = 0 to (CCVector.length op)-1 do
                        match CCVector.get op i with
                        | ToOptionError -> (
-                           Printf.printf "\027[1m\027[31mError\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
+                           Printf.printf "\027[1m\027[31m[lily:error]\027\027[0m\027[1m: unexpected command: \'%s\'\027\n" Sys.argv.(i+2);
                            exit 1)
                        | ToOptionHelp -> LilyToCommand.to_help_op ()
                    done;))

@@ -1,6 +1,7 @@
 open Ast
 open Binop
 (*open Identifier*)
+(*open Precedence*)
 open Stream
 open Unary
 open Default_type
@@ -134,12 +135,64 @@ module ParseExpr = struct
 
     let read_expr ast = 
         match ast.current_token with
-        | Token.Operator OperatorPlus -> parse_binop_operator ast
+        | Token.Separator SeparatorLeftParen
+        | Token.Operator OperatorPlus
+        | Token.Operator OperatorMinus
+        | Token.Operator OperatorStar
+        | Token.Operator OperatorSlash
+        | Token.Operator OperatorPercentage
+        | Token.Operator OperatorHat
+        | Token.Operator OperatorLeftShift
+        | Token.Operator OperatorRightShift
+        | Token.Operator OperatorLeftShiftEq
+        | Token.Operator OperatorRightShiftEq
+        -> (
+            (* make in precedence order *)
+            (*ParserUtil.next_token ast;
+            let precedence_order = CCVector.create () in
+            let p = ref 1 in
+            let rec loop ast =
+                if !p < 9 then
+                    match get_precedence ast.current_token with
+                    | Some precedence -> (
+                        if precedence = 1 && precedence = !p then 
+                            (while ast.current_token <> Token.Separator SeparatorRightParen do
+                                CCVector.push precedence_order ast.current_token;
+                                ParserUtil.next_token ast;
+                            done;
+                            CCVector.push precedence_order ast.current_token;
+                            ParserUtil.next_token ast;
+                            loop (ast))
+                        else if precedence = 2 && precedence = !p then 
+                            print_error (ErrorIdUnexpectedToken "not")
+                            ~line:ast.current_location.line
+                            ~col:ast.current_location.col
+                            ast.filename
+                        else if precedence = 3 && precedence = !p then (
+                            match ParserUtil.get_previous_token ast with
+                            | Ok t -> CCVector.push precedence_order t
+                            | Error e -> print_error e
+                            ~line:ast.current_location.line
+                            ~col:ast.current_location.col
+                            ast.filename;
+                            CCVector.push precedence_order ast.current_token;
+                            ParserUtil.next_token ast;
+                            CCVector.push precedence_order ast.current_token;
+                            ParserUtil.next_token ast)
+                        else if precedence = 4 && precedence = !p then ()
+                        else ())
+                    | None -> print_error (ErrorIdUnexpectedToken "")
+                    ~line:ast.current_location.line
+                    ~col:ast.current_location.col
+                    ast.filename in
+            loop (ast)*)
+            parse_unary ast)
+        (*| Token.Operator OperatorPlus -> parse_binop_operator ast
         | Token.Operator OperatorMinus -> parse_binop_operator ast
         | Token.Operator OperatorStar -> parse_binop_operator ast
         | Token.Operator OperatorSlash -> parse_binop_operator ast
         | Token.Operator OperatorPercentage -> parse_binop_operator ast
-        | Token.Operator OperatorHat -> parse_binop_operator ast
+        | Token.Operator OperatorHat -> parse_binop_operator ast*)
         | Token.Keyword KeywordNot -> parse_unary ast
         | Token.Identifier s -> parse_identifier ast
         | Token.Keyword KeywordTrue -> Ok (ExprLiteral (LiteralBool (true)))

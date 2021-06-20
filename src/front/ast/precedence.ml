@@ -17,26 +17,29 @@ let get_precedence tok =
     | Operator OperatorPercentage 
     | Operator OperatorHat 
     -> Some 3
+    | Operator OperatorPlus
+    | Operator OperatorMinus
+    -> Some 4
     | Operator OperatorLeftShift 
     | Operator OperatorLeftShiftEq 
     | Operator OperatorRightShift 
     | Operator OperatorRightShiftEq 
-    -> Some 4
+    -> Some 5
     | Operator OperatorEqEq 
     | Operator OperatorLeftShiftRightShift 
-    -> Some 5
-    | Keyword KeywordAnd 
     -> Some 6
-    | Keyword KeywordOr 
+    | Keyword KeywordAnd 
     -> Some 7
-    | Operator OperatorInterogation 
+    | Keyword KeywordOr 
     -> Some 8
+    | Operator OperatorInterogation 
+    -> Some 9
     | Operator OperatorPlusEq 
     | Operator OperatorMinusEq 
     | Operator OperatorStarEq 
     | Operator OperatorSlashEq 
     | Operator OperatorPercentageEq 
     | Operator OperatorHatEq 
-    -> Some 9
+    -> Some 10
     | _ 
     -> None
