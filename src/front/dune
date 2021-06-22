@@ -2,5 +2,6 @@
 (library
   (libraries
     ANSITerminal
-    containers)
+    containers
+    stdint)
   (name lilyFront))

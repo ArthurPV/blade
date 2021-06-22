@@ -15,6 +15,9 @@ type lexer_info = {
     mutable pos: int;
 }
 
+(*
+lexer type
+*)
 type lexer = {
     info: lexer_info;
     read: read; (* get filename and read file*)

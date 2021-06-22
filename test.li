@@ -1,4 +1,5 @@
 import "Mymodule"
+import "MyModule2"
 
 ** Mutable variables
 var a
